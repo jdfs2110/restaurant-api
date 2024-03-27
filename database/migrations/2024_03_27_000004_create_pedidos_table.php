@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('fecha');
             $table->integer('estado')->default(0);
-            $table->double('precio')->default(0);
+            $table->float('precio')->default(0);
             $table->integer('numero_comensales')->default(1);
             $table->unsignedBigInteger('id_mesa');
             $table->unsignedBigInteger('id_usuario');

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('lineas', function(Blueprint $table) {
             $table->id();
-            $table->double('precio')->default(0);
+            $table->float('precio')->default(0);
             $table->integer('cantidad')->default(1);
             $table->unsignedBigInteger('id_producto');
             $table->unsignedBigInteger('id_pedido');

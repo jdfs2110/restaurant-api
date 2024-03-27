@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('productos', function(Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->double('precio')->default(0);
+            $table->float('precio')->default(0);
             $table->boolean('activo')->default(true);
 
             $table->timestamps();
