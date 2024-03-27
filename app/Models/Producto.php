@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Producto
 {
-    use HasFactory, Notifiable;
-
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -20,9 +19,19 @@ class Producto
         'activo',
     ];
 
-    public function getFillable(): array
+    public function getNombre(): string
     {
-        return $this->fillable;
+        return $this->nombre;
+    }
+
+    public function getPrecio(): float
+    {
+        return $this->precio;
+    }
+
+    public function getActivo(): bool
+    {
+        return $this->activo;
     }
 
 
