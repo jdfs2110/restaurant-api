@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Roles
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *

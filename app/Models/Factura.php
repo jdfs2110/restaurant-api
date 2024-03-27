@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use DateTime;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Factura
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
