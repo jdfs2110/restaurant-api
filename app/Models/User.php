@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'fecha_ingreso',
         'id_rol'
     ];
 
@@ -61,6 +62,11 @@ class User extends Authenticatable
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getFechaIngreso(): string
+    {
+        return $this->fecha_ingreso;
     }
 
     public function getIdRol(): int
