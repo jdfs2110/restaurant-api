@@ -63,4 +63,19 @@ class Pedido extends Model
     {
         return $this->id_usuario;
     }
+
+    public function getCreatedAt(): string | null
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): string | null
+    {
+        return $this->updated_at;
+    }
+
+    public function getDeletedAt(): string | null
+    {
+        return $this->deleted_at;
+    }
 }

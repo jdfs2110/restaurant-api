@@ -21,7 +21,10 @@ class PedidoResource extends JsonResource
             'precio' => $this->getPrecio(),
             'numero_comensales' => $this->getNumeroComensales(),
             'id_mesa' => $this->getIdMesa(),
-            'id_usuario' => $this->getIdUsuario()
+            'id_usuario' => $this->getIdUsuario(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'deleted_at' => $this->getDeletedAt()
         ];
     }
 }

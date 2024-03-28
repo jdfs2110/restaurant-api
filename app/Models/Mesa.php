@@ -37,4 +37,19 @@ class Mesa extends Model
     {
         return self::ESTADOS[$this->estado];
     }
+
+    public function getCreatedAt(): string | null
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): string | null
+    {
+        return $this->updated_at;
+    }
+
+    public function getDeletedAt(): string | null
+    {
+        return $this->deleted_at;
+    }
 }

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'estado',
         'fecha_ingreso',
         'id_rol'
     ];
@@ -49,6 +50,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -69,8 +75,40 @@ class User extends Authenticatable
         return $this->fecha_ingreso;
     }
 
+    public function getEstado(): bool
+    {
+        return $this->estado;
+    }
+
+    private const ROLES = [
+        1 => 'mesero',
+        2 => 'cocina',
+        3 => 'rrhh',
+        4 => 'admin'
+    ];
+
     public function getIdRol(): int
     {
         return $this->id_rol;
+    }
+
+    public function getRol(): string
+    {
+        return self::ROLES[$this->id_rol];
+    }
+
+    public function getCreatedAt(): string | null
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): string | null
+    {
+        return $this->updated_at;
+    }
+
+    public function getDeletedAt(): string | null
+    {
+        return $this->deleted_at;
     }
 }
