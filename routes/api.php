@@ -5,6 +5,7 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\ProductoController;
 use App\Http\Controllers\api\MesaController;
+use App\Http\Controllers\api\PedidoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +40,9 @@ Route::get('/productos/{id}', [ProductoController::class, 'getProducto']);
  */
 Route::get('/mesas', [MesaController::class, 'index']);
 Route::get('/mesas/{id}', [MesaController::class, 'getMesa']);
+
+/**
+ * Pedidos endpoints
+ */
+Route::get('/pedidos', [PedidoController::class, 'index']);
+Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']);

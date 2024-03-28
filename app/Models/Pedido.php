@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Pedido
+class Pedido extends Model
 {
     use SoftDeletes;
 
