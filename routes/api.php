@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
  */
 Route::get('/usuarios', [UserController::class, 'index']);
 Route::get('/usuarios/{id}', [UserController::class, 'getUser']);
-
+Route::get('usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
 
 /**
  *  Roles endpoints
@@ -49,3 +49,4 @@ Route::post('/mesas/new', [MesaController::class, 'newMesa']);
  */
 Route::get('/pedidos', [PedidoController::class, 'index']);
 Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']);
+Route::post('/pedidos/new', [PedidoController::class, 'newPedido']);

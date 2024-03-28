@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PedidoResource;
 use App\Models\User;
+use App\Models\Pedido;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 class UserController extends Controller
@@ -34,6 +36,15 @@ class UserController extends Controller
         $response = [
             'user' => $user
         ];
+
+        return response()->json($response);
+    }
+
+    public function getUsersPedidos($id): JsonResponse
+    {
+        $pedidos = Pedido::query()->where('id_usuario', $id)->get();
+
+        $response = PedidoResource::collection($pedidos);
 
         return response()->json($response);
     }
