@@ -7,7 +7,7 @@ use App\Models\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class RolesController extends Controller
+class RoleController extends Controller
 {
     function index(): JsonResponse
     {
