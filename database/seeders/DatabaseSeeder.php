@@ -28,5 +28,13 @@ class DatabaseSeeder extends Seeder
                 'nombre' => $role
             ]);
         }
+
+        User::factory()->create([
+            'name' => 'test',
+            'email' => 'test@test.com',
+            'password' => bcrypt('123456'),
+            'id_rol' => '4',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
     }
 }
