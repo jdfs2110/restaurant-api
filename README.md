@@ -90,7 +90,7 @@ CREATE TABLE usuarios(
   name VARCHAR2 NOT NULL,
   email VARCHAR2 UNIQUE NOT NULL,
   password VARCHAR2 NOT NULL,
-  estado BOOLEAN DEFAULT true NOT NULL,
+  estado BOOLEAN DEFAULT true NOT NULL, -- Alta / Baja
   fecha_ingreso DATE NOT NULL,
   id_rol INT NOT NULL,
   PRIMARY KEY(id),
