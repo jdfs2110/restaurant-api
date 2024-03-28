@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
+use App\Http\Resources\UsuarioResource;
 use App\Models\User;
 use App\Models\Pedido;
 use Illuminate\Http\JsonResponse;
@@ -14,9 +15,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        $response = [
-            'users' => $users
-        ];
+        $response = UsuarioResource::collection($users);
 
         return response()->json($response);
     }
@@ -33,9 +32,7 @@ class UserController extends Controller
             return response()->json($errorMessage, 404);
         }
 
-        $response = [
-            'user' => $user
-        ];
+        $response = new UsuarioResource($user);
 
         return response()->json($response);
     }
