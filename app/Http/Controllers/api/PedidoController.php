@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,9 +14,7 @@ class PedidoController extends Controller
     {
         $pedidos = Pedido::all();
 
-        $response = [
-            'pedidos' => $pedidos
-        ];
+        $response = PedidoResource::collection($pedidos);
 
         return response()->json($response);
     }
@@ -32,9 +31,30 @@ class PedidoController extends Controller
             return response()->json($errorMessage, 404);
         }
 
-        $response = [
-            'pedido' => $pedido
-        ];
+        $response = new PedidoResource($pedido);
+
+        return response()->json($response);
+    }
+
+    function newPedido(Request $request): JsonResponse
+    {
+        $pedidoData = $request->validate([
+            'precio' => 'numeric|required',
+            'numero_comensales' => 'numeric|required|min:1',
+            'id_mesa' => 'numeric|required',
+            'id_usuario' => 'numeric|required'
+        ]);
+
+        $pedido = Pedido::query()->create([
+            'fecha' => now(),
+            'estado' => 0,
+            'precio' => $pedidoData['precio'],
+            'numero_comensales' => $pedidoData['numero_comensales'],
+            'id_mesa' => $pedidoData['id_mesa'],
+            'id_usuario' => $pedidoData['id_usuario']
+        ]);
+
+        $response = new PedidoResource($pedido);
 
         return response()->json($response);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,7 +20,7 @@ class Pedido extends Model
         'precio',
         'numero_comensales',
         'id_mesa',
-        'id_empleado'
+        'id_usuario'
     ];
 
     private const ESTADOS = [
@@ -31,7 +30,11 @@ class Pedido extends Model
         'cancelado'
     ];
 
-    public function getFecha(): DateTime
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    public function getFecha(): string
     {
         return $this->fecha;
     }
@@ -56,8 +59,8 @@ class Pedido extends Model
         return $this->id_mesa;
     }
 
-    public function getIdEmpleado(): int
+    public function getIdUsuario(): int
     {
-        return $this->id_empleado;
+        return $this->id_usuario;
     }
 }
