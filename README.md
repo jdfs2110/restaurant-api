@@ -1,3 +1,5 @@
+# Casos de uso con sus endpoints
+
 ## Usuarios
 
 | Caso de uso                              | Endpoint     | Método HTTP |
@@ -64,3 +66,114 @@
 | Buscar un rol por id   | /roles/{id}| GET         |
 | Crear un rol           | /roles/new | POST        |
 | Editar un rol          | /roles/{id}| PATCH       |
+
+---------------------
+<br><br>
+
+# Tablas de la Base de Datos
+
+## Roles
+
+```sql
+CREATE TABLE roles(
+  id INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR2 NOT NULL,
+  PRIMARY KEY(id)
+);
+```
+
+## Usuarios
+
+```sql
+CREATE TABLE usuarios(
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR2 NOT NULL,
+  email VARCHAR2 UNIQUE NOT NULL,
+  password VARCHAR2 NOT NULL,
+  estado BOOLEAN DEFAULT true NOT NULL,
+  fecha_ingreso DATE NOT NULL,
+  id_rol INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(id_rol) REFERENCES roles(id)
+);
+```
+
+## Productos
+
+```sql
+CREATE TABLE productos(
+  id INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR2 NOT NULL,
+  precio FLOAT NOT NULL DEFAULT 0,
+  activo BOOLEAN NOT NULL DEFAULT TRUE,
+  PRIMARY KEY(id)
+);
+```
+
+## Stock
+
+```sql
+CREATE TABLE stock(
+  id INT NOT NULL AUTO_INCREMENT,
+  cantidad INT NOT NULL DEFAULT 0,
+  id_producto INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(id_producto) REFERENCES productos(id)
+);
+```
+
+## Mesas
+
+```sql
+CREATE TABLE mesas(
+  id INT NOT NULL AUTO_INCREMENT,
+  capacidad_maxima INT NOT NULL DEFAULT 0,
+  estado INT NOT NULL,
+  PRIMARY KEY(id),
+  CHECK estado <= 2 AND estado >= 0
+  );
+```
+
+## Pedidos
+
+```sql
+CREATE TABLE pedidos(
+  id INT NOT NULL AUTO_INCREMENT,
+  fecha DATETIME NOT NULL,
+  estado INT NOT NULL,
+  numero_comensales INT NOT NULL DEFAULT 1,
+  id_mesa INT NOT NULL,
+  id_usuario INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(id_mesa) REFERENCES mesas(id),
+  FOREIGN KEY(id_usuario) REFERENCES usuarios(id),
+  CHECK estado<= 3 AND estado >= 0
+); 
+```
+
+## Lineas
+
+```sql
+CREATE TABLE lineas(
+  id INT NOT NULL AUTO_INCREMENT,
+  precio FLOAT NOT NULL DEFAULT 0,
+  cantidad INT NOT NULL DEFAULT 1,
+  id_producto INT NOT NULL,
+  id_pedido INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(id_producto) REFERENCES productos(id),
+  FOREIGN KEY(id_pedido) REFERENCES pedidos(id)
+);
+```
+
+## Facturas (quizá se descarte)
+
+```sql
+CREATE TABLE facturas(
+  id INT NOT NULL AUTO_INCREMENT,
+  fecha DATETIME NOT NULL,
+  id_pedido INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(id_pedido) REFERENCES pedidos(id)
+);
+```
