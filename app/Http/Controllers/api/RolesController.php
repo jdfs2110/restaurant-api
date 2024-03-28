@@ -3,36 +3,37 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-class UserController extends Controller
+
+class RolesController extends Controller
 {
-    public function index(): JsonResponse
+    function index(): JsonResponse
     {
-        $users = User::all();
+        $roles = Roles::all();
 
         $response = [
-            'users' => $users
+            'roles' => $roles
         ];
 
         return response()->json($response);
     }
 
-    public function getUser($id): JsonResponse
+    function getRole($id): JsonResponse
     {
-        $user = User::query()->where('id', $id)->get()->first();
+        $role = Roles::query()->where('id', $id)->get()->first();
 
-        if (is_null($user)) {
+        if (is_null($role)) {
             $errorMessage = [
-                'error' => 'El usuario no existe.'
+                'error' => 'El rol no existe.'
             ];
 
             return response()->json($errorMessage, 404);
         }
 
         $response = [
-            'user' => $user
+            'rol' => $role
         ];
 
         return response()->json($response);
