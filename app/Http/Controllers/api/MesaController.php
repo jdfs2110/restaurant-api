@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MesaResource;
 use App\Models\Mesa;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,9 +14,7 @@ class MesaController extends Controller
     {
         $mesas = Mesa::all();
 
-        $response = [
-            'mesas' => $mesas
-        ];
+        $response = MesaResource::collection($mesas);
 
         return response()->json($response);
     }
@@ -32,9 +31,24 @@ class MesaController extends Controller
             return response()->json($errorMessage, 404);
         }
 
-        $response = [
-            'mesa' => $mesa
-        ];
+        $response = new MesaResource($mesa);
+
+        return response()->json($response);
+    }
+
+    function newMesa(Request $request): JsonResponse
+    {
+        $mesaData = $request->validate([
+            'capacidad_maxima' => 'numeric|required|max:10',
+            'estado' => 'numeric|required|max:2'
+        ]);
+
+        $mesa = Mesa::query()->create([
+           'capacidad_maxima' => $mesaData['capacidad_maxima'],
+           'estado' => $mesaData['estado']
+        ]);
+
+        $response = new MesaResource($mesa);
 
         return response()->json($response);
     }

@@ -25,6 +25,10 @@ class Mesa extends Model
         'reservada'
     ];
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
     public function getCapacidadMaxima(): int
     {
         return $this->capacidad_maxima;

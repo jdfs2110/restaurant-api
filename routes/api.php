@@ -42,6 +42,7 @@ Route::post('/productos/new', [ProductoController::class, 'newProduct']);
  */
 Route::get('/mesas', [MesaController::class, 'index']);
 Route::get('/mesas/{id}', [MesaController::class, 'getMesa']);
+Route::post('/mesas/new', [MesaController::class, 'newMesa']);
 
 /**
  * Pedidos endpoints
