@@ -38,4 +38,25 @@ class ProductoController extends Controller
 
         return response()->json($response);
     }
+
+
+    function newProduct(Request $request): JsonResponse
+    {
+        $productData = $request->validate([
+            'nombre' => 'required|string',
+            'precio' => 'required|numeric'
+        ]);
+
+        $producto = Producto::query()->create([
+            'nombre' => $productData['nombre'],
+            'precio' => $productData['precio'],
+            'activo' => true
+        ]);
+
+        $response = [
+            'producto' => $producto
+        ];
+
+        return response()->json($response);
+    }
 }

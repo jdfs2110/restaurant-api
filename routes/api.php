@@ -35,6 +35,7 @@ Route::post('/roles/new', [RoleController::class, 'newRole']);
  */
 Route::get('/productos', [ProductoController::class, 'index']);
 Route::get('/productos/{id}', [ProductoController::class, 'getProducto']);
+Route::post('/productos/new', [ProductoController::class, 'newProduct']);
 
 /**
  * Mesas endpoints
