@@ -28,6 +28,7 @@ Route::get('/usuarios/{id}', [UserController::class, 'getUser']);
  */
 Route::get('/roles', [RoleController::class, 'index']);
 Route::get('/roles/{id}', [RoleController::class, 'getRole']);
+Route::post('/roles/new', [RoleController::class, 'newRole']);
 
 /**
  *  Productos endpoints

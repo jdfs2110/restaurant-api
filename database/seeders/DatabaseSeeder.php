@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Roles;
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $roles = ['mesero', 'cocina', 'rrhh', 'admin'];
 
         foreach($roles as $role) {
-            Roles::factory()->create([
+            Role::factory()->create([
                 'nombre' => $role
             ]);
         }
