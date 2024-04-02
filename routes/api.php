@@ -91,11 +91,13 @@ Route::put('/stock/{id}', [StockController::class, 'updateStock']);
  *  2. Buscar una mesa por ID
  *  3. Crear una mesa
  *  4. Eliminar una mesa
+ *  5. Editar una mesa
  */
 Route::get('/mesas', [MesaController::class, 'index']);
 Route::get('/mesas/{id}', [MesaController::class, 'getMesa']);
 Route::post('/mesas/new', [MesaController::class, 'newMesa']);
 Route::delete('/mesas/{id}', [MesaController::class, 'deleteMesa']);
+Route::put('/mesas/{id}', [MesaController::class, 'updateMesa']);
 
 /**
  *  Pedidos endpoints
