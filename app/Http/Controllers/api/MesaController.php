@@ -56,4 +56,26 @@ class MesaController extends Controller
 
         return response()->json($response);
     }
+
+    function deleteMesa($id): JsonResponse
+    {
+        $mesa = Mesa::query()->where('id', $id)->get()->first();
+
+        if (is_null($mesa)) {
+            $errorMessage = [
+                'error' => 'La mesa no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $deletion = Mesa::query()->where('id', $id)->delete();
+        $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
+
+        $response = [
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }
