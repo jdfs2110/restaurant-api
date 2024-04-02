@@ -14,7 +14,9 @@ class MesaController extends Controller
     {
         $mesas = Mesa::all();
 
-        $response = MesaResource::collection($mesas);
+        $response =[
+            'mesas' => MesaResource::collection($mesas)
+        ];
 
         return response()->json($response);
     }
@@ -31,7 +33,9 @@ class MesaController extends Controller
             return response()->json($errorMessage, 404);
         }
 
-        $response = new MesaResource($mesa);
+        $response = [
+            'mesa' => new MesaResource($mesa)
+        ];
 
         return response()->json($response);
     }

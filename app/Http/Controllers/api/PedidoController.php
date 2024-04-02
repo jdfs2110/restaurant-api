@@ -14,7 +14,9 @@ class PedidoController extends Controller
     {
         $pedidos = Pedido::all();
 
-        $response = PedidoResource::collection($pedidos);
+        $response = [
+            'pedidos' => PedidoResource::collection($pedidos)
+        ];
 
         return response()->json($response);
     }
@@ -31,7 +33,9 @@ class PedidoController extends Controller
             return response()->json($errorMessage, 404);
         }
 
-        $response = new PedidoResource($pedido);
+        $response = [
+            'pedido' => new PedidoResource($pedido)
+        ];
 
         return response()->json($response);
     }
