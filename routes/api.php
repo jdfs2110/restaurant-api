@@ -7,7 +7,6 @@ use App\Http\Controllers\api\CategoriaController;
 use App\Http\Controllers\api\ProductoController;
 use App\Http\Controllers\api\MesaController;
 use App\Http\Controllers\api\PedidoController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/registro', [AuthController::class, 'register']);
