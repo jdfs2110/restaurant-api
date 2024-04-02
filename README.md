@@ -1,5 +1,15 @@
 # Casos de uso con sus endpoints
 
+## Roles
+
+| Caso de uso            | Endpoint   | Método HTTP |
+| ---------------------- | ---------- | ----------- |
+| Buscar todos los roles | /roles     | GET         |
+| Buscar un rol por id   | /roles/{id}| GET         |
+| Crear un rol           | /roles/new | POST        |
+| Editar un rol          | /roles/{id}| PATCH       |
+| Buscar todos los usuarios de un rol concreto | /roles/{id}/usuarios | GET |
+
 ## Usuarios
 
 | Caso de uso                              | Endpoint     | Método HTTP |
@@ -8,6 +18,17 @@
 | Registro                                 | /registro    | POST        |
 | Cierre de sesión                         | /logout      | POST        |
 | Editar usuario (solo para administrador) | /usuario/{id}| PUT         |
+
+## Categorias
+
+| Caso de uso                           | Endpoint             | Método HTTP |
+| ------------------------------------- | -------------------- | ----------- |
+| Buscar todas las categorias           | /categorias          | GET         |
+| Buscar una categoría por id           | /categorias/{id}     | GET         |
+| Eliminar una categoría (admin)        | /categorias/{id}     | DELETE      |
+| Crear una categoría                   | /categorias/new      | POST        |
+| Editar una categoría                  | /categorias/{id}     | PUT         |
+| Buscar todos los productos de una categoría | /categorias/{id}/productos | GET | 
 
 ## Productos
 
@@ -57,15 +78,6 @@
 | Buscar una factura por id      | /facturas/{id}        | GET         |
 | Crear una factura              | /facturas/new         | POST        |
 | Eliminar una factura (admin)   | /facturas/{id}        | DELETE      |
-
-## Roles
-
-| Caso de uso            | Endpoint   | Método HTTP |
-| ---------------------- | ---------- | ----------- |
-| Buscar todos los roles | /roles     | GET         |
-| Buscar un rol por id   | /roles/{id}| GET         |
-| Crear un rol           | /roles/new | POST        |
-| Editar un rol          | /roles/{id}| PATCH       |
 
 ---------------------
 <br><br>
