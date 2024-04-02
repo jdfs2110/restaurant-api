@@ -44,11 +44,13 @@ Route::get('usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
  *  2. Buscar una categoría por ID
  *  3. Crear una categoría
  *  4. Eliminar una categoría
+ *  5. Todos los productos de una categoría (ID)
  */
 Route::get('/categorias', [CategoriaController::class, 'index']);
 Route::get('/categorias/{id}', [CategoriaController::class, 'getCategoria']);
 Route::post('/categorias/new', [CategoriaController::class, 'newCategoria']);
 Route::delete('/categorias/{id}', [CategoriaController::class, 'deleteCategoria']);
+Route::get('/categorias/{id}/productos', [ProductoController::class, 'getProductosByCategoria']);
 
 /**
  *  Productos endpoints
@@ -83,3 +85,4 @@ Route::delete('/mesas/{id}', [MesaController::class, 'deleteMesa']);
 Route::get('/pedidos', [PedidoController::class, 'index']);
 Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']);
 Route::post('/pedidos/new', [PedidoController::class, 'newPedido']);
+//Route::get('/pedidos/{id}/lineas');
