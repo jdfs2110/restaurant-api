@@ -67,10 +67,12 @@ Route::delete('/productos/{id}', [ProductoController::class, 'deleteProducto']);
  *  1. Todas las mesas
  *  2. Buscar una mesa por ID
  *  3. Crear una mesa
+ *  4. Eliminar una mesa
  */
 Route::get('/mesas', [MesaController::class, 'index']);
 Route::get('/mesas/{id}', [MesaController::class, 'getMesa']);
 Route::post('/mesas/new', [MesaController::class, 'newMesa']);
+Route::delete('/mesas/{id}', [MesaController::class, 'deleteMesa']);
 
 /**
  *  Pedidos endpoints
