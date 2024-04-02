@@ -21,7 +21,7 @@
 | Registro                                   | /registro             | POST        |
 | Cierre de sesión                           | /logout               | POST        |
 | Editar usuario (admin)                     | /usuarios/{id}        | PUT         |
-| Buscar los pedidos manejados por un usuario| /usuarios/{id}/pedidos| GET         |
+| Buscar los pedidos manejados por un usuario (filtrado por mesero en el cliente)| /usuarios/{id}/pedidos| GET         |
 
 ## Categorias
 
