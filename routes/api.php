@@ -110,8 +110,10 @@ Route::put('/mesas/{id}', [MesaController::class, 'updateMesa']);
  *  1. Todos los pedidos
  *  2. Buscar un pedido por ID
  *  3. Crear un pedido
+ *  4. Editar un pedido
  */
 Route::get('/pedidos', [PedidoController::class, 'index']);
 Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']);
 Route::post('/pedidos/new', [PedidoController::class, 'newPedido']);
+Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido']);
 //Route::get('/pedidos/{id}/lineas');
