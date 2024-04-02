@@ -122,4 +122,26 @@ class StockController extends Controller
 
         return response()->json($response);
     }
+
+    function deleteStock($id): JsonResponse
+    {
+        $stock = Stock::query()->where('id', $id)->get()->first();
+
+        if (is_null($stock)) {
+            $errorMessage = [
+                'error' => 'Este stock no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $deletion = Stock::query()->where('id', $id)->delete();
+        $message = $deletion == 1 ? 'Este stock ha sido eliminado correctamente' : 'Error al eliminar este stock';
+
+        $response = [
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }
