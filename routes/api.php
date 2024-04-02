@@ -62,11 +62,13 @@ Route::put('/categorias/{id}', [CategoriaController::class, 'updateCategoria']);
  *  2. Buscar un producto por ID
  *  3. Crear un producto
  *  4. Eliminar un producto
+ *  5. Editar un producto
  */
 Route::get('/productos', [ProductoController::class, 'index']);
 Route::get('/productos/{id}', [ProductoController::class, 'getProducto']);
 Route::post('/productos/new', [ProductoController::class, 'newProducto']);
 Route::delete('/productos/{id}', [ProductoController::class, 'deleteProducto']);
+Route::put('/productos/{id}', [ProductoController::class, 'updateProducto']);
 
 /**
  *  Mesas endpoints
