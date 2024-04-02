@@ -77,4 +77,35 @@ class RoleController extends Controller
 
         return response()->json($response);
     }
+
+    public function updateRole(Request $request, $id): JsonResponse
+    {
+        $rolData = $request->validate([
+            'nombre' => 'required|string'
+        ]);
+
+        $role = Role::query()->where('id', $id)->get()->first();
+
+        if (is_null($role)) {
+            $errorMessage = [
+                'error' => 'El rol no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $update = Role::query()->where('id', $id)->update([
+            'nombre' => $rolData['nombre']
+        ]);
+        $message = $update == 1 ? 'El rol ha sido modificado correctamente.' : 'Error al modificar el rol.';
+
+        $updatedRol = Role::query()->where('id', $id)->get()->first();
+
+        $response = [
+            'rol' => $updatedRol,
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }
