@@ -24,12 +24,14 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
  *  3. Crear un rol
  *  4. Eliminar un rol
  *  5. Editar un rol
+ *  6. Listar usuarios por rol concreto (ID)
  */
 Route::get('/roles', [RoleController::class, 'index']);
 Route::get('/roles/{id}', [RoleController::class, 'getRole']);
 Route::post('/roles/new', [RoleController::class, 'newRole']);
 Route::delete('/roles/{id}', [RoleController::class, 'deleteRole']);
 Route::put('/roles/{id}', [RoleController::class, 'updateRole']);
+Route::get('/roles/{id}/usuarios', [UserController::class, 'getAllUsersByRole']);
 
 /**
  * User endpoints
@@ -39,7 +41,7 @@ Route::put('/roles/{id}', [RoleController::class, 'updateRole']);
  */
 Route::get('/usuarios', [UserController::class, 'index']);
 Route::get('/usuarios/{id}', [UserController::class, 'getUser']);
-Route::get('usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
+Route::get('/usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
 
 /**
  *  Categorias endpoints
