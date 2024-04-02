@@ -40,9 +40,9 @@ class PedidoController extends Controller
     {
         $pedidoData = $request->validate([
             'precio' => 'numeric|required',
-            'numero_comensales' => 'numeric|required|min:1',
-            'id_mesa' => 'numeric|required',
-            'id_usuario' => 'numeric|required'
+            'numero_comensales' => 'int|required|min:1',
+            'id_mesa' => 'int|required',
+            'id_usuario' => 'int|required'
         ]);
 
         $pedido = Pedido::query()->create([

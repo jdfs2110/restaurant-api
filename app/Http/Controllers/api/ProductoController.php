@@ -45,7 +45,7 @@ class ProductoController extends Controller
         $productData = $request->validate([
             'nombre' => 'required|string',
             'precio' => 'required|numeric',
-            'id_categoria' => 'required|numeric'
+            'id_categoria' => 'required|int'
         ]);
 
         $producto = Producto::query()->create([

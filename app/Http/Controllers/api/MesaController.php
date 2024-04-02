@@ -39,8 +39,8 @@ class MesaController extends Controller
     function newMesa(Request $request): JsonResponse
     {
         $mesaData = $request->validate([
-            'capacidad_maxima' => 'numeric|required|max:10',
-            'estado' => 'numeric|required|max:2'
+            'capacidad_maxima' => 'int|required|max:10',
+            'estado' => 'int|required|max:2'
         ]);
 
         $mesa = Mesa::query()->create([
