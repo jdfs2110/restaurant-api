@@ -62,8 +62,8 @@
 | Buscar todas las mesas | /mesas     | GET         |
 | Buscar una mesa por id | /mesas/{id}| GET         |
 | Crear una mesa         | /mesas/new | POST        |
-| Editar una mesa        | /mesas/{id}| PUT / PATCH |
 | Eliminar una mesa      | /mesas/{id}| DELETE      |
+| Editar una mesa        | /mesas/{id}| PUT         |
 
 ## Pedidos (la  tabla ´facturas´ podría ser descartada)
 
@@ -153,7 +153,7 @@ CREATE TABLE productos(
 CREATE TABLE stock(
   id INT NOT NULL AUTO_INCREMENT,
   cantidad INT NOT NULL DEFAULT 0,
-  id_producto INT NOT NULL,
+  id_producto INT NOT NULL UNIQUE -- TODO Unique,
   PRIMARY KEY(id),
   FOREIGN KEY(id_producto) REFERENCES productos(id)
 );
