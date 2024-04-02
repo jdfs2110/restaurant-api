@@ -55,4 +55,26 @@ class RoleController extends Controller
 
         return response()->json($response);
     }
+
+    public function deleteRole($id): JsonResponse
+    {
+        $role = Role::query()->where('id', $id)->get()->first();
+
+        if (is_null($role)) {
+            $errorMessage = [
+                'error' => 'El rol no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $deletion = Role::query()->where('id', $id)->delete();
+        $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
+
+        $response = [
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }
