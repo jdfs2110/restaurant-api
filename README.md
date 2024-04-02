@@ -80,7 +80,7 @@
 | Eliminar una factura (admin)   | /facturas/{id}        | DELETE      |
 
 ---------------------
-<br><br>
+<br>
 
 # Tablas de la Base de Datos
 
