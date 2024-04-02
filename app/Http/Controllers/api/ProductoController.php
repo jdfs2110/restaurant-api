@@ -113,4 +113,41 @@ class ProductoController extends Controller
 
         return response()->json($response);
     }
+
+    function updateProducto(Request $request, $id): JsonResponse
+    {
+        $productoData = $request->validate([
+            'nombre' => 'required|string',
+            'precio' => 'required|numeric',
+            'activo' => 'required|boolean',
+            'id_categoria' => 'required|int'
+        ]);
+
+        $producto = Producto::query()->where('id', $id)->get()->first();
+
+        if (is_null($producto)) {
+            $errorMessage = [
+                'error' => 'El producto no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $update = Producto::query()->where('id', $id)->update([
+            'nombre' => $productoData['nombre'],
+            'precio' => $productoData['precio'],
+            'activo' => $productoData['activo'],
+            'id_categoria' => $productoData['id_categoria']
+        ]);
+        $message = $update == 1 ? 'El producto ha sido modificado correctamente.' : 'Error al modificar el producto';
+
+        $updatedProducto = Producto::query()->where('id', $id)->get()->first();
+
+        $response = [
+            'producto' => $updatedProducto,
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }
