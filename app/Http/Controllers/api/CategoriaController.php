@@ -79,4 +79,37 @@ class CategoriaController extends Controller
 
         return response()->json($response);
     }
+
+    function updateCategoria(Request $request, $id): JsonResponse
+    {
+        $categoriaData = $request->validate([
+            'nombre' => 'required|string',
+            'foto' => 'required|string'
+        ]);
+
+        $categoria = Categoria::query()->where('id', $id)->get()->first();
+
+        if (is_null($categoria)) {
+            $errorMessage = [
+                'error' => 'La categoría no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $update = Categoria::query()->where('id', $id)->update([
+            'nombre' => $categoriaData['nombre'],
+            'foto' => $categoriaData['foto']
+        ]);
+        $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
+
+        $updatedCategoria = Categoria::query()->where('id', $id)->get()->first();
+
+        $response = [
+            'categoria' => $updatedCategoria,
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }
