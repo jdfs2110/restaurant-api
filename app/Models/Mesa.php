@@ -20,9 +20,9 @@ class Mesa extends Model
     ];
 
     private const ESTADOS = [
-        'libre',
-        'ocupada',
-        'reservada'
+        0 =>'libre',
+        1 => 'ocupada',
+        2 => 'reservada'
     ];
 
     public function getId(): int
