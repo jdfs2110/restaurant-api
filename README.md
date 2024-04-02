@@ -110,13 +110,13 @@ CREATE TABLE usuarios(
 );
 ```
 
-## Categorias (WIP)
+## Categorias
 
 ```sql
 CREATE TABLE categorias(
   id INT NOT NULL AUTO_INCREMENT,
   nombre VARCHAR2 NOT NULL,
-  -- foto BASE64 NOT NULL
+  foto VARCHAR2 NOT NULL
   PRIMARY KEY(id)
 );
 ```
