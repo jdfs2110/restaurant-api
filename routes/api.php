@@ -47,12 +47,14 @@ Route::get('usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
  *  3. Crear una categoría
  *  4. Eliminar una categoría
  *  5. Todos los productos de una categoría (ID)
+ *  6. Editar una categoría (ID)
  */
 Route::get('/categorias', [CategoriaController::class, 'index']);
 Route::get('/categorias/{id}', [CategoriaController::class, 'getCategoria']);
 Route::post('/categorias/new', [CategoriaController::class, 'newCategoria']);
 Route::delete('/categorias/{id}', [CategoriaController::class, 'deleteCategoria']);
 Route::get('/categorias/{id}/productos', [ProductoController::class, 'getProductosByCategoria']);
+Route::put('/categorias/{id}', [CategoriaController::class, 'updateCategoria']);
 
 /**
  *  Productos endpoints
