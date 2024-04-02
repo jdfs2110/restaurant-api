@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\RoleController;
+use App\Http\Controllers\api\CategoriaController;
 use App\Http\Controllers\api\ProductoController;
 use App\Http\Controllers\api\MesaController;
 use App\Http\Controllers\api\PedidoController;
@@ -17,18 +18,28 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 });
 
 /**
+ *  Roles endpoints
+ */
+Route::get('/roles', [RoleController::class, 'index']);
+Route::get('/roles/{id}', [RoleController::class, 'getRole']);
+Route::post('/roles/new', [RoleController::class, 'newRole']);
+
+/**
  * User endpoints
+ * 1. All users
+ * 2. Find user by ID
+ * 3. Find all pedidos managed by User
  */
 Route::get('/usuarios', [UserController::class, 'index']);
 Route::get('/usuarios/{id}', [UserController::class, 'getUser']);
 Route::get('usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
 
 /**
- *  Roles endpoints
+ *  Categorias endpoints
  */
-Route::get('/roles', [RoleController::class, 'index']);
-Route::get('/roles/{id}', [RoleController::class, 'getRole']);
-Route::post('/roles/new', [RoleController::class, 'newRole']);
+Route::get('/categorias', [CategoriaController::class, 'index']);
+Route::get('/categorias/{id}', [CategoriaController::class, 'getCategoria']);
+Route::post('/categorias/new', [CategoriaController::class, 'newCategoria']);
 
 /**
  *  Productos endpoints
