@@ -55,10 +55,12 @@ Route::delete('/categorias/{id}', [CategoriaController::class, 'deleteCategoria'
  *  1. Todos los productos
  *  2. Buscar un producto por ID
  *  3. Crear un producto
+ *  4. Eliminar un producto
  */
 Route::get('/productos', [ProductoController::class, 'index']);
 Route::get('/productos/{id}', [ProductoController::class, 'getProducto']);
-Route::post('/productos/new', [ProductoController::class, 'newProduct']);
+Route::post('/productos/new', [ProductoController::class, 'newProducto']);
+Route::delete('/productos/{id}', [ProductoController::class, 'deleteProducto']);
 
 /**
  *  Mesas endpoints
