@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Stock
+class Stock extends Model
 {
     use SoftDeletes;
 
@@ -16,6 +17,8 @@ class Stock
         'id_producto',
         'cantidad',
     ];
+
+    protected $table = 'stock';
 
     public function getIdProducto(): string
     {
