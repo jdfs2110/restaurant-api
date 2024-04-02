@@ -14,7 +14,7 @@ class MesaController extends Controller
     {
         $mesas = Mesa::all();
 
-        $response =[
+        $response = [
             'mesas' => MesaResource::collection($mesas)
         ];
 
@@ -48,8 +48,8 @@ class MesaController extends Controller
         ]);
 
         $mesa = Mesa::query()->create([
-           'capacidad_maxima' => $mesaData['capacidad_maxima'],
-           'estado' => $mesaData['estado']
+            'capacidad_maxima' => $mesaData['capacidad_maxima'],
+            'estado' => $mesaData['estado']
         ]);
 
         $response = new MesaResource($mesa);
@@ -73,6 +73,39 @@ class MesaController extends Controller
         $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
 
         $response = [
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
+
+    function updateMesa(Request $request, $id): JsonResponse
+    {
+        $mesaData = $request->validate([
+            'capacidad_maxima' => 'int|required|max:10',
+            'estado' => 'int|required|max:2'
+        ]);
+
+        $mesa = Mesa::query()->where('id', $id)->get()->first();
+
+        if (is_null($mesa)) {
+            $errorMessage = [
+                'error' => 'La mesa no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $update = Mesa::query()->where('id', $id)->update([
+            'capacidad_maxima' => $mesaData['capacidad_maxima'],
+            'estado' => $mesaData['estado']
+        ]);
+        $message = $update == 1 ? 'La mesa ha sido modificada correctamente.' : 'Error al modificar la mesa.';
+
+        $updatedMesa = Mesa::query()->where('id', $id)->get()->first();
+
+        $response = [
+            'mesa' => new MesaResource($updatedMesa),
             'message' => $message
         ];
 
