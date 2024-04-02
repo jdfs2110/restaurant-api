@@ -22,11 +22,13 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
  *  2. Buscar un rol por ID
  *  3. Crear un rol
  *  4. Eliminar un rol
+ *  5. Editar un rol
  */
 Route::get('/roles', [RoleController::class, 'index']);
 Route::get('/roles/{id}', [RoleController::class, 'getRole']);
 Route::post('/roles/new', [RoleController::class, 'newRole']);
 Route::delete('/roles/{id}', [RoleController::class, 'deleteRole']);
+Route::put('/roles/{id}', [RoleController::class, 'updateRole']);
 
 /**
  * User endpoints
