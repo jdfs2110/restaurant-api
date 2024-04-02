@@ -78,12 +78,14 @@ Route::put('/productos/{id}', [ProductoController::class, 'updateProducto']);
  *  3. Buscar el stock de un producto (ID producto)
  *  4. Dar de alta un producto en stock
  *  5. Editar un stock
+ *  6. Eliminar un stock
  */
 Route::get('/stock', [StockController::class, 'index']);
 Route::get('/stock/{id}', [StockController::class, 'getStock']);
 Route::get('/productos/{id}/stock', [StockController::class, 'getProductStock']);
 Route::post('/stock/new', [StockController::class, 'createStock']);
 Route::put('/stock/{id}', [StockController::class, 'updateStock']);
+Route::delete('/stock/{id}', [StockController::class, 'deleteStock']);
 
 /**
  *  Mesas endpoints
