@@ -45,7 +45,10 @@ class UserController extends Controller
     {
         $pedidos = Pedido::query()->where('id_usuario', $id)->get();
 
-        $response = PedidoResource::collection($pedidos);
+        $response = [
+            'pedidos' => PedidoResource::collection($pedidos)
+        ];
+
 
         return response()->json($response);
     }
