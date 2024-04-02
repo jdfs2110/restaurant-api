@@ -7,17 +7,21 @@
 | Buscar todos los roles | /roles     | GET         |
 | Buscar un rol por id   | /roles/{id}| GET         |
 | Crear un rol           | /roles/new | POST        |
-| Editar un rol          | /roles/{id}| PATCH       |
+| Eliminar un rol (admin)| /roles/{id}| DELETE      |
+| Editar un rol (admin)  | /roles/{id}| PUT         |
 | Buscar todos los usuarios de un rol concreto | /roles/{id}/usuarios | GET |
 
 ## Usuarios
 
-| Caso de uso                              | Endpoint     | Método HTTP |
-| ---------------------------------------- | ------------ | ----------- |
-| Login                                    | /login       | POST        |
-| Registro                                 | /registro    | POST        |
-| Cierre de sesión                         | /logout      | POST        |
-| Editar usuario (solo para administrador) | /usuario/{id}| PUT         |
+| Caso de uso                                | Endpoint              | Método HTTP |
+| ------------------------------------------ | --------------------- | ----------- |
+| Listar todos los usuarios                  | /usuarios             | GET         |
+| Buscar un usuario por id                   | /usuarios/{id}        | GET         |
+| Login                                      | /login                | POST        |
+| Registro                                   | /registro             | POST        |
+| Cierre de sesión                           | /logout               | POST        |
+| Editar usuario (admin)                     | /usuarios/{id}        | PUT         |
+| Buscar los pedidos manejados por un usuario| /usuarios/{id}/pedidos| GET         |
 
 ## Categorias
 
@@ -25,10 +29,10 @@
 | ------------------------------------- | -------------------- | ----------- |
 | Buscar todas las categorias           | /categorias          | GET         |
 | Buscar una categoría por id           | /categorias/{id}     | GET         |
-| Eliminar una categoría (admin)        | /categorias/{id}     | DELETE      |
 | Crear una categoría                   | /categorias/new      | POST        |
-| Editar una categoría                  | /categorias/{id}     | PUT         |
+| Eliminar una categoría (admin)        | /categorias/{id}     | DELETE      |
 | Buscar todos los productos de una categoría | /categorias/{id}/productos | GET | 
+| Editar una categoría                  | /categorias/{id}     | PUT         |
 
 ## Productos
 
@@ -36,10 +40,20 @@
 | ------------------------------------- | -------------------- | ----------- |
 | Buscar todos los productos            | /productos           | GET         |
 | Buscar un producto por id             | /productos/{id}      | GET         |
-| Eliminar un producto                  | /productos/{id}      | DELETE      |
 | Crear un nuevo producto               | /productos/new       | POST        |
+| Eliminar un producto                  | /productos/{id}      | DELETE      |
+| Editar un producto                    | /productos/{id}      | PUT         | 
 | Buscar el stock de un producto        | /productos/{id}/stock| GET         |
-| Buscar el stock de todos los productos| /productos/stock (en decisión) | GET|
+
+## Stock
+
+| Caso de uso                            | Endpoint              | Método HTTP |
+| -------------------------------------- | --------------------- | ----------- |
+| Buscar el stock de todos los productos | /stock                | GET         |
+| Buscar un stock por id                 | /stock{id}            | GET         |
+| Dar de alta un stock                   | /stock/new            | POST        |
+| Editar un stock                        | /stock/{id}           | PUT         |
+| Eliminar un stock (admin only)         | /stock/{id}           | DELETE      |  
 
 ## Mesas
 
