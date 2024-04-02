@@ -8,15 +8,15 @@ use App\Http\Resources\UsuarioResource;
 use App\Models\User;
 use App\Models\Pedido;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function index(): JsonResponse
     {
         $users = User::all();
 
-        $response = UsuarioResource::collection($users);
-
+        $response = [
+            'usuarios' => UsuarioResource::collection($users)
+        ];
         return response()->json($response);
     }
 
@@ -32,8 +32,9 @@ class UserController extends Controller
             return response()->json($errorMessage, 404);
         }
 
-        $response = new UsuarioResource($user);
-
+        $response = [
+            'usuario' => new UsuarioResource($user)
+        ];
         return response()->json($response);
     }
 
