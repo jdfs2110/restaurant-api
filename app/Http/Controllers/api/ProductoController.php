@@ -40,21 +40,45 @@ class ProductoController extends Controller
     }
 
 
-    function newProduct(Request $request): JsonResponse
+    function newProducto(Request $request): JsonResponse
     {
         $productData = $request->validate([
             'nombre' => 'required|string',
-            'precio' => 'required|numeric'
+            'precio' => 'required|numeric',
+            'id_categoria' => 'required|numeric'
         ]);
 
         $producto = Producto::query()->create([
             'nombre' => $productData['nombre'],
             'precio' => $productData['precio'],
-            'activo' => true
+            'activo' => true,
+            'id_categoria' => $productData['id_categoria']
         ]);
 
         $response = [
             'producto' => $producto
+        ];
+
+        return response()->json($response);
+    }
+
+    function deleteProducto($id): JsonResponse
+    {
+        $producto = Producto::query()->where('id', $id)->get()->first();
+
+        if (is_null($producto)) {
+            $errorMessage = [
+                'error' => 'El producto no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $deletion = Producto::query()->where('id', $id)->delete();
+        $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
+
+        $response = [
+            'message' => $message
         ];
 
         return response()->json($response);
