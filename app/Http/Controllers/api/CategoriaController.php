@@ -57,4 +57,26 @@ class CategoriaController extends Controller
 
         return response()->json($response);
     }
+
+    function deleteCategoria($id): JsonResponse
+    {
+        $categoria = Categoria::query()->where('id', $id)->get()->first();
+
+        if (is_null($categoria)) {
+            $errorMessage = [
+                'error' => 'La categoría no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $deletion = Categoria::query()->where('id', $id)->delete();
+        $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
+
+        $response = [
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 }

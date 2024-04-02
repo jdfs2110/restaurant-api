@@ -43,10 +43,12 @@ Route::get('usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
  *  1. Todas las categorias
  *  2. Buscar una categoría por ID
  *  3. Crear una categoría
+ *  4. Eliminar una categoría
  */
 Route::get('/categorias', [CategoriaController::class, 'index']);
 Route::get('/categorias/{id}', [CategoriaController::class, 'getCategoria']);
 Route::post('/categorias/new', [CategoriaController::class, 'newCategoria']);
+Route::delete('/categorias/{id}', [CategoriaController::class, 'deleteCategoria']);
 
 /**
  *  Productos endpoints
