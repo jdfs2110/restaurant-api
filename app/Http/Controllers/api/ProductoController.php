@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -79,6 +80,35 @@ class ProductoController extends Controller
 
         $response = [
             'message' => $message
+        ];
+
+        return response()->json($response);
+    }
+
+    function getProductosByCategoria($id): JsonResponse
+    {
+        $categoria = Categoria::query()->where('id', $id)->get()->first();
+
+        if (is_null($categoria)) {
+            $errorMessage = [
+                'error' => 'La categoría no existe.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $productos = Producto::query()->where('id_categoria', $id)->get();
+
+        if (is_null($productos)) {
+            $errorMessage = [
+                'error' => 'La categoría no tiene productos.'
+            ];
+
+            return response()->json($errorMessage, 404);
+        }
+
+        $response = [
+            'productos' => $productos
         ];
 
         return response()->json($response);
