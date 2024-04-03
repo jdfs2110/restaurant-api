@@ -13,4 +13,10 @@ trait GeneralClass
             'message' => $message
         ]);
     }
+
+    public function errorResponse($error, $status = 404): JsonResponse {
+        return response()->json([
+            'error' => $error
+        ], $status);
+    }
 }
