@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\StockResource;
 use App\Models\Producto;
 use App\Models\Stock;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,7 @@ class StockController extends Controller
         $stock = Stock::all();
 
         $response = [
-            'stock' => $stock
+            'stock' => StockResource::collection($stock)
         ];
 
         return response()->json($response);
@@ -35,7 +36,7 @@ class StockController extends Controller
         }
 
         $response = [
-            'stock' => $stock
+            'stock' => new StockResource($stock)
         ];
 
         return response()->json($response);
@@ -65,7 +66,7 @@ class StockController extends Controller
         }
 
         $response = [
-            'stock' => $stock
+            'stock' => new StockResource($stock)
         ];
 
         return response()->json($response);
@@ -84,7 +85,7 @@ class StockController extends Controller
         ]);
 
         $response = [
-            'stock' => $stock
+            'stock' => new StockResource($stock)
         ];
 
         return response()->json($response);
@@ -116,7 +117,7 @@ class StockController extends Controller
         $updatedStock = Stock::query()->where('id', $id)->get()->first();
 
         $response = [
-            'stock' => $updatedStock,
+            'stock' => new StockResource($updatedStock),
             'message' => $message
         ];
 

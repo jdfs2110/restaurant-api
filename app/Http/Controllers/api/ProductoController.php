@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductoResource;
 use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,7 @@ class ProductoController extends Controller
         $productos = Producto::all();
 
         $response = [
-            'productos' => $productos
+            'productos' => ProductoResource::collection($productos)
         ];
 
         return response()->json($response);
@@ -34,7 +35,7 @@ class ProductoController extends Controller
         }
 
         $response = [
-            'producto' => $producto
+            'producto' => new ProductoResource($producto)
         ];
 
         return response()->json($response);
@@ -57,7 +58,7 @@ class ProductoController extends Controller
         ]);
 
         $response = [
-            'producto' => $producto
+            'producto' => new ProductoResource($producto)
         ];
 
         return response()->json($response);
@@ -108,7 +109,7 @@ class ProductoController extends Controller
         }
 
         $response = [
-            'productos' => $productos
+            'productos' => new ProductoResource($productos)
         ];
 
         return response()->json($response);
@@ -144,7 +145,7 @@ class ProductoController extends Controller
         $updatedProducto = Producto::query()->where('id', $id)->get()->first();
 
         $response = [
-            'producto' => $updatedProducto,
+            'producto' => new ProductoResource($updatedProducto),
             'message' => $message
         ];
 

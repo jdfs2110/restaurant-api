@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MesaResource extends JsonResource
+class StockResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,9 @@ class MesaResource extends JsonResource
     {
         return [
             'id' => $this->getId(),
-            'capacidad_maxima' => $this->getCapacidadMaxima(),
-            'estado' => $this->getEstado(),
-            'created_at' => $this->getCreatedAt(),
+            'id_producto' => $this->getIdProducto(),
+            'cantidad' => $this->getCantidad(),
+            'created_at' => $this->getCreatedAt()
         ];
     }
 }
