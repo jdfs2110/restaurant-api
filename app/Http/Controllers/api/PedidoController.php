@@ -76,4 +76,18 @@ class PedidoController extends Controller
 
         return $this->successResponse(new PedidoResource($pedido), $message);
     }
+
+    function deletePedido($id): JsonResponse
+    {
+        $pedido = Pedido::query()->find($id);
+
+        if (is_null($pedido)) {
+            return $this->errorResponse('El pedido no existe.');
+        }
+
+        $deletion = $pedido->delete();
+        $message = $deletion == 1 ? 'El pedido ha sido eliminado correctamente' : 'Error al eliminar el pedido';
+
+        return $this->successResponse('', $message);
+    }
 }
