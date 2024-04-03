@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class RoleController extends Controller
         $roles = Role::all();
 
         $response = [
-            'roles' => $roles
+            'roles' => RoleResource::collection($roles)
         ];
 
         return response()->json($response);
@@ -33,7 +34,7 @@ class RoleController extends Controller
         }
 
         $response = [
-            'rol' => $role
+            'rol' => new RoleResource($role)
         ];
 
         return response()->json($response);
@@ -50,7 +51,7 @@ class RoleController extends Controller
         ]);
 
         $response = [
-            'rol' => $rol
+            'rol' => new RoleResource($rol)
         ];
 
         return response()->json($response);
@@ -58,7 +59,7 @@ class RoleController extends Controller
 
     public function deleteRole($id): JsonResponse
     {
-        $role = Role::query()->where('id', $id)->get()->first();
+        $role = Role::query()->find($id);
 
         if (is_null($role)) {
             $errorMessage = [
@@ -94,6 +95,10 @@ class RoleController extends Controller
             return response()->json($errorMessage, 404);
         }
 
+//        $role->nombre = $rolData['nombre'];
+
+//        $role->save();
+
         $update = Role::query()->where('id', $id)->update([
             'nombre' => $rolData['nombre']
         ]);
@@ -102,7 +107,7 @@ class RoleController extends Controller
         $updatedRol = Role::query()->where('id', $id)->get()->first();
 
         $response = [
-            'rol' => $updatedRol,
+            'rol' => new RoleResource($updatedRol),
             'message' => $message
         ];
 
