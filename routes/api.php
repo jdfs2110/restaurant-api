@@ -9,6 +9,7 @@ use App\Http\Controllers\api\StockController;
 use App\Http\Controllers\api\MesaController;
 use App\Http\Controllers\api\PedidoController;
 use App\Http\Controllers\api\LineaController;
+use App\Http\Controllers\api\FacturaController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/registro', [AuthController::class, 'register']);
@@ -135,3 +136,17 @@ Route::get('/lineas/{id}', [LineaController::class, 'getLinea']);
 Route::post('/lineas/new', [LineaController::class, 'newLinea']);
 Route::put('/lineas/{id}', [LineaController::class, 'updateLinea']);
 Route::delete('/lineas/{id}', [LineaController::class, 'deleteLinea']);
+
+/**
+ *  Facturas endpoints
+ *  1. Todas las facturas
+ *  2. Buscar una factura por ID
+ *  3. Crear una factura
+ *  4. Modificar una factura
+ *  5. Eliminar una factura
+ */
+Route::get('/facturas', [FacturaController::class, 'index']);
+Route::get('/facturas/{id}', [FacturaController::class, 'getFactura']);
+Route::post('/facturas/new', [FacturaController::class, 'newFactura']);
+Route::put('/facturas/{id}', [FacturaController::class, 'updateFactura']);
+Route::delete('/facturas/{id}', [FacturaController::class, 'deleteFactura']);
