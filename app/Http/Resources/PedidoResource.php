@@ -23,7 +23,6 @@ class PedidoResource extends JsonResource
             'id_mesa' => $this->getIdMesa(),
             'id_usuario' => $this->getIdUsuario(),
             'created_at' => $this->getCreatedAt(),
-            'updated_at' => $this->getUpdatedAt(),
             'deleted_at' => $this->getDeletedAt()
         ];
     }

@@ -19,7 +19,6 @@ class MesaResource extends JsonResource
             'capacidad_maxima' => $this->getCapacidadMaxima(),
             'estado' => $this->getEstado(),
             'created_at' => $this->getCreatedAt(),
-            'updated_at' => $this->getUpdatedAt(),
             'deleted_at' => $this->getDeletedAt()
         ];
     }
