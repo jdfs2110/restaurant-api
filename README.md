@@ -1,3 +1,17 @@
+# TODO
+### Backend
+
+* File uploading (foto categoría)
+* /pedidos/{id}/factura
+* migrar cosas a repositorios (opcional)
+* calculos de precios (facturas, pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0, etc]
+* cuando el stock llega a 0 se inhabilita (more like a frontend problem)
+
+### Frontend
+* todo 😭
+
+-------
+
 # Casos de uso con sus endpoints
 
 ### Los campos marcados con (admin) son para el panel de administración
