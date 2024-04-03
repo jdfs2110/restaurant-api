@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Linea
+class Linea extends Model
 {
     use SoftDeletes;
 
@@ -19,6 +20,11 @@ class Linea
         'id_producto',
         'id_pedido'
     ];
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     public function getPrecio(): float
     {
@@ -38,5 +44,10 @@ class Linea
     public function getIdPedido(): int
     {
         return $this->id_pedido;
+    }
+
+    public function getCreatedAt(): string | null
+    {
+        return $this->created_at;
     }
 }
