@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FacturaResource;
+use App\Models\Pedido;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Factura;
@@ -74,5 +75,22 @@ class FacturaController extends Controller
         $message = $deletion == 1 ? 'La factura ha sido eliminada correctamente' : 'Error al eliminar la factura';
 
         return $this->successResponse('', $message);
+    }
+
+    function getFacturaByPedido($id): JsonResponse
+    {
+        $pedido = Pedido::query()->find($id);
+
+        if (is_null($pedido)) {
+            return $this->errorResponse('El pedido no existe.');
+        }
+
+        $factura = Factura::query()->where('id_pedido', $id)->get()->first();
+
+        if (is_null($factura)) {
+            return $this->errorResponse('El pedido no tiene factura asociada.');
+        }
+
+        return $this->successResponse(new FacturaResource($factura));
     }
 }
