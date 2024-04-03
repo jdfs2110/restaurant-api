@@ -20,6 +20,11 @@ class Stock extends Model
 
     protected $table = 'stock';
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getIdProducto(): string
     {
         return $this->id_producto;
@@ -28,5 +33,10 @@ class Stock extends Model
     public function getCantidad(): int
     {
         return $this->cantidad;
+    }
+
+    public function getCreatedAt(): string | null
+    {
+        return $this->created_at;
     }
 }
