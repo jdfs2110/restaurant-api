@@ -115,6 +115,7 @@ Route::put('/mesas/{id}', [MesaController::class, 'updateMesa']);
  *  4. Editar un pedido
  *  5. Eliminar un pedido
  *  6. Buscar las líneas de un pedido
+ *  7. Buscar la factura de un pedido
  */
 Route::get('/pedidos', [PedidoController::class, 'index']);
 Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']);
@@ -122,6 +123,7 @@ Route::post('/pedidos/new', [PedidoController::class, 'newPedido']);
 Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido']);
 Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido']);
 Route::get('/pedidos/{id}/lineas', [LineaController::class, 'getLineasByPedido']);
+Route::get('/pedidos/{id}/factura', [FacturaController::class, 'getFacturaByPedido']);
 
 /**
  *  Líneas endpoints
