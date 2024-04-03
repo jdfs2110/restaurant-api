@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Factura
+class Factura extends Model
 {
     use SoftDeletes;
 
@@ -19,7 +20,12 @@ class Factura
         'id_pedido'
     ];
 
-    public function getFecha(): DateTime
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getFecha(): string
     {
         return $this->fecha;
     }
@@ -27,5 +33,10 @@ class Factura
     public function getIdPedido(): int
     {
         return $this->id_pedido;
+    }
+
+    public function getCreatedAt(): string | null
+    {
+        return $this->created_at;
     }
 }
