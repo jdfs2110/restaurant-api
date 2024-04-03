@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoriaResource;
 use App\Models\Categoria;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class CategoriaController extends Controller
         $categorias = Categoria::all();
 
         $response = [
-            'categorias' => $categorias
+            'categorias' => CategoriaResource::collection($categorias)
         ];
 
         return response()->json($response);
@@ -33,7 +34,7 @@ class CategoriaController extends Controller
         }
 
         $response = [
-            'categoria' => $categoria
+            'categoria' => new CategoriaResource($categoria)
         ];
 
         return response()->json($response);
@@ -52,7 +53,7 @@ class CategoriaController extends Controller
         ]);
 
         $response = [
-            'categoria' => $categoria
+            'categoria' => new CategoriaResource($categoria)
         ];
 
         return response()->json($response);
@@ -106,7 +107,7 @@ class CategoriaController extends Controller
         $updatedCategoria = Categoria::query()->where('id', $id)->get()->first();
 
         $response = [
-            'categoria' => $updatedCategoria,
+            'categoria' => new CategoriaResource($updatedCategoria),
             'message' => $message
         ];
 
