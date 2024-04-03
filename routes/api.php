@@ -8,6 +8,7 @@ use App\Http\Controllers\api\ProductoController;
 use App\Http\Controllers\api\StockController;
 use App\Http\Controllers\api\MesaController;
 use App\Http\Controllers\api\PedidoController;
+use App\Http\Controllers\api\LineaController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/registro', [AuthController::class, 'register']);
@@ -78,7 +79,7 @@ Route::put('/productos/{id}', [ProductoController::class, 'updateProducto']);
 /**
  *  Stock endpoints
  *  1. El stock de todos los productos
- *  2. Buscar un stock por id (probablemente no se va a utilizar)
+ *  2. Buscar un stock por ID (probablemente no se va a utilizar)
  *  3. Buscar el stock de un producto (ID producto)
  *  4. Dar de alta un producto en stock
  *  5. Editar un stock
@@ -111,9 +112,26 @@ Route::put('/mesas/{id}', [MesaController::class, 'updateMesa']);
  *  2. Buscar un pedido por ID
  *  3. Crear un pedido
  *  4. Editar un pedido
+ *  5. Eliminar un pedido
+ *  6. Buscar las líneas de un pedido
  */
 Route::get('/pedidos', [PedidoController::class, 'index']);
 Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']);
 Route::post('/pedidos/new', [PedidoController::class, 'newPedido']);
 Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido']);
-//Route::get('/pedidos/{id}/lineas');
+Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido']);
+Route::get('/pedidos/{id}/lineas', [LineaController::class, 'getLineasByPedido']);
+
+/**
+ *  Líneas endpoints
+ *  1. Todas las líneas (pretty pointless)
+ *  2. Buscar una línea por ID
+ *  3. Crear una línea
+ *  4. Modificar una línea
+ *  5. Eliminar una línea
+ */
+Route::get('/lineas', [LineaController::class, 'index']);
+Route::get('/lineas/{id}', [LineaController::class, 'getLinea']);
+Route::post('/lineas/new', [LineaController::class, 'newLinea']);
+Route::put('/lineas/{id}', [LineaController::class, 'updateLinea']);
+Route::delete('/lineas/{id}', [LineaController::class, 'deleteLinea']);
