@@ -65,15 +65,15 @@ class LineaController extends Controller
         }
 
         try {
-        $update = $linea->update([
-            'precio' => $data['precio'],
-            'cantidad' => $data['cantidad'],
-            'id_producto' => $data['id_producto'],
-            'id_pedido' => $data['id_pedido']
-        ]);
-        $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
+            $update = $linea->update([
+                'precio' => $data['precio'],
+                'cantidad' => $data['cantidad'],
+                'id_producto' => $data['id_producto'],
+                'id_pedido' => $data['id_pedido']
+            ]);
+            $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
-        return $this->successResponse(new LineaResource($linea), $message);
+            return $this->successResponse(new LineaResource($linea), $message);
         } catch (Exception $e) {
             return $this->errorResponse('Ha ocurrido un error.', 400);
         }
