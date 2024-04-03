@@ -17,105 +17,69 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        $response = [
-            'usuarios' => UsuarioResource::collection($users)
-        ];
-        return response()->json($response);
+        return $this->successResponse(UsuarioResource::collection($users));
     }
 
     public function getUser($id): JsonResponse
     {
-        $user = User::query()->where('id', $id)->get()->first();
+        $user = User::query()->find($id);
 
         if (is_null($user)) {
-            $errorMessage = [
-                'error' => 'El usuario no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El usuario no existe.');
         }
 
-        $response = [
-            'usuario' => new UsuarioResource($user)
-        ];
-        return response()->json($response);
+        return $this->successResponse(new UsuarioResource($user));
     }
 
     public function getUsersPedidos($id): JsonResponse
     {
+        $user = User::query()->find($id);
+
+        if (is_null($user)) {
+            return $this->errorResponse('El usuario no existe');
+        }
+
         $pedidos = Pedido::query()->where('id_usuario', $id)->get();
 
-        $response = [
-            'pedidos' => PedidoResource::collection($pedidos)
-        ];
-
-
-        return response()->json($response);
+        return $this->successResponse(PedidoResource::collection($pedidos));
     }
 
     public function getAllUsersByRole($id): JsonResponse
     {
-        $role = Role::query()->where('id', $id)->get()->first();
+        $role = Role::query()->find($id);
 
         if (is_null($role)) {
-            $errorMessage = [
-                'error' => 'El rol no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El rol no existe.');
         }
 
         $users = User::query()->where('id_rol', $id)->get();
 
-        if (is_null($users)) {
-            $errorMessage = [
-                'error' => 'No hay usuarios con este rol.'
-            ];
-
-            return response()->json($errorMessage, 404);
-        }
-
-        $response = [
-            'usuarios' => $users
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(UsuarioResource::collection($users));
     }
 
     public function updateUser(Request $request, $id): JsonResponse
     {
-        $userData = $request->validate([
+        $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|confirmed',
             'id_rol' =>  'required|int'
         ]);
 
-        $user = User::query()->where('id', $id)->get()->first();
+        $user = User::query()->find($id);
 
         if (is_null($user)) {
-            $errorMessage = [
-                'error' => 'El usuario no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El usuario no existe.');
         }
 
-        $update = User::query()->where('id', $id)->update([
-            'name' => $userData['name'],
-            'email' => $userData['email'],
-            'password' => bcrypt($userData['password']),
-            'id_rol' => $userData['id_rol']
+        $update = $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'id_rol' => $data['id_rol']
         ]);
         $message = $update == 1 ? 'El usuario ha sido modificado correctamente.' : 'Error al modificar el usuario';
 
-        $updatedUser = User::query()->where('id', $id)->get()->first();
-
-        $response = [
-            'usuario' => new UsuarioResource($updatedUser),
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new UsuarioResource($user), $message);
     }
 }

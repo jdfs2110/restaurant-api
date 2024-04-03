@@ -14,103 +14,68 @@ class CategoriaController extends Controller
     {
         $categorias = Categoria::all();
 
-        $response = [
-            'categorias' => CategoriaResource::collection($categorias)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(CategoriaResource::collection($categorias));
     }
 
-    function getCategoria($id): JsonResponse
+    function getCategoria(string $id): JsonResponse
     {
-        $categoria = Categoria::query()->where('id', $id)->get()->first();
+        $categoria = Categoria::query()->find($id);
 
         if(is_null($categoria)) {
-            $errorMessage = [
-                'error' => 'La categoría no existe'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La categoría no existe');
         }
 
-        $response = [
-            'categoria' => new CategoriaResource($categoria)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new CategoriaResource($categoria));
     }
 
     function newCategoria(Request $request): JsonResponse
     {
-        $categoriaData = $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string',
-            'foto' => 'required|string' // no se si hay que hacer algo para subir la foto
+            'foto' => 'required|string' // handle logic to upload photo -> send url to db
         ]);
 
         $categoria = Categoria::query()->create([
-            'nombre' => $categoriaData['nombre'],
-            'foto' => $categoriaData['foto']
+            'nombre' => $data['nombre'],
+            'foto' => $data['foto']
         ]);
 
-        $response = [
-            'categoria' => new CategoriaResource($categoria)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new CategoriaResource($categoria));
     }
 
-    function deleteCategoria($id): JsonResponse
+    function deleteCategoria(string $id): JsonResponse
     {
-        $categoria = Categoria::query()->where('id', $id)->get()->first();
+        $categoria = Categoria::query()->find($id);
 
         if (is_null($categoria)) {
-            $errorMessage = [
-                'error' => 'La categoría no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La categoría no existe.');
         }
 
-        $deletion = Categoria::query()->where('id', $id)->delete();
+        $deletion = $categoria->delete();
         $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
 
-        $response = [
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse('', $message);
     }
 
-    function updateCategoria(Request $request, $id): JsonResponse
+    function updateCategoria(Request $request, string $id): JsonResponse
     {
-        $categoriaData = $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string',
             'foto' => 'required|string'
         ]);
 
-        $categoria = Categoria::query()->where('id', $id)->get()->first();
+        $categoria = Categoria::query()->find($id);
 
         if (is_null($categoria)) {
-            $errorMessage = [
-                'error' => 'La categoría no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La categoría no existe.');
         }
 
-        $update = Categoria::query()->where('id', $id)->update([
-            'nombre' => $categoriaData['nombre'],
-            'foto' => $categoriaData['foto']
+        $update = $categoria->update([
+            'nombre' => $data['nombre'],
+            'foto' => $data['foto']
         ]);
         $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
 
-        $updatedCategoria = Categoria::query()->where('id', $id)->get()->first();
-
-        $response = [
-            'categoria' => new CategoriaResource($updatedCategoria),
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new CategoriaResource($categoria), $message);
     }
 }

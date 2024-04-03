@@ -15,134 +15,87 @@ class StockController extends Controller
     {
         $stock = Stock::all();
 
-        $response = [
-            'stock' => StockResource::collection($stock)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(StockResource::collection($stock));
     }
 
     // findStockById
     function getStock($id): JsonResponse
     {
-        $stock = Stock::query()->where('id', $id)->get()->first();
+        $stock = Stock::query()->find($id);
 
         if (is_null($stock)) {
-            $errorMessage = [
-                'error' => 'Este stock no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('Este stock no existe.');
         }
 
-        $response = [
-            'stock' => new StockResource($stock)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new StockResource($stock));
     }
 
     // find stock of a product
     function getProductStock($id): JsonResponse
     {
-        $producto = Producto::query()->where('id', $id)->get()->first();
+        $producto = Producto::query()->find($id);
 
         if (is_null($producto)) {
-            $errorMessage = [
-                'error' => 'El producto no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El producto no existe.');
         }
 
         $stock = Stock::query()->where('id_producto', $id)->get()->first();
 
         if (is_null($stock)) {
-            $errorMessage = [
-                'error' => 'El producto no tiene stock asociado.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El producto no tiene stock asociado.'); // this shouldn't happen
         }
 
-        $response = [
-            'stock' => new StockResource($stock)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new StockResource($stock));
     }
 
     function createStock(Request $request): JsonResponse
     {
-        $stockData = $request->validate([
+        $data = $request->validate([
             'cantidad' => 'required|int',
             'id_producto' => 'required|int'
         ]);
 
         $stock = Stock::query()->create([
-            'cantidad' => $stockData['cantidad'],
-            'id_producto' => $stockData['id_producto']
+            'cantidad' => $data['cantidad'],
+            'id_producto' => $data['id_producto']
         ]);
 
-        $response = [
-            'stock' => new StockResource($stock)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new StockResource($stock));
     }
 
     function updateStock(Request $request, $id): JsonResponse
     {
-        $stockData = $request->validate([
+        $data = $request->validate([
             'cantidad' => 'required|int',
             'id_producto' => 'required|int',
         ]);
 
-        $stock = Stock::query()->where('id', $id)->get()->first();
+        $stock = Stock::query()->find($id);
 
         if (is_null($stock)) {
-            $errorMessage = [
-                'error' => 'Este stock no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('Este stock no existe.');
         }
 
-        $update = Stock::query()->where('id', $id)->update([
-            'cantidad' => $stockData['cantidad'],
-            'id_producto' => $stockData['id_producto']
+        $update = $stock->update([
+            'cantidad' => $data['cantidad'],
+            'id_producto' => $data['id_producto']
         ]);
         $message = $update == 1 ? 'El stock ha sido modificado correctamente.' : 'Error al modificar el stock.';
 
-        $updatedStock = Stock::query()->where('id', $id)->get()->first();
-
-        $response = [
-            'stock' => new StockResource($updatedStock),
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new StockResource($stock), $message);
     }
 
     function deleteStock($id): JsonResponse
     {
-        $stock = Stock::query()->where('id', $id)->get()->first();
+        $stock = Stock::query()->find($id);
 
         if (is_null($stock)) {
-            $errorMessage = [
-                'error' => 'Este stock no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('Este stock no existe.');
         }
 
-        $deletion = Stock::query()->where('id', $id)->delete();
+        $deletion = $stock->delete();
         $message = $deletion == 1 ? 'Este stock ha sido eliminado correctamente' : 'Error al eliminar este stock';
 
-        $response = [
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse('', $message);
     }
 }

@@ -14,101 +14,68 @@ class MesaController extends Controller
     {
         $mesas = Mesa::all();
 
-        $response = [
-            'mesas' => MesaResource::collection($mesas)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(MesaResource::collection($mesas));
     }
 
     function getMesa($id): JsonResponse
     {
-        $mesa = Mesa::query()->where('id', $id)->get()->first();
+        $mesa = Mesa::query()->find($id);
 
         if (is_null($mesa)) {
-            $errorMessage = [
-                'error' => 'La mesa no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La mesa no existe.');
         }
 
-        $response = [
-            'mesa' => new MesaResource($mesa)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new MesaResource($mesa));
     }
 
     function newMesa(Request $request): JsonResponse
     {
-        $mesaData = $request->validate([
-            'capacidad_maxima' => 'int|required|max:10',
-            'estado' => 'int|required|max:2'
+        $data = $request->validate([
+            'capacidad_maxima' => 'required|int|max:10',
+            'estado' => 'required|int|max:2'
         ]);
 
         $mesa = Mesa::query()->create([
-            'capacidad_maxima' => $mesaData['capacidad_maxima'],
-            'estado' => $mesaData['estado']
+            'capacidad_maxima' => $data['capacidad_maxima'],
+            'estado' => $data['estado']
         ]);
 
-        $response = new MesaResource($mesa);
-
-        return response()->json($response);
+        return $this->successResponse(new MesaResource($mesa));
     }
 
     function deleteMesa($id): JsonResponse
     {
-        $mesa = Mesa::query()->where('id', $id)->get()->first();
+        $mesa = Mesa::query()->find($id);
 
         if (is_null($mesa)) {
-            $errorMessage = [
-                'error' => 'La mesa no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La mesa no existe.');
         }
 
-        $deletion = Mesa::query()->where('id', $id)->delete();
+        $deletion = $mesa->delete();
         $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
 
-        $response = [
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse('', $message);
     }
 
     function updateMesa(Request $request, $id): JsonResponse
     {
-        $mesaData = $request->validate([
-            'capacidad_maxima' => 'int|required|max:10',
-            'estado' => 'int|required|max:2'
+        $data = $request->validate([
+            'capacidad_maxima' => 'required|int|max:10',
+            'estado' => 'required|int|max:2'
         ]);
 
-        $mesa = Mesa::query()->where('id', $id)->get()->first();
+        $mesa = Mesa::query()->find($id);
 
         if (is_null($mesa)) {
-            $errorMessage = [
-                'error' => 'La mesa no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La mesa no existe.');
         }
 
-        $update = Mesa::query()->where('id', $id)->update([
-            'capacidad_maxima' => $mesaData['capacidad_maxima'],
-            'estado' => $mesaData['estado']
+        $update = $mesa->update([
+            'capacidad_maxima' => $data['capacidad_maxima'],
+            'estado' => $data['estado']
         ]);
         $message = $update == 1 ? 'La mesa ha sido modificada correctamente.' : 'Error al modificar la mesa.';
 
-        $updatedMesa = Mesa::query()->where('id', $id)->get()->first();
-
-        $response = [
-            'mesa' => new MesaResource($updatedMesa),
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new MesaResource($mesa), $message);
     }
 }

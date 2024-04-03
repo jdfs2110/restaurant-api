@@ -15,140 +15,89 @@ class ProductoController extends Controller
     {
         $productos = Producto::all();
 
-        $response = [
-            'productos' => ProductoResource::collection($productos)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(ProductoResource::collection($productos));
     }
 
     function getProducto($id): JsonResponse
     {
-        $producto = Producto::query()->where('id', $id)->get()->first();
+        $producto = Producto::query()->find($id);
 
         if (is_null($producto)) {
-            $errorMessage = [
-                'error' => 'El producto no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El producto no existe.');
         }
 
-        $response = [
-            'producto' => new ProductoResource($producto)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new ProductoResource($producto));
     }
 
 
     function newProducto(Request $request): JsonResponse
     {
-        $productData = $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string',
             'precio' => 'required|numeric',
             'id_categoria' => 'required|int'
         ]);
 
         $producto = Producto::query()->create([
-            'nombre' => $productData['nombre'],
-            'precio' => $productData['precio'],
+            'nombre' => $data['nombre'],
+            'precio' => $data['precio'],
             'activo' => true,
-            'id_categoria' => $productData['id_categoria']
+            'id_categoria' => $data['id_categoria']
         ]);
 
-        $response = [
-            'producto' => new ProductoResource($producto)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new ProductoResource($producto));
     }
 
     function deleteProducto($id): JsonResponse
     {
-        $producto = Producto::query()->where('id', $id)->get()->first();
+        $producto = Producto::query()->find($id);
 
         if (is_null($producto)) {
-            $errorMessage = [
-                'error' => 'El producto no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El producto no existe.');
         }
 
-        $deletion = Producto::query()->where('id', $id)->delete();
+        $deletion = $producto->delete();
         $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
 
-        $response = [
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse('', $message);
     }
 
     function getProductosByCategoria($id): JsonResponse
     {
-        $categoria = Categoria::query()->where('id', $id)->get()->first();
+        $categoria = Categoria::query()->find($id);
 
         if (is_null($categoria)) {
-            $errorMessage = [
-                'error' => 'La categoría no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('La categoría no existe.');
         }
 
         $productos = Producto::query()->where('id_categoria', $id)->get();
 
-        if (is_null($productos)) {
-            $errorMessage = [
-                'error' => 'La categoría no tiene productos.'
-            ];
-
-            return response()->json($errorMessage, 404);
-        }
-
-        $response = [
-            'productos' => new ProductoResource($productos)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(ProductoResource::collection($productos));
     }
 
     function updateProducto(Request $request, $id): JsonResponse
     {
-        $productoData = $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string',
             'precio' => 'required|numeric',
             'activo' => 'required|boolean',
             'id_categoria' => 'required|int'
         ]);
 
-        $producto = Producto::query()->where('id', $id)->get()->first();
+        $producto = Producto::query()->find($id);
 
         if (is_null($producto)) {
-            $errorMessage = [
-                'error' => 'El producto no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El producto no existe.');
         }
 
-        $update = Producto::query()->where('id', $id)->update([
-            'nombre' => $productoData['nombre'],
-            'precio' => $productoData['precio'],
-            'activo' => $productoData['activo'],
-            'id_categoria' => $productoData['id_categoria']
+        $update = $producto->update([
+            'nombre' => $data['nombre'],
+            'precio' => $data['precio'],
+            'activo' => $data['activo'],
+            'id_categoria' => $data['id_categoria']
         ]);
         $message = $update == 1 ? 'El producto ha sido modificado correctamente.' : 'Error al modificar el producto';
 
-        $updatedProducto = Producto::query()->where('id', $id)->get()->first();
-
-        $response = [
-            'producto' => new ProductoResource($updatedProducto),
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new ProductoResource($producto), $message);
     }
 }
