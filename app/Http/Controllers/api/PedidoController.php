@@ -14,35 +14,23 @@ class PedidoController extends Controller
     {
         $pedidos = Pedido::all();
 
-        $response = [
-            'pedidos' => PedidoResource::collection($pedidos)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(PedidoResource::collection($pedidos));
     }
 
     function getPedido($id): JsonResponse
     {
-        $pedido = Pedido::query()->where('id', $id)->get()->first();
+        $pedido = Pedido::query()->find($id);
 
         if (is_null($pedido)) {
-            $errorMessage = [
-                'error' => 'El pedido no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El pedido no existe.');
         }
 
-        $response = [
-            'pedido' => new PedidoResource($pedido)
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new PedidoResource($pedido));
     }
 
     function newPedido(Request $request): JsonResponse
     {
-        $pedidoData = $request->validate([
+        $data = $request->validate([
             'precio' => 'required|numeric',
             'numero_comensales' => 'required|int|min:1',
             'id_mesa' => 'required|int',
@@ -52,20 +40,18 @@ class PedidoController extends Controller
         $pedido = Pedido::query()->create([
             'fecha' => now(),
             'estado' => 0,
-            'precio' => $pedidoData['precio'],
-            'numero_comensales' => $pedidoData['numero_comensales'],
-            'id_mesa' => $pedidoData['id_mesa'],
-            'id_usuario' => $pedidoData['id_usuario']
+            'precio' => $data['precio'],
+            'numero_comensales' => $data['numero_comensales'],
+            'id_mesa' => $data['id_mesa'],
+            'id_usuario' => $data['id_usuario']
         ]);
 
-        $response = new PedidoResource($pedido);
-
-        return response()->json($response);
+        return $this->successResponse(new PedidoResource($pedido));
     }
 
     function updatePedido(Request $request, $id): JsonResponse
     {
-        $pedidoData = $request->validate([
+        $data = $request->validate([
             'estado' => 'required|int|max:3',
             'precio' => 'required|numeric',
             'numero_comensales' => 'required|int|min:1',
@@ -73,32 +59,21 @@ class PedidoController extends Controller
             'id_usuario' => 'required|int'
         ]);
 
-        $pedido = Pedido::query()->where('id', $id)->get()->first();
+        $pedido = Pedido::query()->find($id);
 
         if (is_null($pedido)) {
-            $errorMessage = [
-                'error' => 'El pedido no existe.'
-            ];
-
-            return response()->json($errorMessage, 404);
+            return $this->errorResponse('El pedido no existe.');
         }
 
-        $update = Pedido::query()->where('id', $id)->update([
-            'estado' => $pedidoData['estado'],
-            'precio' => $pedidoData['precio'],
-            'numero_comensales' => $pedidoData['numero_comensales'],
-            'id_mesa' => $pedidoData['id_mesa'],
-            'id_usuario' => $pedidoData['id_usuario']
+        $update = $pedido->update([
+            'estado' => $data['estado'],
+            'precio' => $data['precio'],
+            'numero_comensales' => $data['numero_comensales'],
+            'id_mesa' => $data['id_mesa'],
+            'id_usuario' => $data['id_usuario']
         ]);
         $message = $update == 1 ? 'El pedido ha sido modificado correctamente.' : 'Error al modificar el pedido';
 
-        $updatedPedido = Pedido::query()->where('id', $id)->get()->first();
-
-        $response = [
-            'pedido' => new PedidoResource($updatedPedido),
-            'message' => $message
-        ];
-
-        return response()->json($response);
+        return $this->successResponse(new PedidoResource($pedido), $message);
     }
 }
