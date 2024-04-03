@@ -1,21 +1,23 @@
 # Casos de uso con sus endpoints
 
+### Los campos marcados con (admin) son para el panel de administración
+
 ## Roles
 
 | Caso de uso            | Endpoint   | Método HTTP |
 | ---------------------- | ---------- | ----------- |
 | Buscar todos los roles | /roles     | GET         |
 | Buscar un rol por id   | /roles/{id}| GET         |
-| Crear un rol           | /roles/new | POST        |
+| Crear un rol (admin)   | /roles/new | POST        |
 | Eliminar un rol (admin)| /roles/{id}| DELETE      |
 | Editar un rol (admin)  | /roles/{id}| PUT         |
-| Buscar todos los usuarios de un rol concreto | /roles/{id}/usuarios | GET |
+| Buscar todos los usuarios de un rol concreto (admin) | /roles/{id}/usuarios | GET |
 
 ## Usuarios
 
 | Caso de uso                                | Endpoint              | Método HTTP |
 | ------------------------------------------ | --------------------- | ----------- |
-| Listar todos los usuarios                  | /usuarios             | GET         |
+| Listar todos los usuarios (admin)          | /usuarios             | GET         |
 | Buscar un usuario por id                   | /usuarios/{id}        | GET         |
 | Login                                      | /login                | POST        |
 | Registro                                   | /registro             | POST        |
@@ -50,7 +52,7 @@
 | Caso de uso                            | Endpoint              | Método HTTP |
 | -------------------------------------- | --------------------- | ----------- |
 | Buscar el stock de todos los productos | /stock                | GET         |
-| Buscar un stock por id                 | /stock{id}            | GET         |
+| Buscar un stock por id                 | /stock/{id}           | GET         |
 | Dar de alta un stock                   | /stock/new            | POST        |
 | Editar un stock                        | /stock/{id}           | PUT         |
 | Eliminar un stock (admin only)         | /stock/{id}           | DELETE      |  
@@ -72,7 +74,8 @@
 | Buscar todos los pedidos       | /pedidos              | GET         |
 | Buscar un pedido por id        | /pedidos/{id}         | GET         |
 | Crear un pedido                | /pedidos/new          | POST        |
-| Editar un pedido (admin)       | /pedidos/{id}         | PUT / PATCH |
+| Editar un pedido (admin)       | /pedidos/{id}         | PUT         |
+| Eliminar un pedido (admin)     | /pedidos/{id}         | DELETE      | 
 | Buscar las líneas de un pedido | /pedidos/{id}/lineas  | GET         |
 | Buscar la factura de un pedido | /pedidos/{id}/factura | GET         |
 
@@ -80,9 +83,11 @@
 
 | Caso de uso                    | Endpoint              | Método HTTP |
 | ------------------------------ | --------------------- | ----------- |
+| Buscar todas las lineas        | /lineas               | GET         |
+| Buscar una línea por id        | /lineas/{id}          | GET         |
 | Añadir una nueva línea (teoricamente se le asigna el id del pedido en el cuerpo de la peticion)         | /lineas/new | POST |
-| Editar una línea | /lineas/{id} | PUT / PATCH |
-| Eliminar una línea | /lineas/{id} | DELETE | 
+| Editar una línea               | /lineas/{id}          | PUT         |
+| Eliminar una línea             | /lineas/{id}          | DELETE      | 
 
 ## Facturas (podría ser descartada)
 
