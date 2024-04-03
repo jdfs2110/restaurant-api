@@ -75,7 +75,7 @@ class LineaController extends Controller
 
         return $this->successResponse(new LineaResource($linea), $message);
         } catch (Exception $e) {
-            return $this->errorResponse($e, 400);
+            return $this->errorResponse('Ha ocurrido un error.', 400);
         }
     }
 
