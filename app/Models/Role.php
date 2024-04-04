@@ -43,4 +43,9 @@ class Role extends Model
     {
         return $this->deleted_at;
     }
+
+    public function setNombre(string $nombre): void
+    {
+        $this->nombre = $nombre;
+    }
 }

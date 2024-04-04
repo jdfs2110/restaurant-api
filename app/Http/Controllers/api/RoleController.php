@@ -57,7 +57,7 @@ class RoleController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $role->delete();
+        $deletion = $this->repository->delete($role);
         $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
 
         return $this->successResponse('', $message);
@@ -75,7 +75,7 @@ class RoleController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $role->nombre = $data['nombre'];
+        $role->setNombre($data['nombre']);
 
         $update = $role->save();
         $message = $update == 1 ? 'El rol ha sido modificado correctamente.' : 'Error al modificar el rol.';
