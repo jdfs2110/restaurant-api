@@ -232,3 +232,37 @@ CREATE TABLE facturas(
   FOREIGN KEY(id_pedido) REFERENCES pedidos(id)
 );
 ```
+---------------------
+
+## Preparar el entorno para probar la API
+
+```bash
+git clone https://github.com/jdfs2110/restaurant-api.git
+cd restaurant-api/
+```
+
+#### Prerequisitos
+
+> [!WARNING]
+> Si el sistema operativo es Windows, es necesario utilizar WSL
+
+* php
+* docker
+
+### Instalación de dependencias
+
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+### Levantar la API
+
+```bash
+./vendor/bin/sail up
+```
+Realizar las peticiones a http://localhost/api/endpoint
