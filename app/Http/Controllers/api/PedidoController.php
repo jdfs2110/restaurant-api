@@ -4,11 +4,9 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
-use App\Models\Pedido;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\UserRepository;
-use App\Services\PedidoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
