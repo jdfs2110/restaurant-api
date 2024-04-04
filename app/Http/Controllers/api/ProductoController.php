@@ -47,6 +47,12 @@ class ProductoController extends Controller
             'id_categoria' => 'required|int'
         ]);
 
+        try {
+            $this->categoriaRepository->findOrFail($data['id_categoria']);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
         $producto = $this->repository->create([
             'nombre' => $data['nombre'],
             'precio' => $data['precio'],
@@ -65,7 +71,7 @@ class ProductoController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $producto->delete();
+        $deletion = $this->repository->delete($producto);
         $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
 
         return $this->successResponse('', $message);
@@ -94,6 +100,7 @@ class ProductoController extends Controller
 
         try {
             $producto = $this->repository->findOrFail($id);
+            $this->categoriaRepository->findOrFail($data['id_categoria']);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
