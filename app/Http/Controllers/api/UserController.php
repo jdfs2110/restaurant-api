@@ -8,6 +8,8 @@ use App\Http\Resources\UsuarioResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Pedido;
+use App\Repositories\PedidoRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function __construct(
-        public readonly UserRepository $repository
+        public readonly UserRepository   $repository,
+        public readonly PedidoRepository $pedidoRepository,
+        public readonly RoleRepository   $roleRepository
     )
     {
     }
@@ -31,37 +35,34 @@ class UserController extends Controller
     public function getUser($id): JsonResponse
     {
         try {
-        $user = $this->repository->findOrFail($id);
+            $user = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new UsuarioResource($user));
+            return $this->successResponse(new UsuarioResource($user));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
     }
 
     public function getUsersPedidos($id): JsonResponse
     {
-        $user = User::query()->find($id);
-
-        if (is_null($user)) {
-            return $this->errorResponse('El usuario no existe');
+        try {
+            $this->repository->findOrFail($id);
+            $pedidos = $this->pedidoRepository->findPedidosByIdUsuario($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
-
-        $pedidos = Pedido::query()->where('id_usuario', $id)->get();
 
         return $this->successResponse(PedidoResource::collection($pedidos));
     }
 
     public function getAllUsersByRole($id): JsonResponse
     {
-        $role = Role::query()->find($id);
-
-        if (is_null($role)) {
-            return $this->errorResponse('El rol no existe.');
+        try {
+            $this->roleRepository->findOrFail($id);
+            $users = $this->repository->findAllByIdRol($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
-
-        $users = User::query()->where('id_rol', $id)->get();
 
         return $this->successResponse(UsuarioResource::collection($users));
     }
@@ -72,13 +73,13 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|confirmed',
-            'id_rol' =>  'required|int'
+            'id_rol' => 'required|int'
         ]);
 
-        $user = User::query()->find($id);
-
-        if (is_null($user)) {
-            return $this->errorResponse('El usuario no existe.');
+        try {
+            $user = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $user->update([

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Pedido;
+use Illuminate\Database\Eloquent\Collection;
 
 class PedidoRepository extends GeneralRepository
 {
@@ -11,5 +12,10 @@ class PedidoRepository extends GeneralRepository
     {
         $this->setBuilderFromModel(Pedido::query()->getModel());
         $this->setEntityName(self::ENTITY_NAME);
+    }
+
+    public function findPedidosByIdUsuario($id): Collection
+    {
+        return Pedido::query()->where('id_usuario', $id)->get();
     }
 }

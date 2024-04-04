@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRepository extends GeneralRepository
@@ -17,5 +18,10 @@ class UserRepository extends GeneralRepository
     public function findByEmail(string $email): Model | null
     {
         return User::query()->where('email', $email)->get()->first();
+    }
+
+    public function findAllByIdRol(int $id): Collection
+    {
+        return User::query()->where('id_rol', $id)->get();
     }
 }
