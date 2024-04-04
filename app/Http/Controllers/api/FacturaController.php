@@ -46,6 +46,12 @@ class FacturaController extends Controller
             'id_pedido' => 'required|int'
         ]);
 
+        try {
+            $this->pedidoRepository->findOrFail($data['id_pedido']);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
         $factura = $this->repository->create([
             'fecha' => now(),
             'id_pedido' => $data['id_pedido']
@@ -62,6 +68,7 @@ class FacturaController extends Controller
 
         try {
             $factura = $this->repository->findOrFail($id);
+            $this->pedidoRepository->findOrFail($data['id_pedido']);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -82,7 +89,7 @@ class FacturaController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $factura->delete();
+        $deletion = $this->repository->delete($factura);
         $message = $deletion == 1 ? 'La factura ha sido eliminada correctamente' : 'Error al eliminar la factura';
 
         return $this->successResponse('', $message);
