@@ -2,7 +2,6 @@
 ### Backend
 
 * File uploading (foto categoría)
-* migrar cosas a repositorios (opcional)
 * cálculos de precios (facturas, pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0, etc]
 * cuando el stock llega a 0 se inhabilita (more like a frontend problem?)
 
