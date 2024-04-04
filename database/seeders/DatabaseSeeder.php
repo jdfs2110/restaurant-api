@@ -30,10 +30,34 @@ class DatabaseSeeder extends Seeder
         }
 
         User::factory()->create([
-            'name' => 'test',
-            'email' => 'test@test.com',
+            'name' => 'admin',
+            'email' => 'admin@email.com',
             'password' => bcrypt('123456'),
             'id_rol' => '4',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+        User::factory()->create([
+            'name' => 'cocinero',
+            'email' => 'juancocina@email.com',
+            'password' => bcrypt('123456'),
+            'id_rol' => '2',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+        User::factory()->create([
+            'name' => 'mesero',
+            'email' => 'mesero1@email.com',
+            'password' => bcrypt('123456'),
+            'id_rol' => '1',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+        User::factory()->create([
+            'name' => 'Departamento de Recursos Humanos',
+            'email' => 'rrhh@email.com',
+            'password' => bcrypt('123456'),
+            'id_rol' => '3',
             'fecha_ingreso' => date('Y-m-d')
         ]);
     }
