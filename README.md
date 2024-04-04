@@ -263,6 +263,16 @@ docker run --rm \
 ### Levantar la API
 
 ```bash
-./vendor/bin/sail up
+./vendor/bin/sail up -d
 ```
+### Realizar las migraciones de las tablas
+
+```bash
+php artisan migrate
+```
+### Generar datos de prueba
+```bash
+php artisan db:seed
+```
+
 Realizar las peticiones a http://localhost/api/endpoint
