@@ -171,7 +171,7 @@ CREATE TABLE productos(
 CREATE TABLE stock(
   id INT NOT NULL AUTO_INCREMENT,
   cantidad INT NOT NULL DEFAULT 0,
-  id_producto INT NOT NULL UNIQUE -- TODO Unique,
+  id_producto INT NOT NULL UNIQUE,
   PRIMARY KEY(id),
   FOREIGN KEY(id_producto) REFERENCES productos(id)
 );
@@ -227,7 +227,7 @@ CREATE TABLE lineas(
 CREATE TABLE facturas(
   id INT NOT NULL AUTO_INCREMENT,
   fecha DATETIME NOT NULL,
-  id_pedido INT NOT NULL,
+  id_pedido INT NOT NULL UNIQUE,
   PRIMARY KEY(id),
   FOREIGN KEY(id_pedido) REFERENCES pedidos(id)
 );
