@@ -102,7 +102,7 @@
 | Editar una línea               | /lineas/{id}          | PUT         |
 | Eliminar una línea             | /lineas/{id}          | DELETE      | 
 
-## Facturas (podría ser descartada)
+## Facturas
 
 | Caso de uso                    | Endpoint              | Método HTTP |
 | ------------------------------ | --------------------- | ----------- |
@@ -270,6 +270,11 @@ docker run --rm \
 ```bash
 php artisan migrate
 ```
+En caso de hacer una migración limpia (borrando los datos anteriores)
+```bash
+php artisan migrate:fresh
+```
+
 ### Generar datos de prueba
 ```bash
 php artisan db:seed
