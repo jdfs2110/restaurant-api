@@ -80,7 +80,7 @@
 | Eliminar una mesa      | /mesas/{id}| DELETE      |
 | Editar una mesa        | /mesas/{id}| PUT         |
 
-## Pedidos (la  tabla ´facturas´ podría ser descartada)
+## Pedidos
 
 | Caso de uso                    | Endpoint              | Método HTTP |
 | ------------------------------ | --------------------- | ----------- |
@@ -221,7 +221,7 @@ CREATE TABLE lineas(
 );
 ```
 
-## Facturas (quizá se descarte)
+## Facturas
 
 ```sql
 CREATE TABLE facturas(
