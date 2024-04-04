@@ -59,7 +59,7 @@ class CategoriaController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $categoria->delete();
+        $deletion = $this->repository->delete($categoria);
         $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
 
         return $this->successResponse('', $message);

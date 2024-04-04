@@ -108,7 +108,7 @@ class PedidoController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $pedido->delete();
+        $deletion = $this->repository->delete($pedido);
         $message = $deletion == 1 ? 'El pedido ha sido eliminado correctamente' : 'Error al eliminar el pedido';
 
         return $this->successResponse('', $message);

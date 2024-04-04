@@ -59,7 +59,7 @@ class MesaController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $mesa->delete();
+        $deletion = $this->repository->delete($mesa);
         $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
 
         return $this->successResponse('', $message);

@@ -8,6 +8,7 @@ use App\Models\Linea;
 use App\Models\Pedido;
 use App\Repositories\LineaRepository;
 use App\Repositories\PedidoRepository;
+use App\Repositories\ProductoRepository;
 use App\Services\PedidoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -17,6 +18,7 @@ class LineaController extends Controller
 {
     public function __construct(
         public readonly LineaRepository  $repository,
+        public readonly ProductoRepository $productoRepository,
         public readonly PedidoRepository $pedidoRepository,
         public readonly PedidoService    $pedidoService // <- si
     )
@@ -50,6 +52,13 @@ class LineaController extends Controller
             'id_pedido' => 'required|int'
         ]);
 
+        try {
+            $this->productoRepository->findOrFail($data['id_producto']);
+            $this->pedidoRepository->findOrFail($data['id_pedido']);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
         $linea = $this->repository->create([
             'precio' => $data['precio'],
             'cantidad' => $data['cantidad'],
@@ -71,6 +80,8 @@ class LineaController extends Controller
 
         try {
             $linea = $this->repository->findOrFail($id);
+            $this->productoRepository->findOrFail($data['id_producto']);
+            $this->pedidoRepository->findOrFail($data['id_pedido']);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -98,7 +109,7 @@ class LineaController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $linea->delete();
+        $deletion = $this->repository->delete($linea);
         $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
 
         return $this->successResponse('', $message);
