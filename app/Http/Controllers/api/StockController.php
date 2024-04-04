@@ -60,6 +60,12 @@ class StockController extends Controller
             'id_producto' => 'required|int'
         ]);
 
+        try {
+            $this->productoRepository->findOrFail($data['id_producto']);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
         $stock = $this->repository->create([
             'cantidad' => $data['cantidad'],
             'id_producto' => $data['id_producto']
@@ -77,6 +83,7 @@ class StockController extends Controller
 
         try {
             $stock = $this->repository->findOrFail($id);
+            $this->productoRepository->findOrFail($data['id_producto']);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -98,8 +105,8 @@ class StockController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $stock->delete();
-        $message = $deletion == 1 ? 'Este stock ha sido eliminado correctamente' : 'Error al eliminar este stock';
+        $deletion = $this->repository->delete($stock);
+        $message = $deletion == 1 ? 'El stock ha sido eliminado correctamente' : 'Error al eliminar el stock';
 
         return $this->successResponse('', $message);
     }
