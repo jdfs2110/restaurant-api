@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Linea;
+use Illuminate\Database\Eloquent\Collection;
 
 class LineaRepository extends GeneralRepository
 {
@@ -11,5 +12,10 @@ class LineaRepository extends GeneralRepository
     {
         $this->setBuilderFromModel(Linea::query()->getModel());
         $this->setEntityName(self::ENTITY_NAME);
+    }
+
+    public function findAllByIdPedido($id): Collection
+    {
+        return Linea::query()->where('id_pedido', $id)->get();
     }
 }
