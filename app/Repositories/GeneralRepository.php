@@ -48,4 +48,9 @@ abstract class GeneralRepository
     {
         return $this->builder->create($data);
     }
+
+    public function delete(Model $model): bool
+    {
+        return $model->delete();
+    }
 }
