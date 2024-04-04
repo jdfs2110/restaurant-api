@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UsuarioResource;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -11,6 +13,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        public readonly UserRepository $repository
+    )
+    {
+    }
+
     public function register(Request $request): JsonResponse
     {
         $userData = $request->validate([
@@ -20,9 +28,10 @@ class AuthController extends Controller
            'id_rol' =>  'required|int'
         ]);
 
-        $user = User::query()->create([
+        $user = $this->repository->create([
            'name' => $userData['name'],
            'email' => $userData['email'],
+           'estado' => true,
            'password' => bcrypt($userData['password']),
            'fecha_ingreso' => date('Y-m-d'),
            'id_rol' => $userData['id_rol']
@@ -31,7 +40,7 @@ class AuthController extends Controller
         $token = $user->createToken('apiToken')->plainTextToken;
 
         $response = [
-            'user' => $user,
+            'data' =>  new UsuarioResource($user),
             'token' => $token
         ];
 
@@ -45,7 +54,7 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        $user = User::query()->where('email', $userData['email'])->get()->first();
+        $user = $this->repository->findByEmail($userData['email']);
 
         if(is_null($user) || !Hash::check($userData['password'], $user->password)) {
             $loginError = [
@@ -57,7 +66,7 @@ class AuthController extends Controller
         $token = $user->createToken('apiToken')->plainTextToken;
 
         $response = [
-          'user' => $user,
+          'data' => new UsuarioResource($user),
           'token' => $token
         ];
 

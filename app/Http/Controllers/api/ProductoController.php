@@ -46,7 +46,7 @@ class ProductoController extends Controller
             'id_categoria' => 'required|int'
         ]);
 
-        $producto = Producto::query()->create([
+        $producto = $this->repository->create([
             'nombre' => $data['nombre'],
             'precio' => $data['precio'],
             'activo' => true,

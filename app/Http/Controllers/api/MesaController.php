@@ -43,7 +43,7 @@ class MesaController extends Controller
             'estado' => 'required|int|max:2'
         ]);
 
-        $mesa = Mesa::query()->create([
+        $mesa = $this->repository->create([
             'capacidad_maxima' => $data['capacidad_maxima'],
             'estado' => $data['estado']
         ]);

@@ -63,7 +63,7 @@ class StockController extends Controller
             'id_producto' => 'required|int'
         ]);
 
-        $stock = Stock::query()->create([
+        $stock = $this->repository->create([
             'cantidad' => $data['cantidad'],
             'id_producto' => $data['id_producto']
         ]);

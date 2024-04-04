@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Factura;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
 
 class FacturaRepository extends GeneralRepository
 {
@@ -11,5 +13,19 @@ class FacturaRepository extends GeneralRepository
     {
         $this->setBuilderFromModel(Factura::query()->getModel());
         $this->setEntityName(self::ENTITY_NAME);
+    }
+
+    /**
+     * @throws Exception when a factura of a pedido is not found
+     */
+    public function findByIdPedido(int $id): Model
+    {
+        $factura = Factura::query()->where('id_pedido', $id)->get()->first();
+
+        if (is_null($factura)) {
+            throw new Exception('El pedido no tiene factura asociada.');
+        }
+
+        return $factura;
     }
 }

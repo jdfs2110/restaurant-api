@@ -7,6 +7,7 @@ use App\Http\Resources\LineaResource;
 use App\Models\Linea;
 use App\Models\Pedido;
 use App\Repositories\LineaRepository;
+use App\Services\PedidoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ use Illuminate\Http\Request;
 class LineaController extends Controller
 {
     public function __construct(
-        public readonly LineaRepository $repository
+        public readonly LineaRepository $repository,
+        public readonly PedidoService $pedidoService
     )
     {
     }
@@ -46,7 +48,7 @@ class LineaController extends Controller
             'id_pedido' => 'required|int'
         ]);
 
-        $linea = Linea::query()->create([
+        $linea = $this->repository->create([
             'precio' => $data['precio'],
             'cantidad' => $data['cantidad'],
             'id_producto' => $data['id_producto'],

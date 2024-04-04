@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
 use App\Repositories\PedidoRepository;
+use App\Services\PedidoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class PedidoController extends Controller
             'id_usuario' => 'required|int'
         ]);
 
-        $pedido = Pedido::query()->create([
+        $pedido = $this->repository->create([
             'fecha' => now(),
             'estado' => 0,
             'precio' => $data['precio'],

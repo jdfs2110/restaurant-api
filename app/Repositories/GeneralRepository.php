@@ -43,4 +43,9 @@ abstract class GeneralRepository
 
         return $entity;
     }
+
+    public function create(array $data): Model
+    {
+        return $this->builder->create($data);
+    }
 }

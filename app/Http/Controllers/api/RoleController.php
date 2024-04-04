@@ -44,7 +44,7 @@ class RoleController extends Controller
            'nombre' => 'required|string'
         ]);
 
-        $role = Role::query()->create([
+        $role = $this->repository->create([
            'nombre' => $data['nombre']
         ]);
 

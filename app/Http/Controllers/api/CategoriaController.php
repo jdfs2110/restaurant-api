@@ -43,7 +43,7 @@ class CategoriaController extends Controller
             'foto' => 'required|string' // handle logic to upload photo -> send url to db
         ]);
 
-        $categoria = Categoria::query()->create([
+        $categoria = $this->repository->create([
             'nombre' => $data['nombre'],
             'foto' => $data['foto']
         ]);

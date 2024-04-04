@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FacturaResource;
 use App\Models\Pedido;
 use App\Repositories\FacturaRepository;
+use App\Repositories\PedidoRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ use App\Models\Factura;
 class FacturaController extends Controller
 {
     public function __construct(
-        public readonly FacturaRepository $repository
+        public readonly FacturaRepository $repository,
+        public readonly PedidoRepository $pedidoRepository
     )
     {
     }
@@ -44,7 +46,7 @@ class FacturaController extends Controller
             'id_pedido' => 'required|int'
         ]);
 
-        $factura = Factura::query()->create([
+        $factura = $this->repository->create([
             'fecha' => now(),
             'id_pedido' => $data['id_pedido']
         ]);
@@ -74,10 +76,10 @@ class FacturaController extends Controller
 
     function deleteFactura($id): JsonResponse
     {
-        $factura = Factura::query()->find($id);
-
-        if (is_null($factura)) {
-            return $this->errorResponse('La factura no existe.');
+        try {
+            $factura = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $factura->delete();
@@ -88,16 +90,11 @@ class FacturaController extends Controller
 
     function getFacturaByPedido($id): JsonResponse
     {
-        $pedido = Pedido::query()->find($id);
-
-        if (is_null($pedido)) {
-            return $this->errorResponse('El pedido no existe.');
-        }
-
-        $factura = Factura::query()->where('id_pedido', $id)->get()->first();
-
-        if (is_null($factura)) {
-            return $this->errorResponse('El pedido no tiene factura asociada.');
+        try {
+            $this->pedidoRepository->findOrFail($id);
+            $factura = $this->repository->findByIdPedido($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         return $this->successResponse(new FacturaResource($factura));
