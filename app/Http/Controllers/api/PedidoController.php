@@ -5,7 +5,9 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
+use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
+use App\Repositories\UserRepository;
 use App\Services\PedidoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +16,9 @@ use Illuminate\Http\Request;
 class PedidoController extends Controller
 {
     public function __construct(
-        public readonly PedidoRepository $repository
+        public readonly PedidoRepository $repository,
+        public readonly MesaRepository $mesaRepository,
+        public readonly UserRepository $userRepository
     )
     {
     }
@@ -47,6 +51,13 @@ class PedidoController extends Controller
             'id_usuario' => 'required|int'
         ]);
 
+        try {
+            $this->mesaRepository->findOrFail($data['id_mesa']);
+            $this->userRepository->findOrFail($data['id_usuario']);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
         $pedido = $this->repository->create([
             'fecha' => now(),
             'estado' => 0,
@@ -71,6 +82,8 @@ class PedidoController extends Controller
 
         try {
             $pedido = $this->repository->findOrFail($id);
+            $this->mesaRepository->findOrFail($data['id_mesa']);
+            $this->userRepository->findOrFail($data['id_usuario']);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
