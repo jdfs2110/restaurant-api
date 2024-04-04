@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Repositories\CategoriaRepository;
 use App\Repositories\ProductoRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +15,8 @@ use Illuminate\Http\Request;
 class ProductoController extends Controller
 {
     public function __construct(
-        public readonly ProductoRepository $repository
+        public readonly ProductoRepository $repository,
+        public readonly CategoriaRepository $categoriaRepository
     )
     {
     }
@@ -29,14 +31,13 @@ class ProductoController extends Controller
     function getProducto($id): JsonResponse
     {
         try {
-        $producto = $this->repository->findOrFail($id);
+            $producto = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new ProductoResource($producto));
+            return $this->successResponse(new ProductoResource($producto));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
     }
-
 
     function newProducto(Request $request): JsonResponse
     {
@@ -58,10 +59,10 @@ class ProductoController extends Controller
 
     function deleteProducto($id): JsonResponse
     {
-        $producto = Producto::query()->find($id);
-
-        if (is_null($producto)) {
-            return $this->errorResponse('El producto no existe.');
+        try {
+            $producto = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $producto->delete();
@@ -72,13 +73,12 @@ class ProductoController extends Controller
 
     function getProductosByCategoria($id): JsonResponse
     {
-        $categoria = Categoria::query()->find($id);
-
-        if (is_null($categoria)) {
-            return $this->errorResponse('La categoría no existe.');
+        try {
+            $this->categoriaRepository->findOrFail($id);
+            $productos = $this->repository->findAllByIdCategoria($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
-
-        $productos = Producto::query()->where('id_categoria', $id)->get();
 
         return $this->successResponse(ProductoResource::collection($productos));
     }
@@ -92,10 +92,10 @@ class ProductoController extends Controller
             'id_categoria' => 'required|int'
         ]);
 
-        $producto = Producto::query()->find($id);
-
-        if (is_null($producto)) {
-            return $this->errorResponse('El producto no existe.');
+        try {
+            $producto = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $producto->update([

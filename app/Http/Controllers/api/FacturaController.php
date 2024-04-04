@@ -16,7 +16,7 @@ class FacturaController extends Controller
 {
     public function __construct(
         public readonly FacturaRepository $repository,
-        public readonly PedidoRepository $pedidoRepository
+        public readonly PedidoRepository  $pedidoRepository
     )
     {
     }
@@ -31,9 +31,9 @@ class FacturaController extends Controller
     function getFactura($id): JsonResponse
     {
         try {
-        $factura = $this->repository->findOrFail($id);
+            $factura = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new FacturaResource($factura));
+            return $this->successResponse(new FacturaResource($factura));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -60,10 +60,10 @@ class FacturaController extends Controller
             'id_pedido' => 'required|int'
         ]);
 
-        $factura = Factura::query()->find($id);
-
-        if (is_null($factura)) {
-            return $this->errorResponse('La factura no existe.');
+        try {
+            $factura = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $factura->update([

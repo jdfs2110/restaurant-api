@@ -29,9 +29,9 @@ class PedidoController extends Controller
     function getPedido($id): JsonResponse
     {
         try {
-        $pedido = $this->repository->findOrFail($id);
+            $pedido = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new PedidoResource($pedido));
+            return $this->successResponse(new PedidoResource($pedido));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -69,10 +69,10 @@ class PedidoController extends Controller
             'id_usuario' => 'required|int'
         ]);
 
-        $pedido = Pedido::query()->find($id);
-
-        if (is_null($pedido)) {
-            return $this->errorResponse('El pedido no existe.');
+        try {
+            $pedido = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $pedido->update([
@@ -89,10 +89,10 @@ class PedidoController extends Controller
 
     function deletePedido($id): JsonResponse
     {
-        $pedido = Pedido::query()->find($id);
-
-        if (is_null($pedido)) {
-            return $this->errorResponse('El pedido no existe.');
+        try {
+            $pedido = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $pedido->delete();

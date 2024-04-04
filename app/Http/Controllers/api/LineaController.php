@@ -7,6 +7,7 @@ use App\Http\Resources\LineaResource;
 use App\Models\Linea;
 use App\Models\Pedido;
 use App\Repositories\LineaRepository;
+use App\Repositories\PedidoRepository;
 use App\Services\PedidoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -15,8 +16,9 @@ use Illuminate\Http\Request;
 class LineaController extends Controller
 {
     public function __construct(
-        public readonly LineaRepository $repository,
-        public readonly PedidoService $pedidoService
+        public readonly LineaRepository  $repository,
+        public readonly PedidoRepository $pedidoRepository,
+        public readonly PedidoService    $pedidoService // <- si
     )
     {
     }
@@ -31,9 +33,9 @@ class LineaController extends Controller
     function getLinea($id): JsonResponse
     {
         try {
-        $linea = $this->repository->findOrFail($id);
+            $linea = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new LineaResource($linea));
+            return $this->successResponse(new LineaResource($linea));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -67,10 +69,10 @@ class LineaController extends Controller
             'id_pedido' => 'required|int'
         ]);
 
-        $linea = Linea::query()->find($id);
-
-        if (is_null($linea)) {
-            return $this->errorResponse('La línea no existe.');
+        try {
+            $linea = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         try {
@@ -90,10 +92,10 @@ class LineaController extends Controller
 
     function deleteLinea($id): JsonResponse
     {
-        $linea = Linea::query()->find($id);
-
-        if (is_null($linea)) {
-            return $this->errorResponse('La línea no existe.');
+        try {
+            $linea = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $linea->delete();
@@ -104,13 +106,12 @@ class LineaController extends Controller
 
     function getLineasByPedido($id): JsonResponse
     {
-        $pedido = Pedido::query()->find($id);
-
-        if (is_null($pedido)) {
-            return $this->errorResponse('El pedido no existe.');
+        try {
+            $this->pedidoRepository->findOrFail($id);
+            $lineas = $this->repository->findAllByIdPedido($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
-
-        $lineas = Linea::query()->where('id_pedido', $id)->get();
 
         return $this->successResponse(LineaResource::collection($lineas));
     }

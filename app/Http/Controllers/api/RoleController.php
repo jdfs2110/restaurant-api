@@ -28,11 +28,9 @@ class RoleController extends Controller
     function getRole($id): JsonResponse
     {
         try {
+            $role = $this->repository->findOrFail($id);
 
-        $role = $this->repository->findOrFail($id);
-
-        return $this->successResponse(new RoleResource($role));
-
+            return $this->successResponse(new RoleResource($role));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -41,11 +39,11 @@ class RoleController extends Controller
     function newRole(Request $request): JsonResponse
     {
         $data = $request->validate([
-           'nombre' => 'required|string'
+            'nombre' => 'required|string'
         ]);
 
         $role = $this->repository->create([
-           'nombre' => $data['nombre']
+            'nombre' => $data['nombre']
         ]);
 
         return $this->successResponse(new RoleResource($role));
@@ -53,10 +51,10 @@ class RoleController extends Controller
 
     public function deleteRole($id): JsonResponse
     {
-        $role = Role::query()->find($id);
-
-        if (is_null($role)) {
-            return $this->errorResponse('El rol no existe.');
+        try {
+            $role = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $role->delete();
@@ -71,10 +69,10 @@ class RoleController extends Controller
             'nombre' => 'required|string'
         ]);
 
-        $role = Role::query()->find($id);
-
-        if (is_null($role)) {
-            return $this->errorResponse('El rol no existe.');
+        try {
+            $role = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $role->nombre = $data['nombre'];

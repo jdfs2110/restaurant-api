@@ -28,9 +28,9 @@ class MesaController extends Controller
     function getMesa($id): JsonResponse
     {
         try {
-        $mesa = $this->repository->findOrFail($id);
+            $mesa = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new MesaResource($mesa));
+            return $this->successResponse(new MesaResource($mesa));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -53,10 +53,10 @@ class MesaController extends Controller
 
     function deleteMesa($id): JsonResponse
     {
-        $mesa = Mesa::query()->find($id);
-
-        if (is_null($mesa)) {
-            return $this->errorResponse('La mesa no existe.');
+        try {
+            $mesa = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $mesa->delete();
@@ -72,10 +72,10 @@ class MesaController extends Controller
             'estado' => 'required|int|max:2'
         ]);
 
-        $mesa = Mesa::query()->find($id);
-
-        if (is_null($mesa)) {
-            return $this->errorResponse('La mesa no existe.');
+        try {
+            $mesa = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $mesa->update([

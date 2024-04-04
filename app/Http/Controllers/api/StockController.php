@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StockResource;
 use App\Models\Producto;
 use App\Models\Stock;
+use App\Repositories\ProductoRepository;
 use App\Repositories\StockRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +15,8 @@ use Illuminate\Http\Request;
 class StockController extends Controller
 {
     public function __construct(
-        public readonly StockRepository $repository
+        public readonly StockRepository    $repository,
+        public readonly ProductoRepository $productoRepository
     )
     {
     }
@@ -30,9 +32,9 @@ class StockController extends Controller
     function getStock($id): JsonResponse
     {
         try {
-        $stock = $this->repository->findOrFail($id);
+            $stock = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new StockResource($stock));
+            return $this->successResponse(new StockResource($stock));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -41,16 +43,11 @@ class StockController extends Controller
     // find stock of a product
     function getProductStock($id): JsonResponse
     {
-        $producto = Producto::query()->find($id);
-
-        if (is_null($producto)) {
-            return $this->errorResponse('El producto no existe.');
-        }
-
-        $stock = Stock::query()->where('id_producto', $id)->get()->first();
-
-        if (is_null($stock)) {
-            return $this->errorResponse('El producto no tiene stock asociado.'); // this shouldn't happen
+        try {
+            $this->productoRepository->findOrFail($id);
+            $stock = $this->repository->findByIdProducto($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         return $this->successResponse(new StockResource($stock));
@@ -78,10 +75,10 @@ class StockController extends Controller
             'id_producto' => 'required|int',
         ]);
 
-        $stock = Stock::query()->find($id);
-
-        if (is_null($stock)) {
-            return $this->errorResponse('Este stock no existe.');
+        try {
+            $stock = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $stock->update([
@@ -95,10 +92,10 @@ class StockController extends Controller
 
     function deleteStock($id): JsonResponse
     {
-        $stock = Stock::query()->find($id);
-
-        if (is_null($stock)) {
-            return $this->errorResponse('Este stock no existe.');
+        try {
+            $stock = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $stock->delete();

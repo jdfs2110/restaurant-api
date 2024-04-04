@@ -28,9 +28,9 @@ class CategoriaController extends Controller
     function getCategoria(string $id): JsonResponse
     {
         try {
-        $categoria = $this->repository->findOrFail($id);
+            $categoria = $this->repository->findOrFail($id);
 
-        return $this->successResponse(new CategoriaResource($categoria));
+            return $this->successResponse(new CategoriaResource($categoria));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -53,10 +53,10 @@ class CategoriaController extends Controller
 
     function deleteCategoria(string $id): JsonResponse
     {
-        $categoria = Categoria::query()->find($id);
-
-        if (is_null($categoria)) {
-            return $this->errorResponse('La categoría no existe.');
+        try {
+            $categoria = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $deletion = $categoria->delete();
@@ -72,10 +72,10 @@ class CategoriaController extends Controller
             'foto' => 'required|string'
         ]);
 
-        $categoria = Categoria::query()->find($id);
-
-        if (is_null($categoria)) {
-            return $this->errorResponse('La categoría no existe.');
+        try {
+            $categoria = $this->repository->findOrFail($id);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
         }
 
         $update = $categoria->update([
