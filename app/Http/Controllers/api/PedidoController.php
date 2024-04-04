@@ -5,27 +5,36 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
+use App\Repositories\PedidoRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
+    public function __construct(
+        public readonly PedidoRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $pedidos = Pedido::all();
+        $pedidos = $this->repository->all();
 
         return $this->successResponse(PedidoResource::collection($pedidos));
     }
 
     function getPedido($id): JsonResponse
     {
-        $pedido = Pedido::query()->find($id);
-
-        if (is_null($pedido)) {
-            return $this->errorResponse('El pedido no existe.');
-        }
+        try {
+        $pedido = $this->repository->findOrFail($id);
 
         return $this->successResponse(new PedidoResource($pedido));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
     }
 
     function newPedido(Request $request): JsonResponse

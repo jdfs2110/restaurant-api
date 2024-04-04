@@ -5,28 +5,37 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FacturaResource;
 use App\Models\Pedido;
+use App\Repositories\FacturaRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Factura;
 
 class FacturaController extends Controller
 {
+    public function __construct(
+        public readonly FacturaRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $facturas = Factura::all();
+        $facturas = $this->repository->all();
 
         return $this->successResponse(FacturaResource::collection($facturas));
     }
 
     function getFactura($id): JsonResponse
     {
-        $factura = Factura::query()->find($id);
-
-        if (is_null($factura)) {
-            return $this->errorResponse('La factura no existe.');
-        }
+        try {
+        $factura = $this->repository->findOrFail($id);
 
         return $this->successResponse(new FacturaResource($factura));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
     }
 
     function newFactura(Request $request): JsonResponse

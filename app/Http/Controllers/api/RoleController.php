@@ -5,27 +5,37 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
+use App\Repositories\RoleRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    public function __construct(
+        public readonly RoleRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $roles = Role::all();
+        $roles = $this->repository->all();
 
         return $this->successResponse(RoleResource::collection($roles));
     }
 
     function getRole($id): JsonResponse
     {
-        $role = Role::query()->find($id);
+        try {
 
-        if (is_null($role)) {
-            return $this->errorResponse('El rol no existe.');
-        }
+        $role = $this->repository->findOrFail($id);
 
         return $this->successResponse(new RoleResource($role));
+
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     function newRole(Request $request): JsonResponse

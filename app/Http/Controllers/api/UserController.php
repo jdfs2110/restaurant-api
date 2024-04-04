@@ -8,27 +8,36 @@ use App\Http\Resources\UsuarioResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Pedido;
+use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct(
+        public readonly UserRepository $repository
+    )
+    {
+    }
+
     public function index(): JsonResponse
     {
-        $users = User::all();
+        $users = $this->repository->all();
 
         return $this->successResponse(UsuarioResource::collection($users));
     }
 
     public function getUser($id): JsonResponse
     {
-        $user = User::query()->find($id);
-
-        if (is_null($user)) {
-            return $this->errorResponse('El usuario no existe.');
-        }
+        try {
+        $user = $this->repository->findOrFail($id);
 
         return $this->successResponse(new UsuarioResource($user));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+
     }
 
     public function getUsersPedidos($id): JsonResponse

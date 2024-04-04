@@ -6,14 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StockResource;
 use App\Models\Producto;
 use App\Models\Stock;
+use App\Repositories\StockRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
+    public function __construct(
+        public readonly StockRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $stock = Stock::all();
+        $stock = $this->repository->all();
 
         return $this->successResponse(StockResource::collection($stock));
     }
@@ -21,13 +29,13 @@ class StockController extends Controller
     // findStockById
     function getStock($id): JsonResponse
     {
-        $stock = Stock::query()->find($id);
-
-        if (is_null($stock)) {
-            return $this->errorResponse('Este stock no existe.');
-        }
+        try {
+        $stock = $this->repository->findOrFail($id);
 
         return $this->successResponse(new StockResource($stock));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     // find stock of a product

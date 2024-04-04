@@ -5,27 +5,35 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MesaResource;
 use App\Models\Mesa;
+use App\Repositories\MesaRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MesaController extends Controller
 {
+    public function __construct(
+        public readonly MesaRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $mesas = Mesa::all();
+        $mesas = $this->repository->all();
 
         return $this->successResponse(MesaResource::collection($mesas));
     }
 
     function getMesa($id): JsonResponse
     {
-        $mesa = Mesa::query()->find($id);
-
-        if (is_null($mesa)) {
-            return $this->errorResponse('La mesa no existe.');
-        }
+        try {
+        $mesa = $this->repository->findOrFail($id);
 
         return $this->successResponse(new MesaResource($mesa));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     function newMesa(Request $request): JsonResponse

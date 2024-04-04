@@ -6,27 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Repositories\ProductoRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
+    public function __construct(
+        public readonly ProductoRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $productos = Producto::all();
+        $productos = $this->repository->all();
 
         return $this->successResponse(ProductoResource::collection($productos));
     }
 
     function getProducto($id): JsonResponse
     {
-        $producto = Producto::query()->find($id);
-
-        if (is_null($producto)) {
-            return $this->errorResponse('El producto no existe.');
-        }
+        try {
+        $producto = $this->repository->findOrFail($id);
 
         return $this->successResponse(new ProductoResource($producto));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
 

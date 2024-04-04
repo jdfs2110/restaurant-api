@@ -6,28 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\LineaResource;
 use App\Models\Linea;
 use App\Models\Pedido;
+use App\Repositories\LineaRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LineaController extends Controller
 {
+    public function __construct(
+        public readonly LineaRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $lineas = Linea::all();
+        $lineas = $this->repository->all();
 
         return $this->successResponse(LineaResource::collection($lineas));
     }
 
     function getLinea($id): JsonResponse
     {
-        $linea = Linea::query()->find($id);
-
-        if (is_null($linea)) {
-            return $this->errorResponse('La línea no existe.');
-        }
+        try {
+        $linea = $this->repository->findOrFail($id);
 
         return $this->successResponse(new LineaResource($linea));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     function newLinea(Request $request): JsonResponse

@@ -5,27 +5,35 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoriaResource;
 use App\Models\Categoria;
+use App\Repositories\CategoriaRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    public function __construct(
+        public readonly CategoriaRepository $repository
+    )
+    {
+    }
+
     function index(): JsonResponse
     {
-        $categorias = Categoria::all();
+        $categorias = $this->repository->all();
 
         return $this->successResponse(CategoriaResource::collection($categorias));
     }
 
     function getCategoria(string $id): JsonResponse
     {
-        $categoria = Categoria::query()->find($id);
-
-        if(is_null($categoria)) {
-            return $this->errorResponse('La categoría no existe');
-        }
+        try {
+        $categoria = $this->repository->findOrFail($id);
 
         return $this->successResponse(new CategoriaResource($categoria));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     function newCategoria(Request $request): JsonResponse
