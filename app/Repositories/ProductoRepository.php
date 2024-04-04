@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Producto;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductoRepository extends GeneralRepository
 {
@@ -11,5 +12,10 @@ class ProductoRepository extends GeneralRepository
     {
         $this->setBuilderFromModel(Producto::query()->getModel());
         $this->setEntityName(self::ENTITY_NAME);
+    }
+
+    public function findAllByIdCategoria($id): Collection
+    {
+        return Producto::query()->where('id_categoria', $id)->get();
     }
 }
