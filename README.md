@@ -4,6 +4,7 @@
 * File uploading (foto categoría)
 * cálculos de precios (facturas, pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0, etc]
 * cuando el stock llega a 0 se inhabilita (more like a frontend problem?)
+* Fix bug al dar de alta un producto con una categoría softdeleted [dejo el mensale por si me hace falta con otra entidad]
 
 ### Frontend
 * todo 😭
