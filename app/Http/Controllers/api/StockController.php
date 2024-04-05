@@ -45,7 +45,7 @@ class StockController extends Controller
     {
         try {
             $this->productoRepository->findOrFail($id);
-            $stock = $this->repository->findByIdProducto($id);
+            $stock = $this->repository->findByIdProductoOrFail($id);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }

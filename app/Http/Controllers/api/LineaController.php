@@ -10,6 +10,7 @@ use App\Repositories\LineaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\ProductoRepository;
 use App\Services\PedidoService;
+use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class LineaController extends Controller
         public readonly LineaRepository  $repository,
         public readonly ProductoRepository $productoRepository,
         public readonly PedidoRepository $pedidoRepository,
+        public readonly StockService $stockService,
         public readonly PedidoService    $pedidoService // <- si
     )
     {
@@ -55,6 +57,7 @@ class LineaController extends Controller
         try {
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
+            $this->stockService->reduceStock($data['id_producto'], $data['cantidad']);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -73,7 +76,7 @@ class LineaController extends Controller
     {
         $data = $request->validate([
             'precio' => 'required|numeric',
-            'cantidad' => 'required|int|min:1',
+            'cantidad' => 'required|int|min:0',
             'id_producto' => 'required|int',
             'id_pedido' => 'required|int'
         ]);
@@ -82,6 +85,13 @@ class LineaController extends Controller
             $linea = $this->repository->findOrFail($id);
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
+
+            if ($data['cantidad'] < $linea->getCantidad()) {
+                $this->stockService->addStock($data['id_producto'], ($linea->getCantidad() - $data['cantidad']));
+            } else {
+                $this->stockService->reduceStock($data['id_producto'], ($data['cantidad'] - $linea->getCantidad()));
+            }
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }

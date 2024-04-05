@@ -15,12 +15,17 @@ class StockRepository extends GeneralRepository
         $this->setEntityName(self::ENTITY_NAME);
     }
 
+    public function findByIdProducto($id): ?Model
+    {
+        return Stock::query()->where('id_producto', $id)->get()->first();
+    }
+
     /**
      * @throws Exception when a product has no stock associated (really shouldn't happen)
      */
-    public function findByIdProducto($id): Model
+    public function findByIdProductoOrFail($id): Model
     {
-        $stock = Stock::query()->where('id_producto', $id)->get()->first();
+        $stock = $this->findByIdProducto($id);
 
         if (is_null($stock)) {
             throw new Exception('El producto no tiene stock asociado.'); // this shouldn't happen
