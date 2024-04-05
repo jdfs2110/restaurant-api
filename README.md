@@ -5,6 +5,7 @@
 * cálculos de precios (facturas, pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0, etc]
 * cuando el stock llega a 0 se inhabilita (more like a frontend problem?)
 * Que el número de comensales de un pedido no sea superior a la capacidad máxima de una mesa
+* Cuando se actualiza/agrega cantidad de un producto a una línea, que se actualice la cantidad de la tabla stock
 
 ### Frontend
 * todo 😭
