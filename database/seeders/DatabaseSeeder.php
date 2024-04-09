@@ -287,12 +287,12 @@ class DatabaseSeeder extends Seeder
 
         Mesa::factory()->create([
              'capacidad_maxima' => 12,
-             'estado' => 3
+             'estado' => 2
         ]);
 
         Mesa::factory()->create([
              'capacidad_maxima' => 15,
-             'estado' => 3
+             'estado' => 2
         ]);
 
         /**
