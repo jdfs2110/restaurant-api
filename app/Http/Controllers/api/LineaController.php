@@ -18,11 +18,11 @@ use Illuminate\Http\Request;
 class LineaController extends Controller
 {
     public function __construct(
-        public readonly LineaRepository  $repository,
+        public readonly LineaRepository    $repository,
         public readonly ProductoRepository $productoRepository,
-        public readonly PedidoRepository $pedidoRepository,
-        public readonly StockService $stockService,
-        public readonly PedidoService    $pedidoService // <- si
+        public readonly PedidoRepository   $pedidoRepository,
+        public readonly StockService       $stockService,
+        public readonly PedidoService      $pedidoService // <- si
     )
     {
     }
@@ -55,19 +55,27 @@ class LineaController extends Controller
         ]);
 
         try {
+
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
             $this->stockService->reduceStock($data['id_producto'], $data['cantidad']);
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
 
-        $linea = $this->repository->create([
-            'precio' => $data['precio'],
-            'cantidad' => $data['cantidad'],
-            'id_producto' => $data['id_producto'],
-            'id_pedido' => $data['id_pedido']
-        ]);
+        try {
+            $linea = $this->repository->create([
+                'precio' => $data['precio'],
+                'cantidad' => $data['cantidad'],
+                'id_producto' => $data['id_producto'],
+                'id_pedido' => $data['id_pedido']
+            ]);
+
+            $this->pedidoService->recalculatePrice($data['id_pedido']);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
 
         return $this->successResponse(new LineaResource($linea));
     }
@@ -92,6 +100,7 @@ class LineaController extends Controller
                 $this->stockService->reduceStock($data['id_producto'], ($data['cantidad'] - $linea->getCantidad()));
             }
 
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -103,6 +112,7 @@ class LineaController extends Controller
                 'id_producto' => $data['id_producto'],
                 'id_pedido' => $data['id_pedido']
             ]);
+            $this->pedidoService->recalculatePrice($data['id_pedido']);
             $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
             return $this->successResponse(new LineaResource($linea), $message);

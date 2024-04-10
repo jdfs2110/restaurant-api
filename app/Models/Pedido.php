@@ -45,6 +45,10 @@ class Pedido extends Model
         return self::ESTADOS[$this->estado];
     }
 
+    public function isServido(): bool
+    {
+        return $this->estado == 2;
+    }
     public function getPrecio(): float
     {
         return $this->precio;
