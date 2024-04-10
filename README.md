@@ -2,7 +2,7 @@
 ### Backend
 
 * File uploading (foto categoría) [back y front]
-* cálculos de precios (facturas, pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0, que la actualizacion de las lineas actualicen el precio del pedido, etc]
+* cálculos de precios (facturas, pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0, que la actualizacion de las lineas actualicen el precio del pedido ✅, etc]
 
 ### Frontend
 * que la cantidad de stock no pueda ser negativa al añadir/editar la línea del producto
