@@ -241,7 +241,7 @@ git clone https://github.com/jdfs2110/restaurant-api.git
 cd restaurant-api/
 ```
 
-#### Prerequisitos
+#### Prerrequisitos
 
 > [!WARNING]
 > Si el sistema operativo es Windows, es necesario utilizar WSL
