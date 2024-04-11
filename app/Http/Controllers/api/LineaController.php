@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NegativeQuantityException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LineaResource;
 use App\Models\Linea;
@@ -60,11 +62,6 @@ class LineaController extends Controller
             $this->pedidoRepository->findOrFail($data['id_pedido']);
             $this->stockService->reduceStock($data['id_producto'], $data['cantidad']);
 
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage());
-        }
-
-        try {
             $linea = $this->repository->create([
                 'precio' => $data['precio'],
                 'cantidad' => $data['cantidad'],
@@ -84,28 +81,19 @@ class LineaController extends Controller
     {
         $data = $request->validate([
             'precio' => 'required|numeric',
-            'cantidad' => 'required|int|min:0',
+            'cantidad' => 'required|int|min:1',
             'id_producto' => 'required|int',
             'id_pedido' => 'required|int'
         ]);
 
         try {
+
             $linea = $this->repository->findOrFail($id);
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
 
-            if ($data['cantidad'] < $linea->getCantidad()) {
-                $this->stockService->addStock($data['id_producto'], ($linea->getCantidad() - $data['cantidad']));
-            } else {
-                $this->stockService->reduceStock($data['id_producto'], ($data['cantidad'] - $linea->getCantidad()));
-            }
+            $this->stockService->updateStock($data['id_producto'], $data['cantidad'], $linea->getCantidad());
 
-
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage());
-        }
-
-        try {
             $update = $linea->update([
                 'precio' => $data['precio'],
                 'cantidad' => $data['cantidad'],
@@ -117,7 +105,7 @@ class LineaController extends Controller
 
             return $this->successResponse(new LineaResource($linea), $message);
         } catch (Exception $e) {
-            return $this->errorResponse('Ha ocurrido un error.', 400);
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 

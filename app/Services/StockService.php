@@ -37,6 +37,10 @@ class StockService
     {
         $stock = $this->repository->findByIdProductoOrFail($productId);
 
+        if ($stock->cantidad <= 0) {
+            throw new Exception('La cantidad no puede ser negativa');
+        }
+
         $stock->cantidad -= $quantity;
         $stock->save();
     }
@@ -56,5 +60,19 @@ class StockService
 
         $stock->cantidad = $quantity;
         $stock->save();
+    }
+
+    /**
+     * @throws Exception when Producto is not found
+     */
+    public function updateStock($productId, int $firstQuantity, int $secondQuantity): void
+    {
+        $this->repository->findByIdProductoOrFail($productId);
+
+        if ($firstQuantity < $secondQuantity) {
+            $this->addStock($productId, ($secondQuantity - $firstQuantity));
+        }
+
+        $this->reduceStock($productId, ($firstQuantity - $secondQuantity));
     }
 }
