@@ -57,7 +57,7 @@ class FacturaController extends Controller
             'id_pedido' => $data['id_pedido']
         ]);
 
-        return $this->successResponse(new FacturaResource($factura));
+        return $this->successResponse(new FacturaResource($factura), 'Factura creada correctamente');
     }
 
     function updateFactura(Request $request, $id): JsonResponse

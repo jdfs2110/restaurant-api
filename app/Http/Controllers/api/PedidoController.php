@@ -65,7 +65,7 @@ class PedidoController extends Controller
             'id_usuario' => $data['id_usuario']
         ]);
 
-        return $this->successResponse(new PedidoResource($pedido));
+        return $this->successResponse(new PedidoResource($pedido), 'Pedido creado correctamente.');
     }
 
     function updatePedido(Request $request, $id): JsonResponse

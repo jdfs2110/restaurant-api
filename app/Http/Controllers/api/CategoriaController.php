@@ -48,7 +48,7 @@ class CategoriaController extends Controller
             'foto' => $data['foto']
         ]);
 
-        return $this->successResponse(new CategoriaResource($categoria));
+        return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.');
     }
 
     function deleteCategoria(string $id): JsonResponse

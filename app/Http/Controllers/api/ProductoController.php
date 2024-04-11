@@ -68,7 +68,7 @@ class ProductoController extends Controller
             return $this->errorResponse($e->getMessage());
         }
 
-        return $this->successResponse(new ProductoResource($producto));
+        return $this->successResponse(new ProductoResource($producto), 'Producto creado correctamente.');
     }
 
     function deleteProducto($id): JsonResponse

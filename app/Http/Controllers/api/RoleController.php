@@ -46,7 +46,7 @@ class RoleController extends Controller
             'nombre' => $data['nombre']
         ]);
 
-        return $this->successResponse(new RoleResource($role));
+        return $this->successResponse(new RoleResource($role), 'Rol creado correctamente.');
     }
 
     public function deleteRole($id): JsonResponse
