@@ -39,7 +39,7 @@ class MesaController extends Controller
     function newMesa(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'capacidad_maxima' => 'required|int|max:10',
+            'capacidad_maxima' => 'required|int|max:15',
             'estado' => 'required|int|max:2'
         ]);
 
@@ -68,7 +68,7 @@ class MesaController extends Controller
     function updateMesa(Request $request, $id): JsonResponse
     {
         $data = $request->validate([
-            'capacidad_maxima' => 'required|int|max:10',
+            'capacidad_maxima' => 'required|int|max:15',
             'estado' => 'required|int|max:2'
         ]);
 
