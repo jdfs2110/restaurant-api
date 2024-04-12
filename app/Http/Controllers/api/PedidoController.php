@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
+use App\Repositories\LineaRepository;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\UserRepository;
@@ -16,7 +17,8 @@ class PedidoController extends Controller
     public function __construct(
         public readonly PedidoRepository $repository,
         public readonly MesaRepository $mesaRepository,
-        public readonly UserRepository $userRepository
+        public readonly UserRepository $userRepository,
+        public readonly LineaRepository $lineaRepository
     )
     {
     }
@@ -102,13 +104,20 @@ class PedidoController extends Controller
     {
         try {
             $pedido = $this->repository->findOrFail($id);
+            $lineas = $this->lineaRepository->findAllByIdPedido($id);
+
+            if($lineas->isNotEmpty()) {
+                foreach ($lineas as $linea) {
+                    $linea->delete();
+                }
+            }
+
+            $deletion = $this->repository->delete($pedido);
+            $message = $deletion == 1 ? 'El pedido ha sido eliminado correctamente' : 'Error al eliminar el pedido';
+
+            return $this->successResponse('', $message);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $deletion = $this->repository->delete($pedido);
-        $message = $deletion == 1 ? 'El pedido ha sido eliminado correctamente' : 'Error al eliminar el pedido';
-
-        return $this->successResponse('', $message);
     }
 }
