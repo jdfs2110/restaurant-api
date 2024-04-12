@@ -8,6 +8,7 @@ use App\Models\Categoria;
 use App\Models\Producto;
 use App\Repositories\CategoriaRepository;
 use App\Repositories\ProductoRepository;
+use App\Repositories\StockRepository;
 use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,8 @@ class ProductoController extends Controller
     public function __construct(
         public readonly ProductoRepository  $repository,
         public readonly CategoriaRepository $categoriaRepository,
-        public readonly StockService        $stockService
+        public readonly StockService        $stockService,
+        public readonly StockRepository     $stockRepository
     )
     {
     }
@@ -75,14 +77,18 @@ class ProductoController extends Controller
     {
         try {
             $producto = $this->repository->findOrFail($id);
+            $stock = $this->stockRepository->findByIdProducto($id);
+            if (!is_null($stock)) {
+                $stock->delete();
+            }
+            $deletion = $this->repository->delete($producto);
+            $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
+
+            return $this->successResponse('', $message);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
 
-        $deletion = $this->repository->delete($producto);
-        $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
-
-        return $this->successResponse('', $message);
     }
 
     function getProductosByCategoria($id): JsonResponse
