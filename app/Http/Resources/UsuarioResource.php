@@ -21,7 +21,7 @@ class UsuarioResource extends JsonResource
             'estado' => $this->getEstado(),
             'fecha_ingreso' => $this->getFechaIngreso(),
             'id_rol' => $this->getIdRol(),
-            'rol' => $this->getRol(),
+//            'rol' => $this->getRol(),
             'created_at' => $this->getCreatedAt(),
         ];
     }

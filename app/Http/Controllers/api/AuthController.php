@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UsuarioResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -21,30 +22,35 @@ class AuthController extends Controller
 
     public function register(Request $request): JsonResponse
     {
-        $userData = $request->validate([
-           'name' => 'required|string',
-           'email' => 'required|string|unique:users,email',
-           'password' => 'required|string|confirmed',
-           'id_rol' =>  'required|int'
-        ]);
+        try {
+            $userData = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|string|unique:users,email',
+                'password' => 'required|string|confirmed',
+                'id_rol' => 'required|int'
+            ]);
 
-        $user = $this->repository->create([
-           'name' => $userData['name'],
-           'email' => $userData['email'],
-           'estado' => true,
-           'password' => bcrypt($userData['password']),
-           'fecha_ingreso' => date('Y-m-d'),
-           'id_rol' => $userData['id_rol']
-        ]);
+            $user = $this->repository->create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'estado' => true,
+                'password' => bcrypt($userData['password']),
+                'fecha_ingreso' => date('Y-m-d'),
+                'id_rol' => $userData['id_rol']
+            ]);
 
-        $token = $user->createToken('apiToken')->plainTextToken;
+            $token = $user->createToken('apiToken')->plainTextToken;
 
-        $response = [
-            'data' =>  new UsuarioResource($user),
-            'token' => $token
-        ];
+            $response = [
+                'data' => new UsuarioResource($user),
+                'token' => $token
+            ];
 
-        return response()->json($response);
+            return response()->json($response);
+
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
     }
 
     public function login(Request $request): JsonResponse
@@ -56,7 +62,7 @@ class AuthController extends Controller
 
         $user = $this->repository->findByEmail($userData['email']);
 
-        if(is_null($user) || !Hash::check($userData['password'], $user->password)) {
+        if (is_null($user) || !Hash::check($userData['password'], $user->password)) {
             $loginError = [
                 'error' => 'Usuario o contraseña incorrectos.'
             ];
@@ -66,8 +72,8 @@ class AuthController extends Controller
         $token = $user->createToken('apiToken')->plainTextToken;
 
         $response = [
-          'data' => new UsuarioResource($user),
-          'token' => $token
+            'data' => new UsuarioResource($user),
+            'token' => $token
         ];
 
         return response()->json($response);

@@ -80,7 +80,7 @@ class User extends Authenticatable
         return $this->estado;
     }
 
-    private const ROLES = [
+    private const ROLES = [ // Probablemente descarte este array
         1 => 'mesero',
         2 => 'cocina',
         3 => 'rrhh',
