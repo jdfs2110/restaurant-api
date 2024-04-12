@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
         /**
          *  Creación de roles
          */
-        $roles = ['mesero', 'cocina', 'rrhh', 'admin'];
+//        $roles = ['mesero', 'cocina', 'rrhh', 'admin'];
+        $roles = ['mesero', 'cocina', 'rrhh', 'bloqueado'];
 
         foreach ($roles as $role) {
             Role::factory()->create([
