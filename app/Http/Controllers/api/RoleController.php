@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ use Illuminate\Http\Request;
 class RoleController extends Controller
 {
     public function __construct(
-        public readonly RoleRepository $repository
+        public readonly RoleRepository $repository,
+        public readonly UserRepository $userRepository
     )
     {
     }
@@ -53,14 +55,20 @@ class RoleController extends Controller
     {
         try {
             $role = $this->repository->findOrFail($id);
+            $usersWithRole = $this->userRepository->findAllByIdRol($id);
+
+            if ($usersWithRole->isEmpty()) {
+                $deletion = $this->repository->delete($role);
+                $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
+
+                return $this->successResponse('', $message);
+            }
+
+            return $this->errorResponse('Error al eliminar el rol, el rol tiene usuarios', 400);
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $deletion = $this->repository->delete($role);
-        $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
-
-        return $this->successResponse('', $message);
     }
 
     public function updateRole(Request $request, $id): JsonResponse
