@@ -80,11 +80,12 @@ class User extends Authenticatable
         return $this->estado;
     }
 
-    private const ROLES = [ // Probablemente descarte este array
+    private const ROLES = [ // Descartar array si se permiten crear / borrar roles en un futuro.
         1 => 'mesero',
         2 => 'cocina',
         3 => 'rrhh',
-        4 => 'admin'
+        4 => 'admin',
+        5 => 'bloqueado'
     ];
 
     public function getIdRol(): int
