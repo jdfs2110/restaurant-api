@@ -74,25 +74,42 @@ class CategoriaController extends Controller
         }
     }
 
-    function updateCategoria(Request $request, string $id): JsonResponse
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @uses Este método requiere que sea hecho a través de POST, con '?_method=PUT' al final de la URL.
+     */
+    function updateCategoria(Request $request, $id): JsonResponse
     {
         $data = $request->validate([
             'nombre' => 'required|string',
-            'foto' => 'required|string'
+            'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
         ]);
 
         try {
             $categoria = $this->repository->findOrFail($id);
+
+            $null = is_null($data['foto']);
+
+            if (!$null) {
+                $this->deletePhotoIfExists($categoria->getFoto(), 'categorias');
+
+                $file = $request->file('foto');
+                $fileName = time() . '-' . $file->hashName();
+                $path = $file->storePubliclyAs('public/categorias', $fileName);
+
+                $categoria->setFoto($fileName);
+            }
+
+            $categoria->setNombre($data['nombre']);
+
+            $update = $categoria->save();
+            $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
+
+            return $this->successResponse(new CategoriaResource($categoria), $message);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $update = $categoria->update([
-            'nombre' => $data['nombre'],
-            'foto' => $data['foto']
-        ]);
-        $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
-
-        return $this->successResponse(new CategoriaResource($categoria), $message);
     }
 }
