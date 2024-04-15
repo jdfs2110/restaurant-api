@@ -19,6 +19,7 @@ class Producto extends Model
         'nombre',
         'precio',
         'activo',
+        'foto',
         'id_categoria'
     ];
 
@@ -32,9 +33,19 @@ class Producto extends Model
         return $this->nombre;
     }
 
+    public function setNombre(string $nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
     public function getPrecio(): float
     {
         return $this->precio;
+    }
+
+    public function setPrecio(float $precio): void
+    {
+        $this->precio = $precio;
     }
 
     public function getActivo(): bool
@@ -42,9 +53,28 @@ class Producto extends Model
         return $this->activo;
     }
 
+    public function setActivo(bool $activo): void
+    {
+        $this->activo = $activo;
+    }
+
+    public function getFoto(): string
+    {
+        return $this->foto;
+    }
+
+    public function setFoto(string $foto): void
+    {
+        $this->foto = $foto;
+    }
     public function getIdCategoria(): int
     {
         return $this->id_categoria;
+    }
+
+    public function setIdCategoria(int $id_categoria): void
+    {
+        $this->id_categoria = $id_categoria;
     }
 
     public function getCreatedAt(): string | null
