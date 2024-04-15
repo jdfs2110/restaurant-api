@@ -52,25 +52,31 @@ class ProductoController extends Controller
             'nombre' => 'required|string',
             'precio' => 'required|numeric',
             'id_categoria' => 'required|int',
-            'cantidad' => 'required|int|min:0'
+            'cantidad' => 'required|int|min:0',
+            'foto' => 'required|mimes:jpg,png,webp|max:2048'
         ]);
 
         try {
             $this->categoriaRepository->findOrFail($data['id_categoria']);
 
+            $file = $request->file('foto');
+            $fileName = time() . '-' . $file->hashName();
+            $path = $file->storePubliclyAs('public/productos', $fileName);
+
             $producto = $this->repository->create([
                 'nombre' => $data['nombre'],
                 'precio' => $data['precio'],
                 'activo' => true,
-                'id_categoria' => $data['id_categoria']
+                'id_categoria' => $data['id_categoria'],
+                'foto' => $fileName
             ]);
 
             $this->stockService->addStock($producto->getId(), $data['cantidad']);
+
+            return $this->successResponse(new ProductoResource($producto), 'Producto creado correctamente.', 201);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        return $this->successResponse(new ProductoResource($producto), 'Producto creado correctamente.', 201);
     }
 
     function deleteProducto($id): JsonResponse
@@ -78,9 +84,12 @@ class ProductoController extends Controller
         try {
             $producto = $this->repository->findOrFail($id);
             $stock = $this->stockRepository->findByIdProducto($id);
+
             if (!is_null($stock)) {
                 $stock->delete();
             }
+
+            $this->deletePhotoIfExists($producto->getFoto(), 'productos');
             $deletion = $this->repository->delete($producto);
             $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
 
@@ -103,6 +112,12 @@ class ProductoController extends Controller
         return $this->successResponse(ProductoResource::collection($productos));
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @uses Este método requiere que sea hecho a través de POST, con '?_method=PUT' al final de la URL.
+     */
     function updateProducto(Request $request, $id): JsonResponse
     {
         $data = $request->validate([
@@ -110,7 +125,8 @@ class ProductoController extends Controller
             'precio' => 'required|numeric',
             'activo' => 'required|boolean',
             'id_categoria' => 'required|int',
-            'cantidad' => 'required|int|min:0'
+            'cantidad' => 'required|int|min:0',
+            'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
         ]);
 
         try {
@@ -118,20 +134,27 @@ class ProductoController extends Controller
 
             $this->categoriaRepository->findOrFail($data['id_categoria']);
 
-            $update = $producto->update([
-                'nombre' => $data['nombre'],
-                'precio' => $data['precio'],
-                'activo' => $data['activo'],
-                'id_categoria' => $data['id_categoria']
-            ]);
+            $null = is_null($data['foto']);
+
+            if (!$null) {
+                $fileName = $this->updatePhoto($request->file('foto'), $producto->getFoto(), 'productos', 'public/productos');
+
+                $producto->setFoto($fileName);
+            }
+
+            $producto->setNombre($data['nombre']);
+            $producto->setPrecio($data['precio']);
+            $producto->setActivo($data['activo']);
+            $producto->setIdCategoria($data['id_categoria']);
+
+            $update = $producto->save();
+            $message = $update == 1 ? 'El producto ha sido modificado correctamente.' : 'Error al modificar el producto';
 
             $this->stockService->setStock($id, $data['cantidad']);
+
+            return $this->successResponse(new ProductoResource($producto), $message);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $message = $update == 1 ? 'El producto ha sido modificado correctamente.' : 'Error al modificar el producto';
-
-        return $this->successResponse(new ProductoResource($producto), $message);
     }
 }
