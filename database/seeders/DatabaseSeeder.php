@@ -109,7 +109,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Agua mineral',
             'precio' => 1.20,
             'activo' => true,
-            'id_categoria' => 1
+            'id_categoria' => 1,
+            'foto' => 'agua.png'
         ]);
 
         Producto::factory()->create([
@@ -117,7 +118,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Coca-Cola',
             'precio' => 1.80,
             'activo' => true,
-            'id_categoria' => 1
+            'id_categoria' => 1,
+            'foto' => 'cocacola.png'
         ]);
 
         Producto::factory()->create([
@@ -125,7 +127,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Cerveza',
             'precio' => 0.80,
             'activo' => true,
-            'id_categoria' => 1
+            'id_categoria' => 1,
+            'foto' => 'cerveza.png'
         ]);
 
         Producto::factory()->create([
@@ -133,7 +136,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Fanta naranja',
             'precio' => 1.80,
             'activo' => true,
-            'id_categoria' => 1
+            'id_categoria' => 1,
+            'foto' => 'fanta_naranja.png'
         ]);
 
         /**
@@ -145,7 +149,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Ensalada César',
             'precio' => 4.50,
             'activo' => true,
-            'id_categoria' => 2
+            'id_categoria' => 2,
+            'foto' => 'ensalada_cesar.png'
         ]);
 
         Producto::factory()->create([
@@ -153,7 +158,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Sopa de verduras',
             'precio' => 3.60,
             'activo' => true,
-            'id_categoria' => 2
+            'id_categoria' => 2,
+            'foto' => 'sopa_verduras.png'
         ]);
 
         Producto::factory()->create([
@@ -161,7 +167,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Nachos con guacamole',
             'precio' => 5.00,
             'activo' => true,
-            'id_categoria' => 2
+            'id_categoria' => 2,
+            'foto' => 'nachos_guacamole.png'
         ]);
 
         /**
@@ -173,7 +180,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Filete de salmón a la plancha',
             'precio' => 12.50,
             'activo' => true,
-            'id_categoria' => 3
+            'id_categoria' => 3,
+            'foto' => 'filete_salmon.png'
         ]);
 
         Producto::factory()->create([
@@ -181,7 +189,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Pollo al horno con patatas',
             'precio' => 10.00,
             'activo' => true,
-            'id_categoria' => 3
+            'id_categoria' => 3,
+            'foto' => 'pollo_horno_patatas.png'
         ]);
 
         Producto::factory()->create([
@@ -189,7 +198,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Pasta carbonara',
             'precio' => 8.50,
             'activo' => true,
-            'id_categoria' => 3
+            'id_categoria' => 3,
+            'foto' => 'pasta_carbonara.png'
         ]);
 
         Producto::factory()->create([
@@ -197,7 +207,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Arroz al senyoret',
             'precio' => 9.50,
             'activo' => true,
-            'id_categoria' => 3
+            'id_categoria' => 3,
+            'foto' => 'arroz_senyoret.png'
         ]);
 
         /**
@@ -209,7 +220,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Tarta de chocolate',
             'precio' => 4.00,
             'activo' => true,
-            'id_categoria' => 4
+            'id_categoria' => 4,
+            'foto' => 'tarta_chocolate.png'
         ]);
 
         Producto::factory()->create([
@@ -217,7 +229,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Helado de caramelo salado',
             'precio' => 2.60,
             'activo' => true,
-            'id_categoria' => 4
+            'id_categoria' => 4,
+            'foto' => 'helado_caramelosalado.png'
         ]);
 
         Producto::factory()->create([
@@ -225,7 +238,8 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Flan casero',
             'precio' => 3.20,
             'activo' => true,
-            'id_categoria' => 4
+            'id_categoria' => 4,
+            'foto' => 'flan.png'
         ]);
 
         /**
