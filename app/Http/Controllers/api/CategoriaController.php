@@ -93,11 +93,7 @@ class CategoriaController extends Controller
             $null = is_null($data['foto']);
 
             if (!$null) {
-                $this->deletePhotoIfExists($categoria->getFoto(), 'categorias');
-
-                $file = $request->file('foto');
-                $fileName = time() . '-' . $file->hashName();
-                $path = $file->storePubliclyAs('public/categorias', $fileName);
+                $fileName = $this->updatePhoto($request->file('foto'), $categoria->getFoto(), 'categorias', 'public/categorias');
 
                 $categoria->setFoto($fileName);
             }
