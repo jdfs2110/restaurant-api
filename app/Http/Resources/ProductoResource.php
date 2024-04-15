@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Traits\GeneralClass;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductoResource extends JsonResource
 {
+    use GeneralClass;
+    private const FOLDER = 'productos';
     /**
      * Transform the resource into an array.
      *
@@ -19,6 +22,7 @@ class ProductoResource extends JsonResource
             'nombre' => $this->getNombre(),
             'precio' => $this->getPrecio(),
             'activo' => $this->getActivo(),
+            'foto' => $this->toBase64($this->getFoto(), self::FOLDER),
             'id_categoria' => $this->getIdCategoria(),
             'created_at' => $this->getCreatedAt()
         ];
