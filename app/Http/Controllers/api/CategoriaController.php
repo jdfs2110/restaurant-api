@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoriaResource;
-use App\Models\Categoria;
 use App\Repositories\CategoriaRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -40,29 +39,39 @@ class CategoriaController extends Controller
     {
         $data = $request->validate([
             'nombre' => 'required|string',
-            'foto' => 'required|string' // handle logic to upload photo -> send url to db
+            'foto' => 'required|mimes:jpg,png,webp|max:2048'
         ]);
 
-        $categoria = $this->repository->create([
-            'nombre' => $data['nombre'],
-            'foto' => $data['foto']
-        ]);
+        try {
+            $file = $request->file('foto');
+            $fileName = time() . '-' . $file->hashName();
+            $path = $file->storePubliclyAs('public/categorias', $fileName);
 
-        return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.');
+            $categoria = $this->repository->create([
+                'nombre' => $data['nombre'],
+                'foto' => $fileName
+            ]);
+
+            return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.');
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
     }
 
     function deleteCategoria(string $id): JsonResponse
     {
         try {
             $categoria = $this->repository->findOrFail($id);
+
+            $this->deletePhotoIfExists($categoria->getFoto(), 'categorias');
+
+            $deletion = $this->repository->delete($categoria);
+            $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
+
+            return $this->successResponse('', $message);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $deletion = $this->repository->delete($categoria);
-        $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
-
-        return $this->successResponse('', $message);
     }
 
     function updateCategoria(Request $request, string $id): JsonResponse
