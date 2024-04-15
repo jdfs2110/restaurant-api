@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 trait GeneralClass
@@ -44,5 +46,15 @@ trait GeneralClass
         if (Storage::exists($path)) {
             Storage::delete($path);
         }
+    }
+
+    function updatePhoto(UploadedFile $file, string $previousPhoto, string $folder, string $path): string
+    {
+        $this->deletePhotoIfExists($previousPhoto, $folder);
+
+        $fileName = time() . '-' . $file->hashName();
+        $path = $file->storePubliclyAs($path, $fileName);
+
+        return $fileName;
     }
 }
