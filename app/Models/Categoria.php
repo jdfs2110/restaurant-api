@@ -30,9 +30,19 @@ class Categoria extends Model
         return $this->nombre;
     }
 
+    public function setNombre(string $nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
     public function getFoto(): string
     {
         return $this->foto;
+    }
+
+    public function setFoto(string $foto): void
+    {
+        $this->foto = $foto;
     }
 
     public function getCreatedAt(): string | null
