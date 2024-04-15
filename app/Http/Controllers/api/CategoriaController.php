@@ -5,14 +5,17 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoriaResource;
 use App\Repositories\CategoriaRepository;
+use App\Repositories\ProductoRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class CategoriaController extends Controller
 {
     public function __construct(
-        public readonly CategoriaRepository $repository
+        public readonly CategoriaRepository $repository,
+        public readonly ProductoRepository $productoRepository
     )
     {
     }
@@ -62,6 +65,11 @@ class CategoriaController extends Controller
     {
         try {
             $categoria = $this->repository->findOrFail($id);
+
+            $productos = $this->productoRepository->findAllByIdCategoria($id);
+            if ($productos->isNotEmpty()) {
+                return $this->errorResponse('La categoría tiene productos.', 400);
+            }
 
             $this->deletePhotoIfExists($categoria->getFoto(), 'categorias');
 
