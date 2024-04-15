@@ -1,8 +1,7 @@
 # TODO
 ### Backend
 
-* File uploading o Cloudinary (foto categoría) [back y front]
-* cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos, que no lleguen a 0 ✅, que la actualizacion de las lineas actualicen el precio del pedido ✅, etc]
+* cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos]
 * No dejar eliminar una categoría con productos
 
 ##### Side note
@@ -10,6 +9,7 @@
 Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en el modelo User y getRol() en el resource.
 
 ### Frontend
+* File uploading (foto categoría) [front]
 * que la cantidad de stock no pueda ser negativa al añadir/editar la línea del producto
 * cuando el stock de un producto llega a 0 se inhabilita
 * todo 😭
@@ -175,7 +175,7 @@ CREATE TABLE usuarios(
 CREATE TABLE categorias(
   id INT NOT NULL AUTO_INCREMENT,
   nombre VARCHAR2 NOT NULL,
-  foto VARCHAR2 NOT NULL
+  foto VARCHAR2 NOT NULL,
   PRIMARY KEY(id)
 );
 ```
@@ -188,6 +188,7 @@ CREATE TABLE productos(
   nombre VARCHAR2 NOT NULL,
   precio FLOAT NOT NULL DEFAULT 0,
   activo BOOLEAN NOT NULL DEFAULT TRUE,
+  foto VARCHAR2 NOT NULL,
   PRIMARY KEY(id)
 );
 ```
