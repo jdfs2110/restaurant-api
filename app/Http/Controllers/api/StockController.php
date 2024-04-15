@@ -71,7 +71,7 @@ class StockController extends Controller
             'id_producto' => $data['id_producto']
         ]);
 
-        return $this->successResponse(new StockResource($stock));
+        return $this->successResponse(new StockResource($stock), 'Stock creado correctamente.', 201);
     }
 
     function updateStock(Request $request, $id): JsonResponse

@@ -48,7 +48,7 @@ class MesaController extends Controller
             'estado' => $data['estado']
         ]);
 
-        return $this->successResponse(new MesaResource($mesa), 'Mesa creada correctamente.');
+        return $this->successResponse(new MesaResource($mesa), 'Mesa creada correctamente.', 201);
     }
 
     function deleteMesa($id): JsonResponse

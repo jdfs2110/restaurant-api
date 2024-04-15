@@ -74,7 +74,7 @@ class LineaController extends Controller
             return $this->errorResponse($e->getMessage(), 400);
         }
 
-        return $this->successResponse(new LineaResource($linea), 'Línea creada correctamente.');
+        return $this->successResponse(new LineaResource($linea), 'Línea creada correctamente.', 201);
     }
 
     function updateLinea(Request $request, $id): JsonResponse

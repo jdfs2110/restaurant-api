@@ -46,7 +46,7 @@ class AuthController extends Controller
                 'token' => $token
             ];
 
-            return response()->json($response);
+            return response()->json($response, 201);
 
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);

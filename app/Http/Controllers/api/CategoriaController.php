@@ -52,7 +52,7 @@ class CategoriaController extends Controller
                 'foto' => $fileName
             ]);
 
-            return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.');
+            return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.', 201);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

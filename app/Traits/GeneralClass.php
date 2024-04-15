@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Storage;
 
 trait GeneralClass
 {
-    public function successResponse($data, $message = ''): JsonResponse
+    public function successResponse($data, string $message = '', int $status = 200): JsonResponse
     {
         return response()->json([
             'data' => $data,
             'message' => $message
-        ]);
+        ], $status);
     }
 
     public function errorResponse($error, $status = 404): JsonResponse
