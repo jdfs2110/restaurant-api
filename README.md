@@ -261,6 +261,11 @@ CREATE TABLE facturas(
 ```
 ---------------------
 
+## Diagrama Entidad-Relación
+<img src="diagrama.png" alt="Diagrama Entidad-Relación"/>
+
+---------------------
+
 ## Preparar el entorno para probar la API
 
 ```bash
