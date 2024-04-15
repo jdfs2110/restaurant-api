@@ -2,7 +2,6 @@
 ### Backend
 
 * cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos]
-* No dejar eliminar una categoría con productos
 
 ##### Side note
 
