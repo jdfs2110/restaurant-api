@@ -22,7 +22,6 @@ class UsuarioResource extends JsonResource
             'fecha_ingreso' => $this->getFechaIngreso(),
             'id_rol' => $this->getIdRol(),
             'rol' => $this->getRol(),
-            'created_at' => $this->getCreatedAt(),
         ];
     }
 }
