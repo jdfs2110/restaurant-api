@@ -14,6 +14,11 @@ class LineaRepository extends GeneralRepository
         $this->setEntityName(self::ENTITY_NAME);
     }
 
+    public function all(): Collection
+    {
+        return $this->getBuilder()->with(['producto'])->get();
+    }
+
     public function findAllByIdPedido($id): Collection
     {
         return Linea::query()->where('id_pedido', $id)->get();
