@@ -12,11 +12,11 @@ use App\Models\Role;
 use App\Models\Stock;
 use App\Models\User;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    private const PRODUCT_QUANTITY = 14;
     /**
      * Seed the application's database.
      */
@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
         /**
          *  Creación de roles
          */
-//        $roles = ['mesero', 'cocina', 'rrhh', 'admin'];
         $roles = ['mesero', 'cocina', 'rrhh', 'bloqueado'];
 
         foreach ($roles as $role) {
@@ -245,7 +244,7 @@ class DatabaseSeeder extends Seeder
         /**
          *  Creación de stock de los productos
          */
-        for ($i = 1; $i <= 14; $i++) {
+        for ($i = 1; $i <= self::PRODUCT_QUANTITY; $i++) {
             Stock::factory()->create([
                 'cantidad' => rand(10, 75),
                 'id_producto' => $i
