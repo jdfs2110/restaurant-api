@@ -14,6 +14,11 @@ class ProductoRepository extends GeneralRepository
         $this->setEntityName(self::ENTITY_NAME);
     }
 
+    public function all(): Collection
+    {
+        return $this->getBuilder()->with(['categoria'])->get();
+    }
+
     public function findAllByIdCategoria($id): Collection
     {
         return Producto::query()->where('id_categoria', $id)->get();

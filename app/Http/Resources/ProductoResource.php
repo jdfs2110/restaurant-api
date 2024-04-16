@@ -24,7 +24,7 @@ class ProductoResource extends JsonResource
             'activo' => $this->getActivo(),
             'foto' => $this->toBase64($this->getFoto(), self::FOLDER),
             'id_categoria' => $this->getIdCategoria(),
-            'created_at' => $this->getCreatedAt()
+            'categoria' => $this->categoria->getNombre(),
         ];
     }
 }
