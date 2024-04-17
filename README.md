@@ -277,12 +277,14 @@ cd restaurant-api/
 
 > [!WARNING]
 > Si el sistema operativo es Windows, es necesario utilizar WSL
-> Los comandos han de ser hechos dentro de la raíz del proyecto
 
 * php
 * docker
 
 ### Instalación de dependencias
+
+> [!WARNING]
+> A partir de este punto, todos los comandos son hechos a partir del directorio raíz del proyecto
 
 ```bash
 docker run --rm \
