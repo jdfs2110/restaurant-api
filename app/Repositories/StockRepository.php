@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Stock;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class StockRepository extends GeneralRepository
@@ -13,6 +14,11 @@ class StockRepository extends GeneralRepository
     {
         $this->setBuilderFromModel(Stock::query()->getModel());
         $this->setEntityName(self::ENTITY_NAME);
+    }
+
+    public function all(): Collection
+    {
+        return $this->getBuilder()->with(['producto'])->get();
     }
 
     public function findByIdProducto($id): ?Model

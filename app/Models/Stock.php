@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Stock extends Model
 {
@@ -39,5 +40,10 @@ class Stock extends Model
     public function getCreatedAt(): string | null
     {
         return $this->created_at;
+    }
+
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(Producto::class, 'id_producto', 'id')->withTrashed();
     }
 }
