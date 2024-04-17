@@ -2,6 +2,7 @@
 ### Backend
 
 * cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos]
+* secure routes before production
 
 ##### Side note
 
