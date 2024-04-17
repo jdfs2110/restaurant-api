@@ -277,6 +277,7 @@ cd restaurant-api/
 
 > [!WARNING]
 > Si el sistema operativo es Windows, es necesario utilizar WSL
+> Los comandos han de ser hechos dentro de la raíz del proyecto
 
 * php
 * docker
@@ -310,6 +311,11 @@ php artisan migrate:fresh
 ### Generar datos de prueba
 ```bash
 php artisan db:seed
+```
+
+### Parar la api y eliminar los contenedores
+```bash
+./vendor/bin/sail down
 ```
 
 Realizar las peticiones a http://localhost/api/endpoint
