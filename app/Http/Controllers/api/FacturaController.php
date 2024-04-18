@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FacturaResource;
 use App\Models\Pedido;
@@ -35,8 +36,10 @@ class FacturaController extends Controller
             $factura = $this->repository->findOrFail($id);
 
             return $this->successResponse(new FacturaResource($factura));
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
 
     }
@@ -58,8 +61,10 @@ class FacturaController extends Controller
             return $this->successResponse(new FacturaResource($factura), 'Factura creada correctamente', 201);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -81,8 +86,10 @@ class FacturaController extends Controller
             return $this->successResponse(new FacturaResource($factura), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -90,14 +97,17 @@ class FacturaController extends Controller
     {
         try {
             $factura = $this->repository->findOrFail($id);
-        } catch (Exception $e) {
+
+            $deletion = $this->repository->delete($factura);
+            $message = $deletion == 1 ? 'La factura ha sido eliminada correctamente' : 'Error al eliminar la factura';
+
+            return $this->successResponse('', $message);
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
 
-        $deletion = $this->repository->delete($factura);
-        $message = $deletion == 1 ? 'La factura ha sido eliminada correctamente' : 'Error al eliminar la factura';
-
-        return $this->successResponse('', $message);
     }
 
     function getFacturaByPedido($id): JsonResponse
@@ -105,10 +115,12 @@ class FacturaController extends Controller
         try {
             $this->pedidoRepository->findOrFail($id);
             $factura = $this->repository->findByIdPedido($id);
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage());
-        }
 
-        return $this->successResponse(new FacturaResource($factura));
+            return $this->successResponse(new FacturaResource($factura));
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
@@ -34,8 +35,10 @@ class RoleController extends Controller
             $role = $this->repository->findOrFail($id);
 
             return $this->successResponse(new RoleResource($role));
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -64,17 +67,18 @@ class RoleController extends Controller
             $role = $this->repository->findOrFail($id);
             $usersWithRole = $this->userRepository->findAllByIdRol($id);
 
-            if ($usersWithRole->isEmpty()) {
-                $deletion = $this->repository->delete($role);
-                $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
-
-                return $this->successResponse('', $message);
+            if ($usersWithRole->isNotEmpty()) {
+                return $this->errorResponse('Error al eliminar el rol, el rol tiene usuarios', 400);
             }
 
-            return $this->errorResponse('Error al eliminar el rol, el rol tiene usuarios', 400);
+            $deletion = $this->repository->delete($role);
+            $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
 
-        } catch (Exception $e) {
+            return $this->successResponse('', $message);
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -95,8 +99,10 @@ class RoleController extends Controller
             return $this->successResponse(new RoleResource($role), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 }

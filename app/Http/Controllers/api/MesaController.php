@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MesaResource;
 use App\Models\Mesa;
@@ -32,8 +33,10 @@ class MesaController extends Controller
             $mesa = $this->repository->findOrFail($id);
 
             return $this->successResponse(new MesaResource($mesa));
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -62,14 +65,16 @@ class MesaController extends Controller
     {
         try {
             $mesa = $this->repository->findOrFail($id);
-        } catch (Exception $e) {
+
+            $deletion = $this->repository->delete($mesa);
+            $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
+
+            return $this->successResponse('', $message);
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
-
-        $deletion = $this->repository->delete($mesa);
-        $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
-
-        return $this->successResponse('', $message);
     }
 
     function updateMesa(Request $request, $id): JsonResponse
@@ -91,8 +96,10 @@ class MesaController extends Controller
             return $this->successResponse(new MesaResource($mesa), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoriaResource;
 use App\Repositories\CategoriaRepository;
@@ -16,7 +17,7 @@ class CategoriaController extends Controller
 {
     public function __construct(
         public readonly CategoriaRepository $repository,
-        public readonly ProductoRepository $productoRepository
+        public readonly ProductoRepository  $productoRepository
     )
     {
     }
@@ -34,14 +35,15 @@ class CategoriaController extends Controller
             $categoria = $this->repository->findOrFail($id);
 
             return $this->successResponse(new CategoriaResource($categoria));
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
     function newCategoria(Request $request): JsonResponse
     {
-
         try {
             $data = $request->validate([
                 'nombre' => 'required|string',
@@ -61,7 +63,7 @@ class CategoriaController extends Controller
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
     }
@@ -82,8 +84,10 @@ class CategoriaController extends Controller
             $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
 
             return $this->successResponse('', $message);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -120,8 +124,10 @@ class CategoriaController extends Controller
             return $this->successResponse(new CategoriaResource($categoria), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 }

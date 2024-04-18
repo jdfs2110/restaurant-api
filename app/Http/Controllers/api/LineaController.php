@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
-use App\Exceptions\NegativeQuantityException;
+use App\Exceptions\PedidoAlreadyServedException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LineaResource;
-use App\Models\Linea;
-use App\Models\Pedido;
 use App\Repositories\LineaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\ProductoRepository;
@@ -25,7 +23,7 @@ class LineaController extends Controller
         public readonly ProductoRepository $productoRepository,
         public readonly PedidoRepository   $pedidoRepository,
         public readonly StockService       $stockService,
-        public readonly PedidoService      $pedidoService // <- si
+        public readonly PedidoService      $pedidoService
     )
     {
     }
@@ -43,8 +41,10 @@ class LineaController extends Controller
             $linea = $this->repository->findOrFail($id);
 
             return $this->successResponse(new LineaResource($linea));
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -74,6 +74,8 @@ class LineaController extends Controller
             return $this->successResponse(new LineaResource($linea), 'Línea creada correctamente.', 201);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
@@ -107,8 +109,12 @@ class LineaController extends Controller
             return $this->successResponse(new LineaResource($linea), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (PedidoAlreadyServedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getTraceAsString(), 400);
         }
     }
 
@@ -116,14 +122,16 @@ class LineaController extends Controller
     {
         try {
             $linea = $this->repository->findOrFail($id);
-        } catch (Exception $e) {
+
+            $deletion = $this->repository->delete($linea);
+            $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
+
+            return $this->successResponse('', $message);
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
-
-        $deletion = $this->repository->delete($linea);
-        $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
-
-        return $this->successResponse('', $message);
     }
 
     function getLineasByPedido($id): JsonResponse
@@ -131,10 +139,12 @@ class LineaController extends Controller
         try {
             $this->pedidoRepository->findOrFail($id);
             $lineas = $this->repository->findAllByIdPedido($id);
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage());
-        }
 
-        return $this->successResponse(LineaResource::collection($lineas));
+            return $this->successResponse(LineaResource::collection($lineas));
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
     }
 }

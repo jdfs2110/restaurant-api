@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StockResource;
 use App\Models\Producto;
@@ -36,8 +37,10 @@ class StockController extends Controller
             $stock = $this->repository->findOrFail($id);
 
             return $this->successResponse(new StockResource($stock));
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -46,9 +49,12 @@ class StockController extends Controller
     {
         try {
             $this->productoRepository->findOrFail($id);
+
             $stock = $this->repository->findByIdProductoOrFail($id);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
 
         return $this->successResponse(new StockResource($stock));
@@ -72,6 +78,8 @@ class StockController extends Controller
             return $this->successResponse(new StockResource($stock), 'Stock creado correctamente.', 201);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
@@ -97,8 +105,10 @@ class StockController extends Controller
             return $this->successResponse(new StockResource($stock), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
     }
 
@@ -106,13 +116,15 @@ class StockController extends Controller
     {
         try {
             $stock = $this->repository->findOrFail($id);
-        } catch (Exception $e) {
+
+            $deletion = $this->repository->delete($stock);
+            $message = $deletion == 1 ? 'El stock ha sido eliminado correctamente' : 'Error al eliminar el stock';
+
+            return $this->successResponse('', $message);
+        } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
-
-        $deletion = $this->repository->delete($stock);
-        $message = $deletion == 1 ? 'El stock ha sido eliminado correctamente' : 'Error al eliminar el stock';
-
-        return $this->successResponse('', $message);
     }
 }

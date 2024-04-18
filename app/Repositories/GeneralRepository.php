@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\ModelNotFoundException;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,14 +32,14 @@ abstract class GeneralRepository
     }
 
     /**
-     * @throws Exception when model is not found
+     * @throws ModelNotFoundException when model is not found
      */
     public function findOrFail($id): Model
     {
         $entity =  $this->builder->find($id);
 
         if (is_null($entity)) {
-            throw new Exception($this->entityName . ' not found.');
+            throw new ModelNotFoundException($this->entityName . ' not found.');
         }
 
         return $entity;
