@@ -63,7 +63,7 @@ class StockService
     }
 
     /**
-     * @throws Exception when Producto is not found
+     * @throws Exception when the Stock is not found (shouldn't happen)
      */
     public function updateStock($productId, int $firstQuantity, int $secondQuantity): void
     {
