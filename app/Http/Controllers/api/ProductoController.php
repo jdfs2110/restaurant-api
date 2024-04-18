@@ -13,6 +13,7 @@ use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ProductoController extends Controller
 {
@@ -43,20 +44,17 @@ class ProductoController extends Controller
         }
     }
 
-    /**
-     * @throws Exception
-     */
     function newProducto(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'nombre' => 'required|string',
-            'precio' => 'required|numeric',
-            'id_categoria' => 'required|int',
-            'cantidad' => 'required|int|min:0',
-            'foto' => 'required|mimes:jpg,png,webp|max:2048'
-        ]);
-
         try {
+            $data = $request->validate([
+                'nombre' => 'required|string',
+                'precio' => 'required|numeric',
+                'id_categoria' => 'required|int',
+                'cantidad' => 'required|int|min:0',
+                'foto' => 'required|mimes:jpg,png,webp|max:2048'
+            ]);
+
             $this->categoriaRepository->findOrFail($data['id_categoria']);
 
             $file = $request->file('foto');
@@ -74,6 +72,8 @@ class ProductoController extends Controller
             $this->stockService->addStock($producto->getId(), $data['cantidad']);
 
             return $this->successResponse(new ProductoResource($producto), 'Producto creado correctamente.', 201);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
@@ -97,7 +97,6 @@ class ProductoController extends Controller
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
     }
 
     function getProductosByCategoria($id): JsonResponse
@@ -105,11 +104,11 @@ class ProductoController extends Controller
         try {
             $this->categoriaRepository->findOrFail($id);
             $productos = $this->repository->findAllByIdCategoria($id);
+
+            return $this->successResponse(ProductoResource::collection($productos));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        return $this->successResponse(ProductoResource::collection($productos));
     }
 
     /**
@@ -120,16 +119,16 @@ class ProductoController extends Controller
      */
     function updateProducto(Request $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'nombre' => 'required|string',
-            'precio' => 'required|numeric',
-            'activo' => 'required|boolean',
-            'id_categoria' => 'required|int',
-            'cantidad' => 'required|int|min:0',
-            'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
-        ]);
-
         try {
+            $data = $request->validate([
+                'nombre' => 'required|string',
+                'precio' => 'required|numeric',
+                'activo' => 'required|boolean',
+                'id_categoria' => 'required|int',
+                'cantidad' => 'required|int|min:0',
+                'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
+            ]);
+
             $producto = $this->repository->findOrFail($id);
 
             $this->categoriaRepository->findOrFail($data['id_categoria']);
@@ -153,6 +152,8 @@ class ProductoController extends Controller
             $this->stockService->setStock($id, $data['cantidad']);
 
             return $this->successResponse(new ProductoResource($producto), $message);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }

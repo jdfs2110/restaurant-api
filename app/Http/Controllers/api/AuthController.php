@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -22,6 +23,7 @@ class AuthController extends Controller
 
     public function register(Request $request): JsonResponse
     {
+
         try {
             $userData = $request->validate([
                 'name' => 'required|string',
@@ -48,6 +50,8 @@ class AuthController extends Controller
 
             return response()->json($response, 201);
 
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
@@ -55,28 +59,34 @@ class AuthController extends Controller
 
     public function login(Request $request): JsonResponse
     {
-        $userData = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string'
-        ]);
+        try {
+            $userData = $request->validate([
+                'email' => 'required|string',
+                'password' => 'required|string'
+            ]);
 
-        $user = $this->repository->findByEmail($userData['email']);
+            $user = $this->repository->findByEmail($userData['email']);
 
-        if (is_null($user) || !Hash::check($userData['password'], $user->password)) {
-            $loginError = [
-                'error' => 'Usuario o contraseña incorrectos.'
+            if (is_null($user) || !Hash::check($userData['password'], $user->getPassword())) {
+                $loginError = [
+                    'error' => 'Usuario o contraseña incorrectos.'
+                ];
+                return response()->json($loginError, 400);
+            }
+
+            $token = $user->createToken('apiToken')->plainTextToken;
+
+            $response = [
+                'data' => new UsuarioResource($user),
+                'token' => $token
             ];
-            return response()->json($loginError, 400);
+
+            return response()->json($response);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
-
-        $token = $user->createToken('apiToken')->plainTextToken;
-
-        $response = [
-            'data' => new UsuarioResource($user),
-            'token' => $token
-        ];
-
-        return response()->json($response);
     }
 
     public function logout(Request $request): JsonResponse

@@ -10,6 +10,7 @@ use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class RoleController extends Controller
 {
@@ -40,15 +41,21 @@ class RoleController extends Controller
 
     function newRole(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'nombre' => 'required|string'
-        ]);
+        try {
+            $data = $request->validate([
+                'nombre' => 'required|string'
+            ]);
 
-        $role = $this->repository->create([
-            'nombre' => $data['nombre']
-        ]);
+            $role = $this->repository->create([
+                'nombre' => $data['nombre']
+            ]);
 
-        return $this->successResponse(new RoleResource($role), 'Rol creado correctamente.', 201);
+            return $this->successResponse(new RoleResource($role), 'Rol creado correctamente.', 201);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
     }
 
     public function deleteRole($id): JsonResponse
@@ -73,21 +80,23 @@ class RoleController extends Controller
 
     public function updateRole(Request $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'nombre' => 'required|string'
-        ]);
-
         try {
+            $data = $request->validate([
+                'nombre' => 'required|string'
+            ]);
+
             $role = $this->repository->findOrFail($id);
+
+            $role->setNombre($data['nombre']);
+
+            $update = $role->save();
+            $message = $update == 1 ? 'El rol ha sido modificado correctamente.' : 'Error al modificar el rol.';
+
+            return $this->successResponse(new RoleResource($role), $message);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $role->setNombre($data['nombre']);
-
-        $update = $role->save();
-        $message = $update == 1 ? 'El rol ha sido modificado correctamente.' : 'Error al modificar el rol.';
-
-        return $this->successResponse(new RoleResource($role), $message);
     }
 }

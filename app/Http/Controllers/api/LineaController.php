@@ -16,6 +16,7 @@ use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LineaController extends Controller
 {
@@ -49,14 +50,13 @@ class LineaController extends Controller
 
     function newLinea(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'precio' => 'required|numeric',
-            'cantidad' => 'required|int|min:1',
-            'id_producto' => 'required|int',
-            'id_pedido' => 'required|int'
-        ]);
-
         try {
+            $data = $request->validate([
+                'precio' => 'required|numeric',
+                'cantidad' => 'required|int|min:1',
+                'id_producto' => 'required|int',
+                'id_pedido' => 'required|int'
+            ]);
 
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
@@ -70,23 +70,24 @@ class LineaController extends Controller
             ]);
 
             $this->pedidoService->recalculatePrice($data['id_pedido']);
+
+            return $this->successResponse(new LineaResource($linea), 'Línea creada correctamente.', 201);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
-
-        return $this->successResponse(new LineaResource($linea), 'Línea creada correctamente.', 201);
     }
 
     function updateLinea(Request $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'precio' => 'required|numeric',
-            'cantidad' => 'required|int|min:1',
-            'id_producto' => 'required|int',
-            'id_pedido' => 'required|int'
-        ]);
-
         try {
+            $data = $request->validate([
+                'precio' => 'required|numeric',
+                'cantidad' => 'required|int|min:1',
+                'id_producto' => 'required|int',
+                'id_pedido' => 'required|int'
+            ]);
 
             $linea = $this->repository->findOrFail($id);
             $this->productoRepository->findOrFail($data['id_producto']);
@@ -104,6 +105,8 @@ class LineaController extends Controller
             $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
             return $this->successResponse(new LineaResource($linea), $message);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

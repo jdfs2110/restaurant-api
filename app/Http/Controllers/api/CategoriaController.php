@@ -9,6 +9,7 @@ use App\Repositories\ProductoRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use function PHPUnit\Framework\isEmpty;
 
 class CategoriaController extends Controller
@@ -40,12 +41,13 @@ class CategoriaController extends Controller
 
     function newCategoria(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'nombre' => 'required|string',
-            'foto' => 'required|mimes:jpg,png,webp|max:2048'
-        ]);
 
         try {
+            $data = $request->validate([
+                'nombre' => 'required|string',
+                'foto' => 'required|mimes:jpg,png,webp|max:2048'
+            ]);
+
             $file = $request->file('foto');
             $fileName = time() . '-' . $file->hashName();
             $path = $file->storePubliclyAs('public/categorias', $fileName);
@@ -56,7 +58,10 @@ class CategoriaController extends Controller
             ]);
 
             return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.', 201);
-        } catch (Exception $e) {
+
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
+        }catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
     }
@@ -90,12 +95,13 @@ class CategoriaController extends Controller
      */
     function updateCategoria(Request $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'nombre' => 'required|string',
-            'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
-        ]);
 
         try {
+            $data = $request->validate([
+                'nombre' => 'required|string',
+                'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
+            ]);
+
             $categoria = $this->repository->findOrFail($id);
 
             $null = is_null($data['foto']);
@@ -112,6 +118,8 @@ class CategoriaController extends Controller
             $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
 
             return $this->successResponse(new CategoriaResource($categoria), $message);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }

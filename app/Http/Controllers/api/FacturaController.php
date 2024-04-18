@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Factura;
+use Illuminate\Validation\ValidationException;
 
 class FacturaController extends Controller
 {
@@ -42,43 +43,47 @@ class FacturaController extends Controller
 
     function newFactura(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'id_pedido' => 'required|int'
-        ]);
-
         try {
+            $data = $request->validate([
+                'id_pedido' => 'required|int'
+            ]);
+
             $this->pedidoRepository->findOrFail($data['id_pedido']);
+
+            $factura = $this->repository->create([
+                'fecha' => now(),
+                'id_pedido' => $data['id_pedido']
+            ]);
+
+            return $this->successResponse(new FacturaResource($factura), 'Factura creada correctamente', 201);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $factura = $this->repository->create([
-            'fecha' => now(),
-            'id_pedido' => $data['id_pedido']
-        ]);
-
-        return $this->successResponse(new FacturaResource($factura), 'Factura creada correctamente', 201);
     }
 
     function updateFactura(Request $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'id_pedido' => 'required|int'
-        ]);
-
         try {
+            $data = $request->validate([
+                'id_pedido' => 'required|int'
+            ]);
+
             $factura = $this->repository->findOrFail($id);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
+
+            $update = $factura->update([
+                'id_pedido' => $data['id_pedido']
+            ]);
+            $message = $update == 1 ? 'La factura ha sido modificada correctamente.' : 'Error al modificar la factura.';
+
+            return $this->successResponse(new FacturaResource($factura), $message);
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }
-
-        $update = $factura->update([
-            'id_pedido' => $data['id_pedido']
-        ]);
-        $message = $update == 1 ? 'La factura ha sido modificada correctamente.' : 'Error al modificar la factura.';
-
-        return $this->successResponse(new FacturaResource($factura), $message);
     }
 
     function deleteFactura($id): JsonResponse
