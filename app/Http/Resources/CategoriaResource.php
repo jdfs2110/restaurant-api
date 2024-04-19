@@ -9,7 +9,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class CategoriaResource extends JsonResource
 {
     use GeneralClass;
-    private const FOLDER = 'categorias';
     /**
      * Transform the resource into an array.
      *
@@ -20,7 +19,7 @@ class CategoriaResource extends JsonResource
         return [
             'id' => $this->getId(),
             'nombre' => $this->getNombre(),
-            'foto' => $this->toBase64($this->getFoto(), self::FOLDER),
+            'foto' => $this->toCloudflareUrl($this->getFoto()),
             'created_at' => $this->getCreatedAt(),
         ];
     }

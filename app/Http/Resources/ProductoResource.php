@@ -9,7 +9,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ProductoResource extends JsonResource
 {
     use GeneralClass;
-    private const FOLDER = 'productos';
     /**
      * Transform the resource into an array.
      *
@@ -22,7 +21,7 @@ class ProductoResource extends JsonResource
             'nombre' => $this->getNombre(),
             'precio' => $this->getPrecio(),
             'activo' => $this->getActivo(),
-            'foto' => $this->toBase64($this->getFoto(), self::FOLDER),
+            'foto' => $this->toCloudflareUrl($this->getFoto()),
             'id_categoria' => $this->getIdCategoria(),
             'categoria' => $this->categoria->getNombre(),
         ];
