@@ -24,37 +24,16 @@ trait GeneralClass
         ], $status);
     }
 
-    private const UNDEFINED_PHOTO_URL = '/public/photo-undefined.png';
-
-    function toBase64(string $name, string $folder): string
+    function deletePhotoIfExists(string $path): void
     {
-        $path = "public/$folder/$name";
-
-        $foto = Storage::exists($path) ?
-            Storage::get($path) :
-            Storage::get(self::UNDEFINED_PHOTO_URL);
-
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-
-        return 'data:image/' . $type . ';base64,' . base64_encode($foto);
-    }
-
-    function deletePhotoIfExists(string $name, string $folder): void
-    {
-        $path = "public/$folder/$name";
-
-        if (Storage::exists($path)) {
-            Storage::delete($path);
+        if (Storage::disk('r2')->exists($path)) {
+            Storage::disk('r2')->delete($path);
         }
     }
 
-    function updatePhoto(UploadedFile $file, string $previousPhoto, string $folder, string $path): string
+    private const PUBLIC_CLOUDFLARE_R2_STORAGE_URL = 'https://pub-bc3ca3a8662944629a67af74aa0a9f90.r2.dev/';
+    function toCloudflareUrl(string $path): string
     {
-        $this->deletePhotoIfExists($previousPhoto, $folder);
-
-        $fileName = time() . '-' . $file->hashName();
-        $path = $file->storePubliclyAs($path, $fileName);
-
-        return $fileName;
+        return self::PUBLIC_CLOUDFLARE_R2_STORAGE_URL . $path;
     }
 }
