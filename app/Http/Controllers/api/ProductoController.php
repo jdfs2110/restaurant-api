@@ -60,16 +60,14 @@ class ProductoController extends Controller
 
             $this->categoriaRepository->findOrFail($data['id_categoria']);
 
-            $file = $request->file('foto');
-            $fileName = time() . '-' . $file->hashName();
-            $path = $file->storePubliclyAs('public/productos', $fileName);
+            $path = $request->file('foto')->store('productos', 'r2');
 
             $producto = $this->repository->create([
                 'nombre' => $data['nombre'],
                 'precio' => $data['precio'],
                 'activo' => true,
                 'id_categoria' => $data['id_categoria'],
-                'foto' => $fileName
+                'foto' => $path
             ]);
 
             $this->stockService->addStock($producto->getId(), $data['cantidad']);
@@ -94,7 +92,8 @@ class ProductoController extends Controller
                 $stock->delete();
             }
 
-            $this->deletePhotoIfExists($producto->getFoto(), 'productos');
+            $this->deletePhotoIfExists($producto->getFoto());
+
             $deletion = $this->repository->delete($producto);
             $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
 
@@ -145,9 +144,11 @@ class ProductoController extends Controller
             $null = is_null($data['foto']);
 
             if (!$null) {
-                $fileName = $this->updatePhoto($request->file('foto'), $producto->getFoto(), 'productos', 'public/productos');
+                $path = $request->file('foto')->store('productos', 'r2');
 
-                $producto->setFoto($fileName);
+                $this->deletePhotoIfExists($producto->getFoto());
+
+                $producto->setFoto($path);
             }
 
             $producto->setNombre($data['nombre']);

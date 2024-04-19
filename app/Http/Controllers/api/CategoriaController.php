@@ -50,13 +50,11 @@ class CategoriaController extends Controller
                 'foto' => 'required|mimes:jpg,png,webp|max:2048'
             ]);
 
-            $file = $request->file('foto');
-            $fileName = time() . '-' . $file->hashName();
-            $path = $file->storePubliclyAs('public/categorias', $fileName);
+            $path = $request->file('foto')->store('categorias', 'r2');
 
             $categoria = $this->repository->create([
                 'nombre' => $data['nombre'],
-                'foto' => $fileName
+                'foto' => $path
             ]);
 
             return $this->successResponse(new CategoriaResource($categoria), 'Categoría creada correctamente.', 201);
@@ -78,7 +76,7 @@ class CategoriaController extends Controller
                 return $this->errorResponse('La categoría tiene productos.', 400);
             }
 
-            $this->deletePhotoIfExists($categoria->getFoto(), 'categorias');
+            $this->deletePhotoIfExists($categoria->getFoto());
 
             $deletion = $this->repository->delete($categoria);
             $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
@@ -111,9 +109,11 @@ class CategoriaController extends Controller
             $null = is_null($data['foto']);
 
             if (!$null) {
-                $fileName = $this->updatePhoto($request->file('foto'), $categoria->getFoto(), 'categorias', 'public/categorias');
+                $path = $request->file('foto')->store('categorias', 'r2');
 
-                $categoria->setFoto($fileName);
+                $this->deletePhotoIfExists($categoria->getFoto());
+
+                $categoria->setFoto($path);
             }
 
             $categoria->setNombre($data['nombre']);
