@@ -20,7 +20,6 @@ class CategoriaResource extends JsonResource
             'id' => $this->getId(),
             'nombre' => $this->getNombre(),
             'foto' => $this->toCloudflareUrl($this->getFoto()),
-            'created_at' => $this->getCreatedAt(),
         ];
     }
 }
