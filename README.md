@@ -296,10 +296,6 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-```bash
-composer install
-```
-
 ### Levantar la API
 
 ```bash
