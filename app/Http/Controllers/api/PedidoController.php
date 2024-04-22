@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Events\PedidoCreatedEvent;
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
@@ -67,7 +68,9 @@ class PedidoController extends Controller
                 'id_usuario' => $data['id_usuario']
             ]);
 
+            event(new PedidoCreatedEvent($pedido));
             return $this->successResponse(new PedidoResource($pedido), 'Pedido creado correctamente.', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
         } catch (ModelNotFoundException $e) {
