@@ -46,7 +46,7 @@ class AuthController extends Controller
 
             $token = $user->createToken('apiToken')->plainTextToken;
 
-            $this->userService->sendSuccessRegisterEmail($userData['email']);
+            $this->userService->sendSuccessRegisterEmail($user);
 
             $response = [
                 'data' => new UsuarioResource($user),
