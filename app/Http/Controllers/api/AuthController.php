@@ -6,17 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UsuarioResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Resend\Laravel\Facades\Resend;
 
 class AuthController extends Controller
 {
     public function __construct(
-        public readonly UserRepository $repository
+        public readonly UserRepository $repository,
+        public readonly UserService $userService
     )
     {
     }
@@ -42,6 +45,8 @@ class AuthController extends Controller
             ]);
 
             $token = $user->createToken('apiToken')->plainTextToken;
+
+            $this->userService->sendSuccessRegisterEmail($userData['email']);
 
             $response = [
                 'data' => new UsuarioResource($user),
