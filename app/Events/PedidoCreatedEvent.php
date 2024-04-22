@@ -28,7 +28,8 @@ class PedidoCreatedEvent implements ShouldBroadcastNow
         return ['pedido-created'];
     }
 
-    public function broadcastAs(): string{
+    public function broadcastAs(): string
+    {
         return 'pedido-created';
     }
 }
