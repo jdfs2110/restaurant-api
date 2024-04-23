@@ -45,6 +45,11 @@ class Pedido extends Model
         return self::ESTADOS[$this->estado];
     }
 
+    public function getEstadoValue(): int
+    {
+        return $this->estado;
+    }
+
     public function isServido(): bool
     {
         return $this->estado == 2;

@@ -18,11 +18,11 @@ class PedidoResource extends JsonResource
             'id' => $this->getId(),
             'fecha' => $this->getFecha(),
             'estado' => $this->getEstado(),
+            'estado_numero' => $this->getEstadoValue(),
             'precio' => $this->getPrecio(),
             'numero_comensales' => $this->getNumeroComensales(),
             'id_mesa' => $this->getIdMesa(),
             'id_usuario' => $this->getIdUsuario(),
-            'created_at' => $this->getCreatedAt(),
         ];
     }
 }
