@@ -72,12 +72,7 @@ class AuthController extends Controller
 
             $user = $this->repository->findByEmail($userData['email']);
 
-            if (is_null($user) || !Hash::check($userData['password'], $user->getPassword())) {
-                $loginError = [
-                    'error' => 'Usuario o contraseña incorrectos.'
-                ];
-                return response()->json($loginError, 400);
-            }
+            $this->userService->checkEmailAndPassword($user, $userData['password']);
 
             $token = $user->createToken('apiToken')->plainTextToken;
 

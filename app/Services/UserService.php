@@ -6,6 +6,7 @@ use App\Exceptions\ModelNotFoundException;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 use Resend\Laravel\Facades\Resend;
 
 class UserService
@@ -47,6 +48,16 @@ class UserService
 
         if ($user->getIdRol() !== 1) {
             throw new Exception('El usuario no es mesero.');
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function checkEmailAndPassword($user, $passwordToCheck): void
+    {
+        if (is_null($user) || !Hash::check($passwordToCheck, $user->getPassword())) {
+            throw new Exception('Usuario o contraseña incorrectos.');
         }
     }
 }
