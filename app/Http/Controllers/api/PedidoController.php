@@ -10,6 +10,7 @@ use App\Repositories\LineaRepository;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class PedidoController extends Controller
         public readonly PedidoRepository $repository,
         public readonly MesaRepository   $mesaRepository,
         public readonly UserRepository   $userRepository,
+        public readonly UserService      $userService,
         public readonly LineaRepository  $lineaRepository
     )
     {
@@ -93,7 +95,7 @@ class PedidoController extends Controller
 
             $pedido = $this->repository->findOrFail($id);
             $this->mesaRepository->findOrFail($data['id_mesa']);
-            $this->userRepository->findOrFail($data['id_usuario']);
+            $this->userService->checkIfMesero($data['id_usuario']);
 
             $update = $pedido->update([
                 'estado' => $data['estado'],

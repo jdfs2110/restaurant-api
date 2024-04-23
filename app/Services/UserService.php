@@ -2,11 +2,20 @@
 
 namespace App\Services;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Models\User;
+use App\Repositories\UserRepository;
+use Exception;
 use Resend\Laravel\Facades\Resend;
 
 class UserService
 {
+    public function __construct(
+        public UserRepository $repository
+    )
+    {
+    }
+
     public function sendSuccessRegisterEmail(User $user): void
     {
         Resend::emails()->send([
@@ -26,5 +35,18 @@ class UserService
             </body>
             '
         ]);
+    }
+
+    /**
+     * @throws ModelNotFoundException
+     * @throws Exception
+     */
+    public function checkIfMesero($id): void
+    {
+        $user = $this->repository->findOrFail($id);
+
+        if ($user->getIdRol() !== 1) {
+            throw new Exception('El usuario no es mesero.');
+        }
     }
 }
