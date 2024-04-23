@@ -7,9 +7,6 @@ use Resend\Laravel\Facades\Resend;
 
 class UserService
 {
-    /**
-     * @throws \ReflectionException
-     */
     public function sendSuccessRegisterEmail(User $user): void
     {
         Resend::emails()->send([
