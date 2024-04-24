@@ -3,6 +3,8 @@
 * cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (Done)
 * secure routes before production
 * return no content
+* mesacontroller
+* pagination
 
 ##### Side note
 
