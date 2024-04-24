@@ -37,11 +37,10 @@ class StockService
     {
         $stock = $this->repository->findByIdProductoOrFail($productId);
 
+        $stock->cantidad -= $quantity;
         if ($stock->cantidad <= 0) {
             throw new Exception('La cantidad no puede ser negativa');
         }
-
-        $stock->cantidad -= $quantity;
         $stock->save();
     }
 
