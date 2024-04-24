@@ -66,32 +66,36 @@ Route::put('/categorias/{id}', [CategoriaController::class, 'updateCategoria']);
 /**
  *  Productos endpoints
  *  1. Todos los productos
- *  2. Buscar un producto por ID
- *  3. Crear un producto
- *  4. Eliminar un producto
- *  5. Editar un producto
- *  6. Buscar el stock de un producto (ID producto)
+ *  2. Productos paginados
+ *  3. Cantidad de páginas que tienen los productos
+ *  4. Buscar un producto por ID
+ *  5. Crear un producto
+ *  6. Eliminar un producto
+ *  7. Editar un producto
+ *  8. Buscar el stock de un producto (ID producto)
+ *  9. Aumentar el stock de un producto
+ *  10. Reducir el stock de un producto
  */
 Route::get('/productos', [ProductoController::class, 'index']);
+Route::get('/v2/productos', [ProductoController::class, 'indexPaginated']);
+Route::get('/v2/productos/pages', [ProductoController::class, 'getAmountOfPages']);
 Route::get('/productos/{id}', [ProductoController::class, 'getProducto']);
 Route::post('/productos/new', [ProductoController::class, 'newProducto']);
 Route::delete('/productos/{id}', [ProductoController::class, 'deleteProducto']);
 Route::put('/productos/{id}', [ProductoController::class, 'updateProducto']);
 Route::get('/productos/{id}/stock', [ProductoController::class, 'getProductStock']);
+Route::post('/productos/{id}/stock/add', [ProductoController::class, 'addStock']);
+Route::post('/productos/{id}/stock/reduce', [ProductoController::class, 'reduceStock']);
 
 /**
  *  Stock endpoints
  *  1. El stock de todos los productos
- *  2. Buscar un stock por ID (probablemente no se va a utilizar)
- *  3. Dar de alta un producto en stock
- *  4. Editar un stock
- *  5. Eliminar un stock
+ *  2. Dar de alta un producto en stock (Dudo que se vaya a utilizar)
+ *  3. Editar un stock
  */
 Route::get('/stock', [StockController::class, 'index']);
-Route::get('/stock/{id}', [StockController::class, 'getStock']);
 Route::post('/stock/new', [StockController::class, 'createStock']);
 Route::put('/stock/{id}', [StockController::class, 'updateStock']);
-Route::delete('/stock/{id}', [StockController::class, 'deleteStock']);
 
 /**
  *  Mesas endpoints
@@ -100,12 +104,16 @@ Route::delete('/stock/{id}', [StockController::class, 'deleteStock']);
  *  3. Crear una mesa
  *  4. Eliminar una mesa
  *  5. Editar una mesa
+ *  6. Listar todos los pedidos de una mesa
+ *  7. Listar el pedido actual de una mesa
  */
 Route::get('/mesas', [MesaController::class, 'index']);
 Route::get('/mesas/{id}', [MesaController::class, 'getMesa']);
 Route::post('/mesas/new', [MesaController::class, 'newMesa']);
 Route::delete('/mesas/{id}', [MesaController::class, 'deleteMesa']);
 Route::put('/mesas/{id}', [MesaController::class, 'updateMesa']);
+Route::get('mesas/{id}/pedidos', [MesaController::class, 'getPedidosByMesa']);
+Route::get('/mesas/{id}/pedido', [MesaController::class, 'getPedidoActual']);
 
 /**
  *  Pedidos endpoints
