@@ -37,6 +37,14 @@ class CategoriaController extends Controller
         }
     }
 
+    // TODO
+    private const PAGINATION_LIMIT = 10;
+
+//    function indexPaginated(Request $request): JsonResponse
+//    {
+//
+//    }
+
     function getCategoria(string $id): JsonResponse
     {
         try {

@@ -40,6 +40,22 @@ class ProductoController extends Controller
             return $this->errorResponse($e->getMessage(), 204);
         }
     }
+    private const PAGINATION_LIMIT = 10;
+
+    function indexPaginated(Request $request): JsonResponse
+    {
+        $pagina = $request->query('page', 1);
+
+        $productos = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
+
+        return $this->successResponse(ProductoResource::collection($productos));
+    }
+
+    function getAmountOfPages(): JsonResponse
+    {
+        $productos = $this->repository->all()->count();
+        return $this->successResponse(ceil($productos / self::PAGINATION_LIMIT));
+    }
 
     function getProducto($id): JsonResponse
     {

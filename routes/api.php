@@ -50,13 +50,17 @@ Route::put('/usuarios/{id}', [UserController::class, 'updateUser']);
 /**
  *  Categorias endpoints
  *  1. Todas las categorias
- *  2. Buscar una categoría por ID
- *  3. Crear una categoría
- *  4. Eliminar una categoría
- *  5. Todos los productos de una categoría (ID)
- *  6. Editar una categoría (ID)
+ *  2. Categorias paginadas
+ *  3. Cantidad de páginas que tienen las categorias
+ *  4. Buscar una categoría por ID
+ *  5. Crear una categoría
+ *  6. Eliminar una categoría
+ *  7. Todos los productos de una categoría (ID)
+ *  8. Editar una categoría (ID)
  */
 Route::get('/categorias', [CategoriaController::class, 'index']);
+Route::get('/v2/categorias', [CategoriaController::class, 'indexPaginated']);
+Route::get('/v2/categorias/pages', [CategoriaController::class, 'getAmountOfPages']);
 Route::get('/categorias/{id}', [CategoriaController::class, 'getCategoria']);
 Route::post('/categorias/new', [CategoriaController::class, 'newCategoria']);
 Route::delete('/categorias/{id}', [CategoriaController::class, 'deleteCategoria']);
