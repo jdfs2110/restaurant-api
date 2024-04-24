@@ -5,8 +5,6 @@ namespace App\Http\Controllers\api;
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StockResource;
-use App\Models\Producto;
-use App\Models\Stock;
 use App\Repositories\ProductoRepository;
 use App\Repositories\StockRepository;
 use Exception;
@@ -28,20 +26,6 @@ class StockController extends Controller
         $stock = $this->repository->all();
 
         return $this->successResponse(StockResource::collection($stock));
-    }
-
-    // findStockById
-    function getStock($id): JsonResponse
-    {
-        try {
-            $stock = $this->repository->findOrFail($id);
-
-            return $this->successResponse(new StockResource($stock));
-        } catch (ModelNotFoundException $e) {
-            return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
-        }
     }
 
     function createStock(Request $request): JsonResponse
@@ -89,22 +73,6 @@ class StockController extends Controller
             return $this->successResponse(new StockResource($stock), $message);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (ModelNotFoundException $e) {
-            return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
-        }
-    }
-
-    function deleteStock($id): JsonResponse
-    {
-        try {
-            $stock = $this->repository->findOrFail($id);
-
-            $deletion = $this->repository->delete($stock);
-            $message = $deletion == 1 ? 'El stock ha sido eliminado correctamente' : 'Error al eliminar el stock';
-
-            return $this->successResponse('', $message);
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
         } catch (Exception $e) {
