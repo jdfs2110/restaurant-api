@@ -27,7 +27,7 @@ class Stock extends Model
         return $this->id;
     }
 
-    public function getIdProducto(): string
+    public function getIdProducto(): int
     {
         return $this->id_producto;
     }
