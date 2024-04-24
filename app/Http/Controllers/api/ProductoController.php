@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
+use App\Http\Resources\StockResource;
 use App\Models\Categoria;
 use App\Models\Producto;
 use App\Repositories\CategoriaRepository;
@@ -117,6 +118,22 @@ class ProductoController extends Controller
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
+    }
+
+    // find stock of a product
+    function getProductStock($id): JsonResponse
+    {
+        try {
+            $this->repository->findOrFail($id);
+
+            $stock = $this->stockRepository->findByIdProductoOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+
+        return $this->successResponse(new StockResource($stock));
     }
 
     /**

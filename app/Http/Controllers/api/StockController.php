@@ -44,22 +44,6 @@ class StockController extends Controller
         }
     }
 
-    // find stock of a product
-    function getProductStock($id): JsonResponse
-    {
-        try {
-            $this->productoRepository->findOrFail($id);
-
-            $stock = $this->repository->findByIdProductoOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
-        }
-
-        return $this->successResponse(new StockResource($stock));
-    }
-
     function createStock(Request $request): JsonResponse
     {
         try {
