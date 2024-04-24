@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
 use App\Repositories\LineaRepository;
 use App\Repositories\PedidoRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 
 class PedidoService
 {
@@ -39,5 +41,19 @@ class PedidoService
         $pedido->precio = $sum;
 
         $pedido->save();
+    }
+
+    /**
+     * @throws NoContentException
+     */
+    public function all(): Collection
+    {
+        $pedidos = $this->repository->all();
+
+        if ($pedidos->isEmpty()) {
+            throw new NoContentException('No hay pedidos.');
+        }
+
+        return $pedidos;
     }
 }

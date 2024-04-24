@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\NoContentException;
 use App\Repositories\StockRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 
 class StockService
 {
@@ -73,5 +75,19 @@ class StockService
         }
 
         $this->reduceStock($productId, ($firstQuantity - $secondQuantity));
+    }
+
+    /**
+     * @throws NoContentException
+     */
+    public function all(): Collection
+    {
+        $stockList = $this->repository->all();
+
+        if ($stockList->isEmpty()) {
+            throw new NoContentException('No hay stock disponible');
+        }
+
+        return $stockList;
     }
 }

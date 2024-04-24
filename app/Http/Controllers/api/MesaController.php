@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MesaResource;
-use App\Models\Mesa;
 use App\Repositories\MesaRepository;
+use App\Services\MesaService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,16 +16,22 @@ use Illuminate\Validation\ValidationException;
 class MesaController extends Controller
 {
     public function __construct(
-        public readonly MesaRepository $repository
+        public readonly MesaRepository $repository,
+        public readonly MesaService    $service
     )
     {
     }
 
     function index(): JsonResponse
     {
-        $mesas = $this->repository->all();
+        try {
+            $mesas = $this->service->all();
 
-        return $this->successResponse(MesaResource::collection($mesas));
+            return $this->successResponse(MesaResource::collection($mesas));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function getMesa($id): JsonResponse
@@ -102,4 +109,15 @@ class MesaController extends Controller
             return $this->errorResponse($e->getMessage(), 400);
         }
     }
+
+    // TODO
+    /*function getPedidosByMesa($id): JsonResponse
+    {
+
+    }
+
+    function getPedidoActual($id): JsonResponse
+    {
+
+    }*/
 }

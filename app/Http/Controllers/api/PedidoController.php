@@ -4,12 +4,14 @@ namespace App\Http\Controllers\api;
 
 use App\Events\PedidoCreatedEvent;
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Repositories\LineaRepository;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\UserRepository;
+use App\Services\PedidoService;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +22,7 @@ class PedidoController extends Controller
 {
     public function __construct(
         public readonly PedidoRepository $repository,
+        public readonly PedidoService    $service,
         public readonly MesaRepository   $mesaRepository,
         public readonly UserRepository   $userRepository,
         public readonly UserService      $userService,
@@ -30,9 +33,14 @@ class PedidoController extends Controller
 
     function index(): JsonResponse
     {
-        $pedidos = $this->repository->all();
+        try {
+            $pedidos = $this->service->all();
 
-        return $this->successResponse(PedidoResource::collection($pedidos));
+            return $this->successResponse(PedidoResource::collection($pedidos));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function getPedido($id): JsonResponse

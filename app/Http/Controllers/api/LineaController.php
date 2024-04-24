@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LineaResource;
 use App\Repositories\LineaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\ProductoRepository;
+use App\Services\LineaService;
 use App\Services\PedidoService;
 use App\Services\StockService;
 use Exception;
@@ -20,6 +22,7 @@ class LineaController extends Controller
 {
     public function __construct(
         public readonly LineaRepository    $repository,
+        public readonly LineaService       $service,
         public readonly ProductoRepository $productoRepository,
         public readonly PedidoRepository   $pedidoRepository,
         public readonly StockService       $stockService,
@@ -30,9 +33,14 @@ class LineaController extends Controller
 
     function index(): JsonResponse
     {
-        $lineas = $this->repository->all();
+        try {
+            $lineas = $this->service->all();
 
-        return $this->successResponse(LineaResource::collection($lineas));
+            return $this->successResponse(LineaResource::collection($lineas));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function getLinea($id): JsonResponse

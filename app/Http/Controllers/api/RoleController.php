@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use App\Services\RoleService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,6 +19,7 @@ class RoleController extends Controller
 {
     public function __construct(
         public readonly RoleRepository $repository,
+        public readonly RoleService    $service,
         public readonly UserRepository $userRepository
     )
     {
@@ -24,9 +27,14 @@ class RoleController extends Controller
 
     function index(): JsonResponse
     {
-        $roles = $this->repository->all();
+        try {
+            $roles = $this->service->all();
 
-        return $this->successResponse(RoleResource::collection($roles));
+            return $this->successResponse(RoleResource::collection($roles));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function getRole($id): JsonResponse

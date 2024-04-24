@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StockResource;
 use App\Repositories\ProductoRepository;
 use App\Repositories\StockRepository;
+use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +18,7 @@ class StockController extends Controller
 {
     public function __construct(
         public readonly StockRepository    $repository,
+        public readonly StockService       $service,
         public readonly ProductoRepository $productoRepository
     )
     {
@@ -23,9 +26,14 @@ class StockController extends Controller
 
     function index(): JsonResponse
     {
-        $stock = $this->repository->all();
+        try {
+            $stock = $this->service->all();
 
-        return $this->successResponse(StockResource::collection($stock));
+            return $this->successResponse(StockResource::collection($stock));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function createStock(Request $request): JsonResponse

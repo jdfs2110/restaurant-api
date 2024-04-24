@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 use Resend\Laravel\Facades\Resend;
 
@@ -59,5 +61,19 @@ class UserService
         if (is_null($user) || !Hash::check($passwordToCheck, $user->getPassword())) {
             throw new Exception('Usuario o contraseña incorrectos.');
         }
+    }
+
+    /**
+     * @throws NoContentException
+     */
+    public function all(): Collection
+    {
+        $users = $this->repository->all();
+
+        if ($users->isEmpty()) {
+            throw new NoContentException('No hay usuarios.');
+        }
+
+        return $users;
     }
 }

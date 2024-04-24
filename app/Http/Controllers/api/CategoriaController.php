@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoriaResource;
 use App\Repositories\CategoriaRepository;
 use App\Repositories\ProductoRepository;
+use App\Services\CategoriaService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,16 +19,22 @@ class CategoriaController extends Controller
 {
     public function __construct(
         public readonly CategoriaRepository $repository,
-        public readonly ProductoRepository  $productoRepository
+        public readonly ProductoRepository  $productoRepository,
+        public readonly CategoriaService    $service
     )
     {
     }
 
     function index(): JsonResponse
     {
-        $categorias = $this->repository->all();
+        try {
+            $categorias = $this->service->all();
 
-        return $this->successResponse(CategoriaResource::collection($categorias));
+            return $this->successResponse(CategoriaResource::collection($categorias));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function getCategoria(string $id): JsonResponse
@@ -35,8 +43,10 @@ class CategoriaController extends Controller
             $categoria = $this->repository->findOrFail($id);
 
             return $this->successResponse(new CategoriaResource($categoria));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

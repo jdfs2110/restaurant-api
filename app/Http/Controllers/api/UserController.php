@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Http\Resources\UsuarioResource;
 use App\Repositories\PedidoRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,6 +20,7 @@ class UserController extends Controller
 {
     public function __construct(
         public readonly UserRepository   $repository,
+        public readonly UserService      $service,
         public readonly PedidoRepository $pedidoRepository,
         public readonly RoleRepository   $roleRepository
     )
@@ -26,9 +29,14 @@ class UserController extends Controller
 
     public function index(): JsonResponse
     {
-        $users = $this->repository->all();
+        try {
+            $users = $this->service->all();
 
-        return $this->successResponse(UsuarioResource::collection($users));
+            return $this->successResponse(UsuarioResource::collection($users));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     public function getUser($id): JsonResponse

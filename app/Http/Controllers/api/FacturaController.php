@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FacturaResource;
 use App\Models\Pedido;
 use App\Repositories\FacturaRepository;
 use App\Repositories\PedidoRepository;
+use App\Services\FacturaService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,16 +20,22 @@ class FacturaController extends Controller
 {
     public function __construct(
         public readonly FacturaRepository $repository,
-        public readonly PedidoRepository  $pedidoRepository
+        public readonly PedidoRepository  $pedidoRepository,
+        public readonly FacturaService    $service
     )
     {
     }
 
     function index(): JsonResponse
     {
-        $facturas = $this->repository->all();
+        try {
+            $facturas = $this->service->all();
 
-        return $this->successResponse(FacturaResource::collection($facturas));
+            return $this->successResponse(FacturaResource::collection($facturas));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
     function getFactura($id): JsonResponse

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
 use App\Http\Resources\StockResource;
-use App\Models\Categoria;
-use App\Models\Producto;
 use App\Repositories\CategoriaRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\StockRepository;
+use App\Services\ProductoService;
 use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -21,6 +21,7 @@ class ProductoController extends Controller
 {
     public function __construct(
         public readonly ProductoRepository  $repository,
+        public readonly ProductoService     $service,
         public readonly CategoriaRepository $categoriaRepository,
         public readonly StockService        $stockService,
         public readonly StockRepository     $stockRepository
@@ -30,12 +31,17 @@ class ProductoController extends Controller
 
     function index(): JsonResponse
     {
-        $productos = $this->repository->all();
+        try {
+            $productos = $this->service->all();
 
-        return $this->successResponse(ProductoResource::collection($productos));
+            return $this->successResponse(ProductoResource::collection($productos));
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+        }
     }
 
-       function getProducto($id): JsonResponse
+    function getProducto($id): JsonResponse
     {
         try {
             $producto = $this->repository->findOrFail($id);
