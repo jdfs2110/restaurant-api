@@ -35,7 +35,7 @@ class ProductoController extends Controller
         return $this->successResponse(ProductoResource::collection($productos));
     }
 
-    function getProducto($id): JsonResponse
+       function getProducto($id): JsonResponse
     {
         try {
             $producto = $this->repository->findOrFail($id);
@@ -183,6 +183,56 @@ class ProductoController extends Controller
             return $this->errorResponse($e->errors(), 400);
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    function addStock(Request $request, $id): JsonResponse
+    {
+        try {
+            $data = $request->validate([
+                'cantidad' => 'required|int|min:0',
+            ]);
+
+            $this->repository->findOrFail($id);
+
+            $this->stockService->addStock($id, $data['cantidad']);
+
+            $updatedStock = $this->stockRepository->findByIdProducto($id);
+
+            return $this->successResponse(new StockResource($updatedStock), 'Cantidad actualizada correctamente.');
+
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    function reduceStock(Request $request, $id): JsonResponse
+    {
+        try {
+            $data = $request->validate([
+                'cantidad' => 'required|int|min:0',
+            ]);
+
+            $this->repository->findOrFail($id);
+
+            $this->stockService->reduceStock($id, $data['cantidad']);
+
+            $updatedStock = $this->stockRepository->findByIdProducto($id);
+
+            return $this->successResponse(new StockResource($updatedStock), 'Cantidad actualizada correctamente.');
+
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
+
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
