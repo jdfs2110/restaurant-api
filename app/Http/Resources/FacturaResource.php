@@ -18,7 +18,6 @@ class FacturaResource extends JsonResource
             'id' => $this->getId(),
             'fecha' => $this->getFecha(),
             'id_pedido' => $this->getIdPedido(),
-            'created_at' => $this->getCreatedAt()
         ];
     }
 }
