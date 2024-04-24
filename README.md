@@ -2,6 +2,7 @@
 
 * cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (Done)
 * secure routes before production
+* return no content
 
 ##### Side note
 
@@ -15,14 +16,14 @@ Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en
 
 ## Roles
 
-| Caso de uso            | Endpoint   | Método HTTP |
-| ---------------------- | ---------- | ----------- |
-| Buscar todos los roles | /roles     | GET         |
-| Buscar un rol por id   | /roles/{id}| GET         |
-| Crear un rol (admin)   | /roles/new | POST        |
-| Eliminar un rol (admin)| /roles/{id}| DELETE      |
-| Editar un rol (admin)  | /roles/{id}| PUT         |
-| Buscar todos los usuarios de un rol concreto (admin) | /roles/{id}/usuarios | GET |
+| Caso de uso                                          | Endpoint             | Método HTTP |
+|------------------------------------------------------|----------------------|-------------|
+| Buscar todos los roles                               | /roles               | GET         |
+| Buscar un rol por id                                 | /roles/{id}          | GET         |
+| Crear un rol (admin)                                 | /roles/new           | POST        |
+| Eliminar un rol (admin)                              | /roles/{id}          | DELETE      |
+| Editar un rol (admin)                                | /roles/{id}          | PUT         |
+| Buscar todos los usuarios de un rol concreto (admin) | /roles/{id}/usuarios | GET         |
 
 ## Usuarios
 
@@ -49,56 +50,58 @@ Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en
 
 ## Productos
 
-| Caso de uso                           | Endpoint             | Método HTTP |
-| ------------------------------------- | -------------------- | ----------- |
-| Buscar todos los productos            | /productos           | GET         |
-| Buscar un producto por id             | /productos/{id}      | GET         |
-| Crear un nuevo producto               | /productos/new       | POST        |
-| Eliminar un producto                  | /productos/{id}      | DELETE      |
-| Editar un producto                    | /productos/{id}      | PUT         | 
-| Buscar el stock de un producto        | /productos/{id}/stock| GET         |
+| Caso de uso                      | Endpoint                     | Método HTTP |
+|----------------------------------|------------------------------|-------------|
+| Buscar todos los productos       | /productos                   | GET         |
+| Buscar un producto por id        | /productos/{id}              | GET         |
+| Crear un nuevo producto          | /productos/new               | POST        |
+| Eliminar un producto             | /productos/{id}              | DELETE      |
+| Editar un producto               | /productos/{id}              | PUT         | 
+| Buscar el stock de un producto   | /productos/{id}/stock        | GET         |
+| Aumentar el stock de un producto | /productos/{id}/stock/add    | POST        | 
+| Reducir el stock de un producto  | /productos/{id}/stock/reduce | POST        |
 
 ## Stock
 
 | Caso de uso                            | Endpoint              | Método HTTP |
-| -------------------------------------- | --------------------- | ----------- |
+|----------------------------------------| --------------------- | ----------- |
 | Buscar el stock de todos los productos | /stock                | GET         |
-| Buscar un stock por id                 | /stock/{id}           | GET         |
 | Dar de alta un stock                   | /stock/new            | POST        |
-| Editar un stock                        | /stock/{id}           | PUT         |
-| Eliminar un stock (admin only)         | /stock/{id}           | DELETE      |  
+| Editar un stock (admin only)           | /stock/{id}           | PUT         |
 
 ## Mesas
 
-| Caso de uso            | Endpoint   | Método HTTP |
-| ---------------------- | ---------- | ----------- |
-| Buscar todas las mesas | /mesas     | GET         |
-| Buscar una mesa por id | /mesas/{id}| GET         |
-| Crear una mesa         | /mesas/new | POST        |
-| Eliminar una mesa      | /mesas/{id}| DELETE      |
-| Editar una mesa        | /mesas/{id}| PUT         |
+| Caso de uso                         | Endpoint            | Método HTTP |
+|-------------------------------------|---------------------|-------------|
+| Buscar todas las mesas              | /mesas              | GET         |
+| Buscar una mesa por id              | /mesas/{id}         | GET         |
+| Crear una mesa                      | /mesas/new          | POST        |
+| Eliminar una mesa                   | /mesas/{id}         | DELETE      |
+| Editar una mesa                     | /mesas/{id}         | PUT         |
+| Listar los pedidos de una mesa      | /mesas/{id}/pedidos | GET         |
+| Listar el pedido actual de una mesa | /mesas/{id}/pedido  | GET         |
 
 ## Pedidos
 
 | Caso de uso                    | Endpoint              | Método HTTP |
-| ------------------------------ | --------------------- | ----------- |
+|--------------------------------| --------------------- | ----------- |
 | Buscar todos los pedidos       | /pedidos              | GET         |
 | Buscar un pedido por id        | /pedidos/{id}         | GET         |
 | Crear un pedido                | /pedidos/new          | POST        |
-| Editar un pedido (admin)       | /pedidos/{id}         | PUT         |
+| Editar un pedido               | /pedidos/{id}         | PUT         |
 | Eliminar un pedido (admin)     | /pedidos/{id}         | DELETE      | 
 | Buscar las líneas de un pedido | /pedidos/{id}/lineas  | GET         |
 | Buscar la factura de un pedido | /pedidos/{id}/factura | GET         |
 
 ## Lineas
 
-| Caso de uso                    | Endpoint              | Método HTTP |
-| ------------------------------ | --------------------- | ----------- |
-| Buscar todas las lineas        | /lineas               | GET         |
-| Buscar una línea por id        | /lineas/{id}          | GET         |
-| Añadir una nueva línea (teoricamente se le asigna el id del pedido en el cuerpo de la peticion)         | /lineas/new | POST |
-| Editar una línea               | /lineas/{id}          | PUT         |
-| Eliminar una línea             | /lineas/{id}          | DELETE      | 
+| Caso de uso                                                                                     | Endpoint      | Método HTTP |
+|-------------------------------------------------------------------------------------------------|---------------|-------------|
+| Buscar todas las lineas                                                                         | /lineas       | GET         |
+| Buscar una línea por id                                                                         | /lineas/{id}  | GET         |
+| Añadir una nueva línea (teoricamente se le asigna el id del pedido en el cuerpo de la peticion) | /lineas/new   | POST        |
+| Editar una línea                                                                                | /lineas/{id}  | PUT         |
+| Eliminar una línea                                                                              | /lineas/{id}  | DELETE      | 
 
 ## Facturas
 
