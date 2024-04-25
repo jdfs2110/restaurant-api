@@ -84,4 +84,18 @@ class UserService
 
         return ceil($paginas / self::PAGINATION_LIMIT);
     }
+
+    /**
+     * @throws NoContentException
+     */
+    public function findAllByIdRol(int $id): Collection
+    {
+        $users = $this->repository->findAllByIdRol($id);
+
+        if ($users->isEmpty()) {
+            throw new NoContentException('No hay usuarios.');
+        }
+
+        return $users;
+    }
 }

@@ -82,13 +82,17 @@ class UserController extends Controller
         try {
             $this->roleRepository->findOrFail($id);
 
-            $users = $this->repository->findAllByIdRol($id);
+            $users = $this->service->findAllByIdRol($id);
 
             return $this->successResponse(UsuarioResource::collection($users));
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
