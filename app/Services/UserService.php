@@ -23,7 +23,7 @@ class UserService
     {
         Resend::emails()->send([
             'to' => $user->getEmail(),
-            'from' => 'Registro <onboarding@mail.jdfs.tech>',
+            'from' => 'Registro <onboarding@mail.jdfs.dev>',
             'subject' => 'Bienvenido/a',
             'html' =>
             '
