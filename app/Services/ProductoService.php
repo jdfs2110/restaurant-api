@@ -14,17 +14,25 @@ class ProductoService
     {
     }
 
+    private const PAGINATION_LIMIT = 10;
     /**
      * @throws NoContentException
      */
-    public function all(): Collection
+    public function paginated(int $pagina): Collection
     {
-        $productos = $this->repository->all();
+        $productos = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
 
         if ($productos->isEmpty()) {
             throw new NoContentException('No hay productos.');
         }
 
         return $productos;
+    }
+
+    public function getAmountOfPages(): int
+    {
+        $paginas = $this->repository->all()->count();
+
+        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }

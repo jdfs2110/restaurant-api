@@ -77,17 +77,25 @@ class StockService
         $this->reduceStock($productId, ($firstQuantity - $secondQuantity));
     }
 
+    private const PAGINATION_LIMIT = 10;
     /**
      * @throws NoContentException
      */
-    public function all(): Collection
+    public function paginated(int $pagina): Collection
     {
-        $stockList = $this->repository->all();
+        $stockList = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
 
         if ($stockList->isEmpty()) {
             throw new NoContentException('No hay stock disponible');
         }
 
         return $stockList;
+    }
+
+    public function getAmountOfPages(): int
+    {
+        $paginas = $this->repository->all()->count();
+
+        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }

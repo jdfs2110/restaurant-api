@@ -31,16 +31,25 @@ class LineaController extends Controller
     {
     }
 
-    function index(): JsonResponse
+    function index(Request $request): JsonResponse
     {
         try {
-            $lineas = $this->service->all();
+            $pagina = $request->query('page', 1);
 
-            return $this->successResponse(LineaResource::collection($lineas));
+            $lineas = $this->service->paginated($pagina);
+
+            return $this->successResponse(LineaResource::collection($lineas), "Lineas de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
         }
+    }
+
+    function getAmountOfPages(): JsonResponse
+    {
+        $paginas = $this->service->getAmountOfPages();
+
+        return $this->successResponse($paginas);
     }
 
     function getLinea($id): JsonResponse

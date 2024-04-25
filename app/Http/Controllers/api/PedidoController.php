@@ -31,16 +31,25 @@ class PedidoController extends Controller
     {
     }
 
-    function index(): JsonResponse
+    function index(Request $request): JsonResponse
     {
         try {
-            $pedidos = $this->service->all();
+            $pagina = $request->query('page', 1);
 
-            return $this->successResponse(PedidoResource::collection($pedidos));
+            $pedidos = $this->service->paginated($pagina);
+
+            return $this->successResponse(PedidoResource::collection($pedidos), "Pedidos de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
         }
+    }
+
+    function getAmountOfPages(): JsonResponse
+    {
+        $paginas = $this->service->getAmountOfPages();
+
+        return $this->successResponse($paginas);
     }
 
     function getPedido($id): JsonResponse

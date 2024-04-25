@@ -26,16 +26,25 @@ class FacturaController extends Controller
     {
     }
 
-    function index(): JsonResponse
+    function index(Request $request): JsonResponse
     {
         try {
-            $facturas = $this->service->all();
+            $pagina = $request->query('page', 1);
 
-            return $this->successResponse(FacturaResource::collection($facturas));
+            $facturas = $this->service->paginated($pagina);
+
+            return $this->successResponse(FacturaResource::collection($facturas), "Facturas de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
         }
+    }
+
+    function getAmountOfPages(): JsonResponse
+    {
+        $paginas = $this->service->getAmountOfPages();
+
+        return $this->successResponse($paginas);
     }
 
     function getFactura($id): JsonResponse

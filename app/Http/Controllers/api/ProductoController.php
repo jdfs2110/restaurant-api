@@ -29,32 +29,25 @@ class ProductoController extends Controller
     {
     }
 
-    function index(): JsonResponse
+    function index(Request $request): JsonResponse
     {
         try {
-            $productos = $this->service->all();
+            $pagina = $request->query('page', 1);
 
-            return $this->successResponse(ProductoResource::collection($productos));
+            $productos = $this->service->paginated($pagina);
+
+            return $this->successResponse(ProductoResource::collection($productos), "Productos de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
         }
     }
-    private const PAGINATION_LIMIT = 10;
-
-    function indexPaginated(Request $request): JsonResponse
-    {
-        $pagina = $request->query('page', 1);
-
-        $productos = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
-
-        return $this->successResponse(ProductoResource::collection($productos));
-    }
 
     function getAmountOfPages(): JsonResponse
     {
-        $productos = $this->repository->all()->count();
-        return $this->successResponse(ceil($productos / self::PAGINATION_LIMIT));
+        $paginas = $this->service->getAmountOfPages();
+
+        return $this->successResponse($paginas);
     }
 
     function getProducto($id): JsonResponse

@@ -24,16 +24,25 @@ class StockController extends Controller
     {
     }
 
-    function index(): JsonResponse
+    function index(Request $request): JsonResponse
     {
         try {
-            $stock = $this->service->all();
+            $pagina = $request->query('page', 1);
 
-            return $this->successResponse(StockResource::collection($stock));
+            $stock = $this->service->paginated($pagina);
+
+            return $this->successResponse(StockResource::collection($stock), "Stock de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
         }
+    }
+
+    function getAmountOfPages(): JsonResponse
+    {
+        $paginas = $this->service->getAmountOfPages();
+
+        return $this->successResponse($paginas);
     }
 
     function createStock(Request $request): JsonResponse

@@ -14,17 +14,25 @@ class CategoriaService
     {
     }
 
+    private const PAGINATION_LIMIT = 10;
     /**
      * @throws NoContentException
      */
-    public function all(): Collection
+    public function paginated(int $pagina): Collection
     {
-        $categorias = $this->repository->all();
+        $categorias = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
 
         if ($categorias->isEmpty()) {
             throw new NoContentException('No hay categorias.');
         }
 
         return $categorias;
+    }
+
+    public function getAmountOfPages(): int
+    {
+        $paginas = $this->repository->all()->count();
+
+        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }

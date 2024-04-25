@@ -63,17 +63,25 @@ class UserService
         }
     }
 
+    private const PAGINATION_LIMIT = 15;
     /**
      * @throws NoContentException
      */
-    public function all(): Collection
+    public function paginated(int $pagina): Collection
     {
-        $users = $this->repository->all();
+        $users = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
 
         if ($users->isEmpty()) {
             throw new NoContentException('No hay usuarios.');
         }
 
         return $users;
+    }
+
+    public function getAmountOfPages(): int
+    {
+        $paginas = $this->repository->all()->count();
+
+        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }

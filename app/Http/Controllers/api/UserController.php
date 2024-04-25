@@ -27,16 +27,25 @@ class UserController extends Controller
     {
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         try {
-            $users = $this->service->all();
+            $pagina = $request->query('page', 1);
 
-            return $this->successResponse(UsuarioResource::collection($users));
+            $users = $this->service->paginated($pagina);
+
+            return $this->successResponse(UsuarioResource::collection($users), "Usuarios de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
         }
+    }
+
+    public function getAmountOfpages(): JsonResponse
+    {
+        $paginas = $this->service->getAmountOfpages();
+
+        return $this->successResponse($paginas);
     }
 
     public function getUser($id): JsonResponse

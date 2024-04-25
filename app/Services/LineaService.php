@@ -14,17 +14,25 @@ class LineaService
     {
     }
 
+    private const PAGINATION_LIMIT = 20;
     /**
      * @throws NoContentException
      */
-    public function all(): Collection
+    public function paginated(int $pagina): Collection
     {
-        $lineas = $this->repository->all();
+        $lineas = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
 
         if ($lineas->isEmpty()) {
             throw new NoContentException('No hay lineas.');
         }
 
         return $lineas;
+    }
+
+    public function  getAmountOfPages(): int
+    {
+        $paginas = $this->repository->all()->count();
+
+        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }

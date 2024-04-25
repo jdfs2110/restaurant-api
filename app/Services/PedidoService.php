@@ -43,17 +43,25 @@ class PedidoService
         $pedido->save();
     }
 
+    private const PAGINATION_LIMIT = 15;
     /**
      * @throws NoContentException
      */
-    public function all(): Collection
+    public function paginated(int $pagina): Collection
     {
-        $pedidos = $this->repository->all();
+        $pedidos = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
 
         if ($pedidos->isEmpty()) {
             throw new NoContentException('No hay pedidos.');
         }
 
         return $pedidos;
+    }
+
+    public function getAmountOfPages(): int
+    {
+        $paginas = $this->repository->all()->count();
+
+        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }

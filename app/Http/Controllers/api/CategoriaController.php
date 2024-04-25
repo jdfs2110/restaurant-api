@@ -13,8 +13,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use function PHPUnit\Framework\isEmpty;
-
 class CategoriaController extends Controller
 {
     public function __construct(
@@ -25,25 +23,28 @@ class CategoriaController extends Controller
     {
     }
 
-    function index(): JsonResponse
+    function index(Request $request): JsonResponse
     {
         try {
-            $categorias = $this->service->all();
+            $pagina = $request->get('page', 1);
 
-            return $this->successResponse(CategoriaResource::collection($categorias));
+            $categorias = $this->service->paginated($pagina);
 
+            return $this->successResponse(CategoriaResource::collection($categorias), "Categorias de la página $pagina");
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
-    // TODO
-    private const PAGINATION_LIMIT = 10;
+    function getAmountOfPages(): JsonResponse
+    {
+        $paginas = $this->service->getAmountOfPages();
 
-//    function indexPaginated(Request $request): JsonResponse
-//    {
-//
-//    }
+        return $this->successResponse($paginas);
+    }
 
     function getCategoria(string $id): JsonResponse
     {
