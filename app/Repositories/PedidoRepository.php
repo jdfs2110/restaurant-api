@@ -18,4 +18,14 @@ class PedidoRepository extends GeneralRepository
     {
         return Pedido::query()->where('id_usuario', $id)->get();
     }
+
+    public function findPedidosByIdMesa($id): Collection
+    {
+        return Pedido::query()->where('id_mesa', $id)->get();
+    }
+
+    public function findLastPedidoByIdMesa($id): Pedido
+    {
+        return Pedido::query()->where('id_mesa', $id)->get()->last();
+    }
 }

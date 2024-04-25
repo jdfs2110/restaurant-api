@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\MesaDesocupadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MesaResource;
+use App\Http\Resources\PedidoResource;
 use App\Repositories\MesaRepository;
 use App\Services\MesaService;
 use Exception;
@@ -110,14 +112,37 @@ class MesaController extends Controller
         }
     }
 
-    // TODO
-    /*function getPedidosByMesa($id): JsonResponse
+    function getPedidosByMesa($id): JsonResponse
     {
+        try {
+            $pedidos = $this->service->getPedidosByMesa($id);
 
+            return $this->successResponse(PedidoResource::collection($pedidos));
+
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
     }
 
+    // TODO: hacerle una revisión porque no estoy muy claro
     function getPedidoActual($id): JsonResponse
     {
+        try {
+            $pedido = $this->service->getPedidoActual($id);
 
-    }*/
+            return $this->successResponse(new PedidoResource($pedido));
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (MesaDesocupadaException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
 }
