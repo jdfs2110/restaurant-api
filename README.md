@@ -2,11 +2,13 @@
 
 - [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
 - [ ] secure routes before production
+- [ ] remove all error messages for unhandled errors before production
 - [ ] mesacontroller
 
 ##### Side note
 
-Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en el modelo User y getRol() en el resource.
+* Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en el modelo User y getRol() en el resource.
+* El logout se peta si se usa un token que ha sido eliminado previamente
 
 -------
 
