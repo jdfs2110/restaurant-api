@@ -24,6 +24,13 @@ trait GeneralClass
         ], $status);
     }
 
+    public function unhandledErrorResponse($error = 'Ha ocurrido un error.'): JsonResponse
+    {
+        return response()->json([
+           'error' => $error
+        ], 500);
+    }
+
     function deletePhotoIfExists(string $path): void
     {
         if (Storage::disk('r2')->exists($path)) {
