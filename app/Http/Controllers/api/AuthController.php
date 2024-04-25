@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 use Resend\Laravel\Facades\Resend;
 
 class AuthController extends Controller
@@ -45,19 +46,13 @@ class AuthController extends Controller
                 'id_rol' => $userData['id_rol']
             ]);
 
-            $token = $user->createToken('apiToken')->plainTextToken;
-
             $this->userService->sendSuccessRegisterEmail($user);
 
-            $response = [
-                'data' => new UsuarioResource($user),
-                'token' => $token
-            ];
-
-            return response()->json($response, 201);
+            return $this->successResponse(new UsuarioResource($user), 'Registro exitoso.', 201);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());
         }
@@ -83,19 +78,22 @@ class AuthController extends Controller
             ];
 
             return response()->json($response);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (IncorrectLoginException $e) {
             return $this->errorResponse($e->getMessage(), 400);
+
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         try {
-            auth()->user()->tokens()->delete();
+            PersonalAccessToken::findToken($request->bearerToken())->delete();
 
             $response = [
                 'message' => 'logged out'
