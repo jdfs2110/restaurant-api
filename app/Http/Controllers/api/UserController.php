@@ -10,6 +10,7 @@ use App\Http\Resources\UsuarioResource;
 use App\Repositories\PedidoRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use App\Services\PedidoService;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +23,7 @@ class UserController extends Controller
         public readonly UserRepository   $repository,
         public readonly UserService      $service,
         public readonly PedidoRepository $pedidoRepository,
+        public readonly PedidoService    $pedidoService,
         public readonly RoleRepository   $roleRepository
     )
     {
@@ -38,14 +40,22 @@ class UserController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     public function getAmountOfpages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfpages();
+        try {
+            $paginas = $this->service->getAmountOfpages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     public function getUser($id): JsonResponse
@@ -54,10 +64,12 @@ class UserController extends Controller
             $user = $this->repository->findOrFail($id);
 
             return $this->successResponse(new UsuarioResource($user));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -66,15 +78,19 @@ class UserController extends Controller
         try {
             $this->repository->findOrFail($id);
 
-            $pedidos = $this->pedidoRepository->findPedidosByIdUsuario($id);
+            $pedidos = $this->pedidoService->findPedidosByIdUsuario($id);
 
             return $this->successResponse(PedidoResource::collection($pedidos));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
-        }
 
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     public function getAllUsersByRole($id): JsonResponse
@@ -85,6 +101,7 @@ class UserController extends Controller
             $users = $this->service->findAllByIdRol($id);
 
             return $this->successResponse(UsuarioResource::collection($users));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -92,7 +109,7 @@ class UserController extends Controller
             return $this->errorResponse($e->getMessage(), 204);
 
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 500);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -117,12 +134,15 @@ class UserController extends Controller
             $message = $update == 1 ? 'El usuario ha sido modificado correctamente.' : 'Error al modificar el usuario';
 
             return $this->successResponse(new UsuarioResource($user), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

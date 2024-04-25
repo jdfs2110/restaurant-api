@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+
 class CategoriaController extends Controller
 {
     public function __construct(
@@ -31,19 +32,25 @@ class CategoriaController extends Controller
             $categorias = $this->service->paginated($pagina);
 
             return $this->successResponse(CategoriaResource::collection($categorias), "Categorias de la página $pagina");
+
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 500);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function getCategoria(string $id): JsonResponse
@@ -57,7 +64,7 @@ class CategoriaController extends Controller
             return $this->errorResponse($e->getMessage());
 
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -80,8 +87,9 @@ class CategoriaController extends Controller
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -91,6 +99,7 @@ class CategoriaController extends Controller
             $categoria = $this->repository->findOrFail($id);
 
             $productos = $this->productoRepository->findAllByIdCategoria($id);
+
             if ($productos->isNotEmpty()) {
                 return $this->errorResponse('La categoría tiene productos.', 400);
             }
@@ -101,10 +110,12 @@ class CategoriaController extends Controller
             $message = $deletion == 1 ? 'La categoría ha sido eliminada correctamente' : 'Error al eliminar la categoría';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -116,7 +127,6 @@ class CategoriaController extends Controller
      */
     function updateCategoria(Request $request, $id): JsonResponse
     {
-
         try {
             $data = $request->validate([
                 'nombre' => 'required|string',
@@ -141,12 +151,15 @@ class CategoriaController extends Controller
             $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
 
             return $this->successResponse(new CategoriaResource($categoria), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

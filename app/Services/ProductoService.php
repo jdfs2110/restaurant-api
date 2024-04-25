@@ -35,4 +35,18 @@ class ProductoService
 
         return ceil($paginas / self::PAGINATION_LIMIT);
     }
+
+    /**
+     * @throws NoContentException
+     */
+    public function findAllByIdCategoria(int $id): Collection
+    {
+        $productos = $this->repository->findAllByIdCategoria($id);
+
+        if ($productos->isEmpty()) {
+            throw new NoContentException('No hay productos.');
+        }
+
+        return $productos;
+    }
 }

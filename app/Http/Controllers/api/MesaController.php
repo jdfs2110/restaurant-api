@@ -33,6 +33,9 @@ class MesaController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -42,10 +45,12 @@ class MesaController extends Controller
             $mesa = $this->repository->findOrFail($id);
 
             return $this->successResponse(new MesaResource($mesa));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -63,10 +68,12 @@ class MesaController extends Controller
             ]);
 
             return $this->successResponse(new MesaResource($mesa), 'Mesa creada correctamente.', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -79,10 +86,12 @@ class MesaController extends Controller
             $message = $deletion == 1 ? 'La mesa ha sido eliminada correctamente' : 'Error al eliminar la mesa';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -103,12 +112,15 @@ class MesaController extends Controller
             $message = $update == 1 ? 'La mesa ha sido modificada correctamente.' : 'Error al modificar la mesa.';
 
             return $this->successResponse(new MesaResource($mesa), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -126,7 +138,7 @@ class MesaController extends Controller
             return $this->errorResponse($e->getMessage(), 204);
 
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 500);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -137,12 +149,15 @@ class MesaController extends Controller
             $pedido = $this->service->getPedidoActual($id);
 
             return $this->successResponse(new PedidoResource($pedido));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (MesaDesocupadaException $e) {
             return $this->errorResponse($e->getMessage(), 400);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 500);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

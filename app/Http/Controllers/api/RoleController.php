@@ -36,14 +36,22 @@ class RoleController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function getRole($id): JsonResponse
@@ -52,10 +60,12 @@ class RoleController extends Controller
             $role = $this->repository->findOrFail($id);
 
             return $this->successResponse(new RoleResource($role));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -71,10 +81,12 @@ class RoleController extends Controller
             ]);
 
             return $this->successResponse(new RoleResource($role), 'Rol creado correctamente.', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -92,10 +104,12 @@ class RoleController extends Controller
             $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -114,12 +128,15 @@ class RoleController extends Controller
             $message = $update == 1 ? 'El rol ha sido modificado correctamente.' : 'Error al modificar el rol.';
 
             return $this->successResponse(new RoleResource($role), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

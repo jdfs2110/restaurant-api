@@ -35,4 +35,18 @@ class LineaService
 
         return ceil($paginas / self::PAGINATION_LIMIT);
     }
+
+    /**
+     * @throws NoContentException
+     */
+    public function findAllByIdPedido(int $id): Collection
+    {
+        $lineas = $this->repository->findAllByIdPedido($id);
+
+        if ($lineas->isEmpty()) {
+            throw new NoContentException('No hay lineas.');
+        }
+
+        return $lineas;
+    }
 }

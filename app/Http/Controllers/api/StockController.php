@@ -35,14 +35,22 @@ class StockController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function createStock(Request $request): JsonResponse
@@ -61,12 +69,15 @@ class StockController extends Controller
             ]);
 
             return $this->successResponse(new StockResource($stock), 'Stock creado correctamente.', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -88,12 +99,15 @@ class StockController extends Controller
             $message = $update == 1 ? 'El stock ha sido modificado correctamente.' : 'Error al modificar el stock.';
 
             return $this->successResponse(new StockResource($stock), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

@@ -64,4 +64,18 @@ class PedidoService
 
         return ceil($paginas / self::PAGINATION_LIMIT);
     }
+
+    /**
+     * @throws NoContentException
+     */
+    public function findPedidosByIdUsuario(int $id): Collection
+    {
+        $pedidos = $this->repository->findPedidosByIdUsuario($id);
+
+        if ($pedidos->isEmpty()) {
+            throw new NoContentException('No hay pedidos.');
+        }
+
+        return $pedidos;
+    }
 }

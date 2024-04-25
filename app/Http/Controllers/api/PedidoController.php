@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Events\PedidoCreatedEvent;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Exceptions\UserIsNotMeseroException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Repositories\LineaRepository;
@@ -42,14 +43,22 @@ class PedidoController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function getPedido($id): JsonResponse
@@ -58,10 +67,12 @@ class PedidoController extends Controller
             $pedido = $this->repository->findOrFail($id);
 
             return $this->successResponse(new PedidoResource($pedido));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -88,14 +99,17 @@ class PedidoController extends Controller
             ]);
 
             event(new PedidoCreatedEvent($pedido));
+
             return $this->successResponse(new PedidoResource($pedido), 'Pedido creado correctamente.', 201);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -112,6 +126,7 @@ class PedidoController extends Controller
 
             $pedido = $this->repository->findOrFail($id);
             $this->mesaRepository->findOrFail($data['id_mesa']);
+
             $this->userService->checkIfMesero($data['id_usuario']);
 
             $update = $pedido->update([
@@ -124,12 +139,18 @@ class PedidoController extends Controller
             $message = $update == 1 ? 'El pedido ha sido modificado correctamente.' : 'Error al modificar el pedido';
 
             return $this->successResponse(new PedidoResource($pedido), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
+
+        } catch (UserIsNotMeseroException $e) {
             return $this->errorResponse($e->getMessage(), 400);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -149,10 +170,12 @@ class PedidoController extends Controller
             $message = $deletion == 1 ? 'El pedido ha sido eliminado correctamente' : 'Error al eliminar el pedido';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

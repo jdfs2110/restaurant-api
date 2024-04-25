@@ -40,14 +40,22 @@ class ProductoController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function getProducto($id): JsonResponse
@@ -56,10 +64,12 @@ class ProductoController extends Controller
             $producto = $this->repository->findOrFail($id);
 
             return $this->successResponse(new ProductoResource($producto));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -89,12 +99,15 @@ class ProductoController extends Controller
             $this->stockService->addStock($producto->getId(), $data['cantidad']);
 
             return $this->successResponse(new ProductoResource($producto), 'Producto creado correctamente.', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -114,10 +127,12 @@ class ProductoController extends Controller
             $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -125,13 +140,19 @@ class ProductoController extends Controller
     {
         try {
             $this->categoriaRepository->findOrFail($id);
-            $productos = $this->repository->findAllByIdCategoria($id);
+
+            $productos = $this->service->findAllByIdCategoria($id);
 
             return $this->successResponse(ProductoResource::collection($productos));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -142,13 +163,15 @@ class ProductoController extends Controller
             $this->repository->findOrFail($id);
 
             $stock = $this->stockRepository->findByIdProductoOrFail($id);
+
+            return $this->successResponse(new StockResource($stock));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
-        }
 
-        return $this->successResponse(new StockResource($stock));
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     /**
@@ -194,12 +217,15 @@ class ProductoController extends Controller
             $this->stockService->setStock($id, $data['cantidad']);
 
             return $this->successResponse(new ProductoResource($producto), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -220,10 +246,12 @@ class ProductoController extends Controller
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -249,7 +277,7 @@ class ProductoController extends Controller
             return $this->errorResponse($e->getMessage());
 
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

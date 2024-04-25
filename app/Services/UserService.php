@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\IncorrectLoginException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Exceptions\UserIsNotMeseroException;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Exception;
@@ -42,14 +44,14 @@ class UserService
 
     /**
      * @throws ModelNotFoundException
-     * @throws Exception
+     * @throws UserIsNotMeseroException
      */
     public function checkIfMesero($id): void
     {
         $user = $this->repository->findOrFail($id);
 
         if ($user->getIdRol() !== 1) {
-            throw new Exception('El usuario no es mesero.');
+            throw new UserIsNotMeseroException('El usuario no es mesero.');
         }
     }
 
@@ -59,7 +61,7 @@ class UserService
     public function checkEmailAndPassword($user, $passwordToCheck): void
     {
         if (is_null($user) || !Hash::check($passwordToCheck, $user->getPassword())) {
-            throw new Exception('Usuario o contraseña incorrectos.');
+            throw new IncorrectLoginException('Usuario o contraseña incorrectos.');
         }
     }
 

@@ -42,14 +42,22 @@ class LineaController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function getLinea($id): JsonResponse
@@ -58,10 +66,12 @@ class LineaController extends Controller
             $linea = $this->repository->findOrFail($id);
 
             return $this->successResponse(new LineaResource($linea));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -77,6 +87,7 @@ class LineaController extends Controller
 
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
+
             $this->stockService->reduceStock($data['id_producto'], $data['cantidad']);
 
             $linea = $this->repository->create([
@@ -89,12 +100,15 @@ class LineaController extends Controller
             $this->pedidoService->recalculatePrice($data['id_pedido']);
 
             return $this->successResponse(new LineaResource($linea), 'Línea creada correctamente.', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -120,18 +134,23 @@ class LineaController extends Controller
                 'id_producto' => $data['id_producto'],
                 'id_pedido' => $data['id_pedido']
             ]);
-            $this->pedidoService->recalculatePrice($data['id_pedido']);
             $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
+            $this->pedidoService->recalculatePrice($data['id_pedido']);
+
             return $this->successResponse(new LineaResource($linea), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (PedidoAlreadyServedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getTraceAsString(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -144,10 +163,12 @@ class LineaController extends Controller
             $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -155,13 +176,18 @@ class LineaController extends Controller
     {
         try {
             $this->pedidoRepository->findOrFail($id);
-            $lineas = $this->repository->findAllByIdPedido($id);
+            $lineas = $this->service->findAllByIdPedido($id);
 
-            return $this->successResponse(LineaResource::collection($lineas));
+            return $this->successResponse(LineaResource::collection($lineas), "Lineas del pedido $id");
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
+        } catch (NoContentException $e) {
+            return $this->errorResponse($e->getMessage(), 204);
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 }

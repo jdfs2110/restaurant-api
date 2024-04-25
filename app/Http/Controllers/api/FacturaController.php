@@ -37,14 +37,22 @@ class FacturaController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
     function getAmountOfPages(): JsonResponse
     {
-        $paginas = $this->service->getAmountOfPages();
+        try {
+            $paginas = $this->service->getAmountOfPages();
 
-        return $this->successResponse($paginas);
+            return $this->successResponse($paginas);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function getFactura($id): JsonResponse
@@ -53,12 +61,13 @@ class FacturaController extends Controller
             $factura = $this->repository->findOrFail($id);
 
             return $this->successResponse(new FacturaResource($factura));
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
-        }
 
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 
     function newFactura(Request $request): JsonResponse
@@ -76,12 +85,15 @@ class FacturaController extends Controller
             ]);
 
             return $this->successResponse(new FacturaResource($factura), 'Factura creada correctamente', 201);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -101,12 +113,15 @@ class FacturaController extends Controller
             $message = $update == 1 ? 'La factura ha sido modificada correctamente.' : 'Error al modificar la factura.';
 
             return $this->successResponse(new FacturaResource($factura), $message);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 

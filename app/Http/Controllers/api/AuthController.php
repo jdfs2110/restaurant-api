@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\IncorrectLoginException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UsuarioResource;
 use App\Models\User;
@@ -19,7 +20,7 @@ class AuthController extends Controller
 {
     public function __construct(
         public readonly UserRepository $repository,
-        public readonly UserService $userService
+        public readonly UserService    $userService
     )
     {
     }
@@ -58,7 +59,7 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
@@ -84,19 +85,26 @@ class AuthController extends Controller
             return response()->json($response);
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
-        } catch (Exception $e) {
+        } catch (IncorrectLoginException $e) {
             return $this->errorResponse($e->getMessage(), 400);
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
-    public function logout(Request $request): JsonResponse
+    public function logout(): JsonResponse
     {
-        auth()->user()->tokens()->delete();
+        try {
+            auth()->user()->tokens()->delete();
 
-        $response = [
-            'message' => 'logged out'
-        ];
+            $response = [
+                'message' => 'logged out'
+            ];
 
-        return response()->json($response);
+            return response()->json($response);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
     }
 }
