@@ -20,7 +20,7 @@ class FacturaRepository extends GeneralRepository
      */
     public function findByIdPedido(int $id): Model
     {
-        $factura = Factura::query()->where('id_pedido', $id)->get()->first();
+        $factura = $this->getBuilder()->where('id_pedido', $id)->get()->first();
 
         if (is_null($factura)) {
             throw new Exception('El pedido no tiene factura asociada.');

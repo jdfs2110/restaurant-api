@@ -16,16 +16,16 @@ class PedidoRepository extends GeneralRepository
 
     public function findPedidosByIdUsuario($id): Collection
     {
-        return Pedido::query()->where('id_usuario', $id)->get();
+        return $this->getBuilder()->where('id_usuario', $id)->get();
     }
 
     public function findPedidosByIdMesa($id): Collection
     {
-        return Pedido::query()->where('id_mesa', $id)->get();
+        return $this->getBuilder()->where('id_mesa', $id)->get();
     }
 
     public function findLastPedidoByIdMesa($id): Pedido
     {
-        return Pedido::query()->where('id_mesa', $id)->get()->last();
+        return $this->getBuilder()->where('id_mesa', $id)->get()->last();
     }
 }

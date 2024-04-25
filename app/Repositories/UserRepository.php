@@ -17,11 +17,11 @@ class UserRepository extends GeneralRepository
 
     public function findByEmail(string $email): Model | null
     {
-        return User::query()->where('email', $email)->get()->first();
+        return $this->getBuilder()->where('email', $email)->get()->first();
     }
 
     public function findAllByIdRol(int $id): Collection
     {
-        return User::query()->where('id_rol', $id)->get();
+        return $this->getBuilder()->where('id_rol', $id)->get();
     }
 }

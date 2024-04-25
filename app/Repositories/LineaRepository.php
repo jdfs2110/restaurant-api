@@ -21,6 +21,6 @@ class LineaRepository extends GeneralRepository
 
     public function findAllByIdPedido($id): Collection
     {
-        return Linea::query()->where('id_pedido', $id)->get();
+        return $this->getBuilder()->where('id_pedido', $id)->get();
     }
 }

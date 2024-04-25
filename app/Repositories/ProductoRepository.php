@@ -21,6 +21,6 @@ class ProductoRepository extends GeneralRepository
 
     public function findAllByIdCategoria($id): Collection
     {
-        return Producto::query()->where('id_categoria', $id)->get();
+        return $this->getBuilder()->where('id_categoria', $id)->get();
     }
 }
