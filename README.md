@@ -1,8 +1,8 @@
 # TODO
 
-* cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (Done)
-* secure routes before production
-* mesacontroller
+- [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
+- [ ] secure routes before production
+- [ ] mesacontroller
 
 ##### Side note
 
