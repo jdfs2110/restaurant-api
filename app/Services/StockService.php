@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
 use App\Repositories\StockRepository;
 use Exception;
@@ -15,7 +16,7 @@ class StockService
     {
     }
 
-    public function addStock($productId, int $quantity = 1): void
+    public function addStock(int $productId, int $quantity = 1): void
     {
         $stock = $this->repository->findByIdProducto($productId);
 
@@ -34,19 +35,22 @@ class StockService
 
     /**
      * @throws Exception
+     * @throws NegativeQuantityException
      */
-    public function reduceStock($productId, int $quantity = 1): void
+    public function reduceStock(int $productId, int $quantity = 1): void
     {
         $stock = $this->repository->findByIdProductoOrFail($productId);
 
         $stock->cantidad -= $quantity;
-        if ($stock->cantidad <= 0) {
-            throw new Exception('La cantidad no puede ser negativa');
+
+        if ($stock->cantidad < 0) {
+            throw new NegativeQuantityException('La cantidad de stock es negativa');
         }
+
         $stock->save();
     }
 
-    public function setStock($productId, int $quantity = 1): void
+    public function setStock(int $productId, int $quantity = 1): void
     {
         $stock = $this->repository->findByIdProducto($productId);
 
@@ -65,13 +69,16 @@ class StockService
 
     /**
      * @throws Exception when the Stock is not found (shouldn't happen)
+     * @throws NegativeQuantityException
      */
-    public function updateStock($productId, int $firstQuantity, int $secondQuantity): void
+    public function updateStock(int $productId, int $firstQuantity, int $secondQuantity): void
     {
         $this->repository->findByIdProductoOrFail($productId);
 
         if ($firstQuantity < $secondQuantity) {
             $this->addStock($productId, ($secondQuantity - $firstQuantity));
+
+            return;
         }
 
         $this->reduceStock($productId, ($firstQuantity - $secondQuantity));

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
@@ -275,6 +276,9 @@ class ProductoController extends Controller
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
+        } catch (NegativeQuantityException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());
