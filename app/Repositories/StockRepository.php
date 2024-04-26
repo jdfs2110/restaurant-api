@@ -27,7 +27,7 @@ class StockRepository extends GeneralRepository
     }
 
     /**
-     * @throws Exception when a product has no stock associated (really shouldn't happen)
+     * @throws Exception cuando no se encuentra Stock (no debería de suceder...)
      */
     public function findByIdProductoOrFail($id): Model
     {
