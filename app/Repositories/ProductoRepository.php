@@ -19,7 +19,7 @@ class ProductoRepository extends GeneralRepository
         return $this->getBuilder()->with(['categoria'])->get();
     }
 
-    public function findAllByIdCategoria($id): Collection
+    public function findAllByIdCategoria(int $id): Collection
     {
         return $this->getBuilder()->where('id_categoria', $id)->get();
     }

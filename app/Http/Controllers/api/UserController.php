@@ -59,7 +59,7 @@ class UserController extends Controller
         }
     }
 
-    public function getUser($id): JsonResponse
+    public function getUser(int $id): JsonResponse
     {
         try {
             $user = $this->repository->findOrFail($id);
@@ -74,7 +74,7 @@ class UserController extends Controller
         }
     }
 
-    public function getUsersPedidos($id): JsonResponse
+    public function getUsersPedidos(int $id): JsonResponse
     {
         try {
             $pedidos = $this->pedidoService->findPedidosByIdUsuario($id);
@@ -95,7 +95,7 @@ class UserController extends Controller
         }
     }
 
-    public function getAllUsersByRole($id): JsonResponse
+    public function getAllUsersByRole(int $id): JsonResponse
     {
         try {
             $this->roleRepository->findOrFail($id);
@@ -115,7 +115,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateUser(Request $request, $id): JsonResponse
+    public function updateUser(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([

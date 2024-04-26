@@ -19,7 +19,7 @@ class LineaRepository extends GeneralRepository
         return $this->getBuilder()->with(['producto'])->get();
     }
 
-    public function findAllByIdPedido($id): Collection
+    public function findAllByIdPedido(int $id): Collection
     {
         return $this->getBuilder()->where('id_pedido', $id)->get();
     }

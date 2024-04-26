@@ -54,7 +54,7 @@ class FacturaController extends Controller
         }
     }
 
-    function getFactura($id): JsonResponse
+    function getFactura(int $id): JsonResponse
     {
         try {
             $factura = $this->repository->findOrFail($id);
@@ -96,7 +96,7 @@ class FacturaController extends Controller
         }
     }
 
-    function updateFactura(Request $request, $id): JsonResponse
+    function updateFactura(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -124,7 +124,7 @@ class FacturaController extends Controller
         }
     }
 
-    function deleteFactura($id): JsonResponse
+    function deleteFactura(int $id): JsonResponse
     {
         try {
             $factura = $this->repository->findOrFail($id);
@@ -142,7 +142,7 @@ class FacturaController extends Controller
         }
     }
 
-    function getFacturaByPedido($id): JsonResponse
+    function getFacturaByPedido(int $id): JsonResponse
     {
         try {
             $this->pedidoRepository->findOrFail($id);

@@ -59,7 +59,7 @@ class ProductoController extends Controller
         }
     }
 
-    function getProducto($id): JsonResponse
+    function getProducto(int $id): JsonResponse
     {
         try {
             $producto = $this->repository->findOrFail($id);
@@ -112,7 +112,7 @@ class ProductoController extends Controller
         }
     }
 
-    function deleteProducto($id): JsonResponse
+    function deleteProducto(int $id): JsonResponse
     {
         try {
             $producto = $this->repository->findOrFail($id);
@@ -137,7 +137,7 @@ class ProductoController extends Controller
         }
     }
 
-    function getProductosByCategoria($id): JsonResponse
+    function getProductosByCategoria(int $id): JsonResponse
     {
         try {
             $this->categoriaRepository->findOrFail($id);
@@ -157,8 +157,7 @@ class ProductoController extends Controller
         }
     }
 
-    // find stock of a product
-    function getProductStock($id): JsonResponse
+    function getProductStock(int $id): JsonResponse
     {
         try {
             $this->repository->findOrFail($id);
@@ -177,11 +176,11 @@ class ProductoController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return JsonResponse
      * @uses Este método requiere que sea hecho a través de POST, con '?_method=PUT' al final de la URL.
      */
-    function updateProducto(Request $request, $id): JsonResponse
+    function updateProducto(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -230,7 +229,7 @@ class ProductoController extends Controller
         }
     }
 
-    function addStock(Request $request, $id): JsonResponse
+    function addStock(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -256,7 +255,7 @@ class ProductoController extends Controller
         }
     }
 
-    function reduceStock(Request $request, $id): JsonResponse
+    function reduceStock(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([

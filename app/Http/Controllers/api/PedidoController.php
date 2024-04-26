@@ -61,7 +61,7 @@ class PedidoController extends Controller
         }
     }
 
-    function getPedido($id): JsonResponse
+    function getPedido(int $id): JsonResponse
     {
         try {
             $pedido = $this->repository->findOrFail($id);
@@ -113,7 +113,7 @@ class PedidoController extends Controller
         }
     }
 
-    function updatePedido(Request $request, $id): JsonResponse
+    function updatePedido(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -154,7 +154,7 @@ class PedidoController extends Controller
         }
     }
 
-    function deletePedido($id): JsonResponse
+    function deletePedido(int $id): JsonResponse
     {
         try {
             $pedido = $this->repository->findOrFail($id);

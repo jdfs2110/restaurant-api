@@ -61,7 +61,7 @@ class LineaController extends Controller
         }
     }
 
-    function getLinea($id): JsonResponse
+    function getLinea(int $id): JsonResponse
     {
         try {
             $linea = $this->repository->findOrFail($id);
@@ -116,7 +116,7 @@ class LineaController extends Controller
         }
     }
 
-    function updateLinea(Request $request, $id): JsonResponse
+    function updateLinea(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -158,7 +158,7 @@ class LineaController extends Controller
         }
     }
 
-    function deleteLinea($id): JsonResponse
+    function deleteLinea(int $id): JsonResponse
     {
         try {
             $linea = $this->repository->findOrFail($id);
@@ -176,7 +176,7 @@ class LineaController extends Controller
         }
     }
 
-    function getLineasByPedido($id): JsonResponse
+    function getLineasByPedido(int $id): JsonResponse
     {
         try {
             $this->pedidoRepository->findOrFail($id);

@@ -29,7 +29,7 @@ class StockRepository extends GeneralRepository
     /**
      * @throws Exception cuando no se encuentra Stock (no debería de suceder...)
      */
-    public function findByIdProductoOrFail($id): Model
+    public function findByIdProductoOrFail(int $id): Model
     {
         $stock = $this->findByIdProducto($id);
 

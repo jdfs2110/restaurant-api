@@ -81,7 +81,7 @@ class StockController extends Controller
         }
     }
 
-    function updateStock(Request $request, $id): JsonResponse
+    function updateStock(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([

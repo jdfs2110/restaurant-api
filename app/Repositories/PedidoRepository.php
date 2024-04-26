@@ -14,17 +14,17 @@ class PedidoRepository extends GeneralRepository
         $this->setEntityName(self::ENTITY_NAME);
     }
 
-    public function findPedidosByIdUsuario($id): Collection
+    public function findPedidosByIdUsuario(int $id): Collection
     {
         return $this->getBuilder()->where('id_usuario', $id)->get();
     }
 
-    public function findPedidosByIdMesa($id): Collection
+    public function findPedidosByIdMesa(int $id): Collection
     {
         return $this->getBuilder()->where('id_mesa', $id)->get();
     }
 
-    public function findLastPedidoByIdMesa($id): Pedido
+    public function findLastPedidoByIdMesa(int $id): Pedido
     {
         return $this->getBuilder()->where('id_mesa', $id)->get()->last();
     }

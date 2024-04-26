@@ -53,7 +53,7 @@ class RoleController extends Controller
         }
     }
 
-    function getRole($id): JsonResponse
+    function getRole(int $id): JsonResponse
     {
         try {
             $role = $this->repository->findOrFail($id);
@@ -89,7 +89,7 @@ class RoleController extends Controller
         }
     }
 
-    public function deleteRole($id): JsonResponse
+    public function deleteRole(int $id): JsonResponse
     {
         try {
             $role = $this->repository->findOrFail($id);
@@ -112,7 +112,7 @@ class RoleController extends Controller
         }
     }
 
-    public function updateRole(Request $request, $id): JsonResponse
+    public function updateRole(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([

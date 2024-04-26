@@ -53,7 +53,7 @@ class CategoriaController extends Controller
         }
     }
 
-    function getCategoria(string $id): JsonResponse
+    function getCategoria(int $id): JsonResponse
     {
         try {
             $categoria = $this->repository->findOrFail($id);
@@ -93,7 +93,7 @@ class CategoriaController extends Controller
         }
     }
 
-    function deleteCategoria(string $id): JsonResponse
+    function deleteCategoria(int $id): JsonResponse
     {
         try {
             $categoria = $this->repository->findOrFail($id);
@@ -121,11 +121,11 @@ class CategoriaController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return JsonResponse
      * @uses Este método requiere que sea hecho a través de POST, con '?_method=PUT' al final de la URL.
      */
-    function updateCategoria(Request $request, $id): JsonResponse
+    function updateCategoria(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([

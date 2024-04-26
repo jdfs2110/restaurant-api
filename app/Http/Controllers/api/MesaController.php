@@ -39,7 +39,7 @@ class MesaController extends Controller
         }
     }
 
-    function getMesa($id): JsonResponse
+    function getMesa(int $id): JsonResponse
     {
         try {
             $mesa = $this->repository->findOrFail($id);
@@ -77,7 +77,7 @@ class MesaController extends Controller
         }
     }
 
-    function deleteMesa($id): JsonResponse
+    function deleteMesa(int $id): JsonResponse
     {
         try {
             $mesa = $this->repository->findOrFail($id);
@@ -95,7 +95,7 @@ class MesaController extends Controller
         }
     }
 
-    function updateMesa(Request $request, $id): JsonResponse
+    function updateMesa(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -124,7 +124,7 @@ class MesaController extends Controller
         }
     }
 
-    function getPedidosByMesa($id): JsonResponse
+    function getPedidosByMesa(int $id): JsonResponse
     {
         try {
             $pedidos = $this->service->getPedidosByMesa($id);
@@ -143,7 +143,7 @@ class MesaController extends Controller
     }
 
     // TODO: hacerle una revisión porque no estoy muy claro
-    function getPedidoActual($id): JsonResponse
+    function getPedidoActual(int $id): JsonResponse
     {
         try {
             $pedido = $this->service->getPedidoActual($id);
