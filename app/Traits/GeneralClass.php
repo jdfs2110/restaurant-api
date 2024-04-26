@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Storage;
 trait GeneralClass
 {
     /**
-     * @param array $data Datos que se va a formatear a JSON
+     * @param mixed $data Datos que se va a formatear a JSON
      * @param string $message Mensaje de respuesta (Por defecto una cadena vacía)
      * @param int $status El estado HTTP (Por defecto 200 OK)
      * @return JsonResponse La respuesta formateada a JSON
      */
-    public function successResponse(array $data, string $message = '', int $status = 200): JsonResponse
+    public function successResponse(mixed $data, string $message = '', int $status = 200): JsonResponse
     {
         return response()->json([
             'data' => $data,
