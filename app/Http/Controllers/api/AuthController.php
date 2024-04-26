@@ -5,17 +5,13 @@ namespace App\Http\Controllers\api;
 use App\Exceptions\IncorrectLoginException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UsuarioResource;
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
-use Resend\Laravel\Facades\Resend;
 
 class AuthController extends Controller
 {

@@ -16,7 +16,9 @@ class ProductoService
 
     private const PAGINATION_LIMIT = 10;
     /**
-     * @throws NoContentException
+     * @param int $pagina Número de página que se desea obtener
+     * @throws NoContentException cuuando la página está vacía
+     * @return Collection Los productos de la página deseada
      */
     public function paginated(int $pagina): Collection
     {
@@ -29,6 +31,9 @@ class ProductoService
         return $productos;
     }
 
+    /**
+     * @return int La cantidad de páginas que tienen los productos
+     */
     public function getAmountOfPages(): int
     {
         $paginas = $this->repository->all()->count();
@@ -37,7 +42,9 @@ class ProductoService
     }
 
     /**
-     * @throws NoContentException
+     * @param int $id ID de la categoría
+     * @throws NoContentException cuando la categoría no tiene productos
+     * @return Collection Los productos de la categoría seleccionada
      */
     public function findAllByIdCategoria(int $id): Collection
     {

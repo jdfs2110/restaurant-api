@@ -32,9 +32,11 @@ abstract class GeneralRepository
     }
 
     /**
-     * @throws ModelNotFoundException when model is not found
+     * @param int $id
+     * @throws ModelNotFoundException cuando no se encuentra el modelo
+     * @return Model El modelo que se ha encontrado
      */
-    public function findOrFail($id): Model
+    public function findOrFail(int $id): Model
     {
         $entity =  $this->builder->find($id);
 

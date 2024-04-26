@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Exceptions\UserIsNotWaiterException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Http\Resources\UsuarioResource;
@@ -76,8 +77,6 @@ class UserController extends Controller
     public function getUsersPedidos($id): JsonResponse
     {
         try {
-            $this->repository->findOrFail($id);
-
             $pedidos = $this->pedidoService->findPedidosByIdUsuario($id);
 
             return $this->successResponse(PedidoResource::collection($pedidos));
@@ -87,6 +86,9 @@ class UserController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (UserIsNotWaiterException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());

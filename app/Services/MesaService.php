@@ -19,6 +19,10 @@ class MesaService
     {
     }
 
+    /**
+     * @throws NoContentException cuando la lista de mesas está vacía
+     * @return Collection Todas las mesas
+     */
     public function all(): Collection
     {
         $mesas = $this->repository->all();
@@ -31,8 +35,10 @@ class MesaService
     }
 
     /**
-     * @throws ModelNotFoundException
-     * @throws NoContentException
+     * @param int $id ID de la Mesa
+     * @throws ModelNotFoundException cuando no se encuentra la mesa
+     * @throws NoContentException cuando la mesa no tiene pedidos
+     * @return Collection Los pedidos de esa mesa
      */
     public function getPedidosByMesa(int $id): Collection
     {
@@ -48,8 +54,10 @@ class MesaService
     }
 
     /**
-     * @throws ModelNotFoundException
-     * @throws MesaDesocupadaException
+     * @param int $id ID de la mesa
+     * @throws ModelNotFoundException cuando no se encuentra la mesa
+     * @throws MesaDesocupadaException cuando la mesa no tiene el estado 'ocupada'
+     * @return Pedido el último pedido de la mesa
      */
     public function getPedidoActual(int $id): Pedido
     {

@@ -16,6 +16,10 @@ class StockService
     {
     }
 
+    /**
+     * @param int $productId ID del producto
+     * @param int $quantity cantidad a añadir
+     */
     public function addStock(int $productId, int $quantity = 1): void
     {
         $stock = $this->repository->findByIdProducto($productId);
@@ -34,8 +38,10 @@ class StockService
     }
 
     /**
-     * @throws Exception
-     * @throws NegativeQuantityException
+     * @param int $productId ID del producto
+     * @param int $quantity cantidad a restar
+     * @throws Exception cuando no se encuentra Stock (no debería de suceder...)
+     * @throws NegativeQuantityException cuando el Stock es negativo despues de restarle la cantidad introducida
      */
     public function reduceStock(int $productId, int $quantity = 1): void
     {
@@ -50,6 +56,10 @@ class StockService
         $stock->save();
     }
 
+    /**
+     * @param int $productId ID del producto
+     * @param int $quantity Cantidad a actualizar (Por defecto 1)
+     */
     public function setStock(int $productId, int $quantity = 1): void
     {
         $stock = $this->repository->findByIdProducto($productId);
@@ -68,25 +78,30 @@ class StockService
     }
 
     /**
-     * @throws Exception when the Stock is not found (shouldn't happen)
-     * @throws NegativeQuantityException
+     * @param int $productId ID del producto
+     * @param int $newQuantity Cantidad a actualizar
+     * @param int $oldQuantity Cantidad actual
+     * @throws Exception cuando no se encuentra Stock (no debería de suceder...)
+     * @throws NegativeQuantityException cuando el Stock es negativo despues de restarle la cantidad introducida
      */
-    public function updateStock(int $productId, int $firstQuantity, int $secondQuantity): void
+    public function updateStock(int $productId, int $newQuantity, int $oldQuantity): void
     {
         $this->repository->findByIdProductoOrFail($productId);
 
-        if ($firstQuantity < $secondQuantity) {
-            $this->addStock($productId, ($secondQuantity - $firstQuantity));
+        if ($newQuantity < $oldQuantity) {
+            $this->addStock($productId, ($oldQuantity - $newQuantity));
 
             return;
         }
 
-        $this->reduceStock($productId, ($firstQuantity - $secondQuantity));
+        $this->reduceStock($productId, ($newQuantity - $oldQuantity));
     }
 
     private const PAGINATION_LIMIT = 10;
     /**
-     * @throws NoContentException
+     * @param int $pagina Número de página que se desea obtener
+     * @throws NoContentException cuando la página está vacía
+     * @return Collection La lista de stock de la página deseada
      */
     public function paginated(int $pagina): Collection
     {
@@ -99,6 +114,9 @@ class StockService
         return $stockList;
     }
 
+    /**
+     * @return int La cántidad de páginas que tiene el Stock
+     */
     public function getAmountOfPages(): int
     {
         $paginas = $this->repository->all()->count();

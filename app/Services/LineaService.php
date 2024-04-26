@@ -16,7 +16,9 @@ class LineaService
 
     private const PAGINATION_LIMIT = 20;
     /**
-     * @throws NoContentException
+     * @param int $pagina Número de página que se desea obtener
+     * @throws NoContentException cuando la página está vacía
+     * @return Collection Las líneas de la página deseada
      */
     public function paginated(int $pagina): Collection
     {
@@ -29,6 +31,9 @@ class LineaService
         return $lineas;
     }
 
+    /**
+     * @return int La cantidad de páginas que tienen las líneas
+     */
     public function  getAmountOfPages(): int
     {
         $paginas = $this->repository->all()->count();
@@ -37,7 +42,9 @@ class LineaService
     }
 
     /**
-     * @throws NoContentException
+     * @param int $id ID del pedido
+     * @throws NoContentException cuando no hay líneas en el pedido
+     * @return Collection Las líneas del pedido
      */
     public function findAllByIdPedido(int $id): Collection
     {

@@ -6,9 +6,9 @@ use Exception;
 use Throwable;
 
 /**
- * Excepción que se lanza cuando una mesa no tiene el estado 'ocupada'
+ * Excepción que se lanza cuando el usuario no tiene el rol 'mesero'
  */
-class MesaDesocupadaException extends Exception
+class UserIsNotWaiterException extends Exception
 {
     public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {

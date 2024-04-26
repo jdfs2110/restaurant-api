@@ -6,7 +6,6 @@ use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
-use App\Models\Role;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Services\RoleService;

@@ -4,16 +4,15 @@ namespace App\Http\Controllers\api;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Exceptions\PedidoSinFacturaException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FacturaResource;
-use App\Models\Pedido;
 use App\Repositories\FacturaRepository;
 use App\Repositories\PedidoRepository;
 use App\Services\FacturaService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Factura;
 use Illuminate\Validation\ValidationException;
 
 class FacturaController extends Controller
@@ -134,12 +133,13 @@ class FacturaController extends Controller
             $message = $deletion == 1 ? 'La factura ha sido eliminada correctamente' : 'Error al eliminar la factura';
 
             return $this->successResponse('', $message);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
-
     }
 
     function getFacturaByPedido($id): JsonResponse
@@ -149,8 +149,10 @@ class FacturaController extends Controller
             $factura = $this->repository->findByIdPedido($id);
 
             return $this->successResponse(new FacturaResource($factura));
-        } catch (ModelNotFoundException $e) {
+
+        } catch (ModelNotFoundException|PedidoSinFacturaException $e) {
             return $this->errorResponse($e->getMessage());
+
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

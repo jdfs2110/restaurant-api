@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\PedidoSinFacturaException;
 use App\Models\Factura;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class FacturaRepository extends GeneralRepository
@@ -16,14 +16,14 @@ class FacturaRepository extends GeneralRepository
     }
 
     /**
-     * @throws Exception when a factura of a pedido is not found
+     * @throws PedidoSinFacturaException cuando el pedido no tiene una factura generada aún
      */
     public function findByIdPedido(int $id): Model
     {
         $factura = $this->getBuilder()->where('id_pedido', $id)->get()->first();
 
         if (is_null($factura)) {
-            throw new Exception('El pedido no tiene factura asociada.');
+            throw new PedidoSinFacturaException('El pedido no tiene factura asociada.');
         }
 
         return $factura;

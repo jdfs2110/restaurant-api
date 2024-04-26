@@ -16,7 +16,9 @@ class FacturaService
 
     private const PAGINATION_LIMIT = 20;
     /**
-     * @throws NoContentException
+     * @param int $pagina Número de página que se desea obtener
+     * @throws NoContentException cuando la página está vacía
+     * @return Collection Las facturas de la página deseada
      */
     public function paginated(int $pagina): Collection
     {
@@ -29,6 +31,9 @@ class FacturaService
         return $facturas;
     }
 
+    /**
+     * @return int La cantidad de páginas que tienen las facturas
+     */
     public function getAmountOfPages(): int
     {
         $paginas = $this->repository->all()->count();

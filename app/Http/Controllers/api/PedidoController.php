@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Events\PedidoCreatedEvent;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
-use App\Exceptions\UserIsNotMeseroException;
+use App\Exceptions\UserIsNotWaiterException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PedidoResource;
 use App\Repositories\LineaRepository;
@@ -146,7 +146,7 @@ class PedidoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (UserIsNotMeseroException $e) {
+        } catch (UserIsNotWaiterException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {

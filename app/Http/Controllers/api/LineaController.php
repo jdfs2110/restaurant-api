@@ -108,7 +108,7 @@ class LineaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (NegativeQuantityException $e) {
+        } catch (NegativeQuantityException|PedidoAlreadyServedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {
