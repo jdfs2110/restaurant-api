@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\EmailAlreadyInUseException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\UserIsNotWaiterException;
@@ -120,12 +121,14 @@ class UserController extends Controller
         try {
             $data = $request->validate([
                 'name' => 'required|string',
-                'email' => 'required|string|unique:users,email',
+                'email' => 'required|string',
                 'password' => 'required|string|confirmed',
                 'id_rol' => 'required|int'
             ]);
 
             $user = $this->repository->findOrFail($id);
+
+            $this->repository->emailExists($id, $data["email"]);
 
             $update = $user->update([
                 'name' => $data['name'],
@@ -135,10 +138,37 @@ class UserController extends Controller
             ]);
             $message = $update == 1 ? 'El usuario ha sido modificado correctamente.' : 'Error al modificar el usuario';
 
-            return $this->successResponse(new UsuarioResource($user), $message);
+            $updatedUser = $this->repository->findOrFail($id);
+
+            $this->service->sendUpdatedUserEmail($updatedUser);
+
+            return $this->successResponse(new UsuarioResource($user), '');
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
+
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+
+        } catch (EmailAlreadyInUseException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
+    }
+
+    public function deleteUser(int $id): JsonResponse
+    {
+        try {
+            $user = $this->repository->findOrFail($id);
+
+            $deletion = $this->repository->delete($user);
+            $message = $deletion == '1' ? 'El usuario ha sido eliminado correctamente.' : 'Error al eliminar el usuario.';
+
+            $this->service->sendGoodByeEmail($user);
+
+            return $this->successResponse('', $message);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());

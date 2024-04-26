@@ -44,12 +44,14 @@ Route::get('/roles/{id}/usuarios', [UserController::class, 'getAllUsersByRole'])
  *  3. Buscar un usuario por ID
  *  4. Buscar todos los pedidos manejados por un usuario concreto (ID)
  *  5. Editar un usuario
+ *  6. Eliminar un usuario
  */
 Route::get('/usuarios', [UserController::class, 'index']);
 Route::get('/usuarios/pages', [UserController::class, 'getAmountOfpages']);
 Route::get('/usuarios/{id}', [UserController::class, 'getUser']);
 Route::get('/usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']);
 Route::put('/usuarios/{id}', [UserController::class, 'updateUser']);
+Route::delete('/usuarios/{id}', [UserController::class, 'deleteUser']);
 
 /**
  *  Categorias endpoints

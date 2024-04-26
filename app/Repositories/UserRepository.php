@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\EmailAlreadyInUseException;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -23,5 +24,20 @@ class UserRepository extends GeneralRepository
     public function findAllByIdRol(int $id): Collection
     {
         return $this->getBuilder()->where('id_rol', $id)->get();
+    }
+
+    /**
+     * @param int $id ID del usuario
+     * @param string $email Email a comprobar
+     * @throws EmailAlreadyInUseException cuando el email ya está registrado
+     */
+    public function emailExists(int $id, string $email): void
+    {
+        // DONT TOUCH que se rompe
+        $count = $this->getBuilder()->getModel()->where('id', '!=', $id)->where('email', $email)->get()->count();
+
+        if ($count >= 1) {
+            throw new EmailAlreadyInUseException('El email ingresado ya existe');
+        }
     }
 }
