@@ -85,15 +85,16 @@
 
 ## Pedidos
 
-| Caso de uso                    | Endpoint              | Método HTTP |
-|--------------------------------| --------------------- | ----------- |
-| Buscar todos los pedidos       | /pedidos              | GET         |
-| Buscar un pedido por id        | /pedidos/{id}         | GET         |
-| Crear un pedido                | /pedidos/new          | POST        |
-| Editar un pedido               | /pedidos/{id}         | PUT         |
-| Eliminar un pedido (admin)     | /pedidos/{id}         | DELETE      | 
-| Buscar las líneas de un pedido | /pedidos/{id}/lineas  | GET         |
-| Buscar la factura de un pedido | /pedidos/{id}/factura | GET         |
+| Caso de uso                                | Endpoint              | Método HTTP |
+|--------------------------------------------|-----------------------|-------------|
+| Buscar todos los pedidos                   | /pedidos              | GET         |
+| Buscar un pedido por id                    | /pedidos/{id}         | GET         |
+| Crear un pedido                            | /pedidos/new          | POST        |
+| Editar un pedido                           | /pedidos/{id}         | PUT         |
+| Eliminar un pedido (admin)                 | /pedidos/{id}         | DELETE      | 
+| Buscar las líneas de un pedido             | /pedidos/{id}/lineas  | GET         |
+| Buscar la factura de un pedido             | /pedidos/{id}/factura | GET         |
+| Cambiar el estado de un pedido a 'servido' | /pedidos/{id}/servir  | POST        |
 
 ## Lineas
 
