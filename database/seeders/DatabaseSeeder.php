@@ -37,8 +37,16 @@ class DatabaseSeeder extends Seeder
          *  Creación de usuarios
          */
         User::factory()->create([
+            'name' => 'test user',
+            'email' => 'test@test.com',
+            'password' => bcrypt('123456'),
+            'id_rol' => '4',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+        User::factory()->create([
             'name' => 'admin',
-            'email' => 'admin@email.com',
+            'email' => 'admin@jdfs.dev',
             'password' => bcrypt('123456'),
             'id_rol' => '4',
             'fecha_ingreso' => date('Y-m-d')
@@ -46,7 +54,15 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'cocinero',
-            'email' => 'juancocina@email.com',
+            'email' => 'juancocina@jdfs.dev',
+            'password' => bcrypt('123456'),
+            'id_rol' => '2',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+        User::factory()->create([
+            'name' => 'cocinero 2',
+            'email' => 'josecocina@jdfs.dev',
             'password' => bcrypt('123456'),
             'id_rol' => '2',
             'fecha_ingreso' => date('Y-m-d')
@@ -54,7 +70,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'mesero',
-            'email' => 'mesero1@email.com',
+            'email' => 'mesero1@jdfs.dev',
             'password' => bcrypt('123456'),
             'id_rol' => '1',
             'fecha_ingreso' => date('Y-m-d')
@@ -62,7 +78,15 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'mesero 2',
-            'email' => 'mesero2@email.com',
+            'email' => 'mesero2@jdfs.dev',
+            'password' => bcrypt('123456'),
+            'id_rol' => '1',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+        User::factory()->create([
+            'name' => 'mesero 3',
+            'email' => 'mesero3@jdfs.dev',
             'password' => bcrypt('123456'),
             'id_rol' => '1',
             'fecha_ingreso' => date('Y-m-d')
@@ -70,7 +94,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Departamento de Recursos Humanos',
-            'email' => 'rrhh@email.com',
+            'email' => 'rrhh@jdfs.dev',
             'password' => bcrypt('123456'),
             'id_rol' => '3',
             'fecha_ingreso' => date('Y-m-d')
@@ -276,12 +300,12 @@ class DatabaseSeeder extends Seeder
 
         Mesa::factory()->create([
              'capacidad_maxima' => 2,
-             'estado' => 0
+             'estado' => 1
         ]);
 
         Mesa::factory()->create([
              'capacidad_maxima' => 1,
-             'estado' => 0
+             'estado' => 1
         ]);
 
         Mesa::factory()->create([
@@ -291,12 +315,12 @@ class DatabaseSeeder extends Seeder
 
         Mesa::factory()->create([
              'capacidad_maxima' => 5,
-             'estado' => 1
+             'estado' => 0
         ]);
 
         Mesa::factory()->create([
              'capacidad_maxima' => 3,
-             'estado' => 1
+             'estado' => 0
         ]);
 
         Mesa::factory()->create([
