@@ -39,6 +39,11 @@ class Mesa extends Model
         return self::ESTADOS[$this->estado];
     }
 
+    public function setEstado(int $estado): void
+    {
+        $this->estado = $estado;
+    }
+
     public function getEstadoValue(): int
     {
         return $this->estado;
