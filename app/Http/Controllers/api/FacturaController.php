@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class FacturaController extends Controller
 {
@@ -54,12 +55,15 @@ class FacturaController extends Controller
         }
     }
 
-    function getFactura(int $id): JsonResponse
+    function getFactura($id): JsonResponse
     {
         try {
             $factura = $this->repository->findOrFail($id);
 
             return $this->successResponse(new FacturaResource($factura));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -96,7 +100,7 @@ class FacturaController extends Controller
         }
     }
 
-    function updateFactura(Request $request, int $id): JsonResponse
+    function updateFactura(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -113,6 +117,9 @@ class FacturaController extends Controller
 
             return $this->successResponse(new FacturaResource($factura), $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
@@ -124,7 +131,7 @@ class FacturaController extends Controller
         }
     }
 
-    function deleteFactura(int $id): JsonResponse
+    function deleteFactura($id): JsonResponse
     {
         try {
             $factura = $this->repository->findOrFail($id);
@@ -134,6 +141,9 @@ class FacturaController extends Controller
 
             return $this->successResponse('', $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -142,13 +152,16 @@ class FacturaController extends Controller
         }
     }
 
-    function getFacturaByPedido(int $id): JsonResponse
+    function getFacturaByPedido($id): JsonResponse
     {
         try {
             $this->pedidoRepository->findOrFail($id);
             $factura = $this->repository->findByIdPedido($id);
 
             return $this->successResponse(new FacturaResource($factura));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException|PedidoSinFacturaException $e) {
             return $this->errorResponse($e->getMessage());

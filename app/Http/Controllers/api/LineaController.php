@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class LineaController extends Controller
 {
@@ -61,12 +62,15 @@ class LineaController extends Controller
         }
     }
 
-    function getLinea(int $id): JsonResponse
+    function getLinea($id): JsonResponse
     {
         try {
             $linea = $this->repository->findOrFail($id);
 
             return $this->successResponse(new LineaResource($linea));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -116,7 +120,7 @@ class LineaController extends Controller
         }
     }
 
-    function updateLinea(Request $request, int $id): JsonResponse
+    function updateLinea(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -144,6 +148,9 @@ class LineaController extends Controller
 
             return $this->successResponse(new LineaResource($linea), $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
@@ -158,7 +165,7 @@ class LineaController extends Controller
         }
     }
 
-    function deleteLinea(int $id): JsonResponse
+    function deleteLinea($id): JsonResponse
     {
         try {
             $linea = $this->repository->findOrFail($id);
@@ -168,6 +175,9 @@ class LineaController extends Controller
 
             return $this->successResponse('', $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -176,13 +186,16 @@ class LineaController extends Controller
         }
     }
 
-    function getLineasByPedido(int $id): JsonResponse
+    function getLineasByPedido($id): JsonResponse
     {
         try {
             $this->pedidoRepository->findOrFail($id);
             $lineas = $this->service->findAllByIdPedido($id);
 
             return $this->successResponse(LineaResource::collection($lineas), "Lineas del pedido $id");
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());

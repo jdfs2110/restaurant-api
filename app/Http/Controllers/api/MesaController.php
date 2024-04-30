@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class MesaController extends Controller
 {
@@ -39,12 +40,15 @@ class MesaController extends Controller
         }
     }
 
-    function getMesa(int $id): JsonResponse
+    function getMesa($id): JsonResponse
     {
         try {
             $mesa = $this->repository->findOrFail($id);
 
             return $this->successResponse(new MesaResource($mesa));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -77,7 +81,7 @@ class MesaController extends Controller
         }
     }
 
-    function deleteMesa(int $id): JsonResponse
+    function deleteMesa($id): JsonResponse
     {
         try {
             $mesa = $this->repository->findOrFail($id);
@@ -87,6 +91,9 @@ class MesaController extends Controller
 
             return $this->successResponse('', $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -95,7 +102,7 @@ class MesaController extends Controller
         }
     }
 
-    function updateMesa(Request $request, int $id): JsonResponse
+    function updateMesa(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -113,6 +120,9 @@ class MesaController extends Controller
 
             return $this->successResponse(new MesaResource($mesa), $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
@@ -124,12 +134,15 @@ class MesaController extends Controller
         }
     }
 
-    function getPedidosByMesa(int $id): JsonResponse
+    function getPedidosByMesa($id): JsonResponse
     {
         try {
             $pedidos = $this->service->getPedidosByMesa($id);
 
             return $this->successResponse(PedidoResource::collection($pedidos));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -143,12 +156,15 @@ class MesaController extends Controller
     }
 
     // TODO: hacerle una revisión porque no estoy muy claro
-    function getPedidoActual(int $id): JsonResponse
+    function getPedidoActual($id): JsonResponse
     {
         try {
             $pedido = $this->service->getPedidoActual($id);
 
             return $this->successResponse(new PedidoResource($pedido));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());

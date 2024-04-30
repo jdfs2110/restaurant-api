@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class CategoriaController extends Controller
 {
@@ -53,12 +54,15 @@ class CategoriaController extends Controller
         }
     }
 
-    function getCategoria(int $id): JsonResponse
+    function getCategoria($id): JsonResponse
     {
         try {
             $categoria = $this->repository->findOrFail($id);
 
             return $this->successResponse(new CategoriaResource($categoria));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -93,7 +97,7 @@ class CategoriaController extends Controller
         }
     }
 
-    function deleteCategoria(int $id): JsonResponse
+    function deleteCategoria($id): JsonResponse
     {
         try {
             $categoria = $this->repository->findOrFail($id);
@@ -111,6 +115,9 @@ class CategoriaController extends Controller
 
             return $this->successResponse('', $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -121,11 +128,11 @@ class CategoriaController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param $id
      * @return JsonResponse
      * @uses Este método requiere que sea hecho a través de POST, con '?_method=PUT' al final de la URL.
      */
-    function updateCategoria(Request $request, int $id): JsonResponse
+    function updateCategoria(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -151,6 +158,9 @@ class CategoriaController extends Controller
             $message = $update == 1 ? 'La categoría ha sido modificada correctamente.' : 'Error al modificar la categoría.';
 
             return $this->successResponse(new CategoriaResource($categoria), $message);
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);

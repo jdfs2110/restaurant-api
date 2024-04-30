@@ -81,7 +81,7 @@ class StockController extends Controller
         }
     }
 
-    function updateStock(Request $request, int $id): JsonResponse
+    function updateStock(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -99,6 +99,9 @@ class StockController extends Controller
             $message = $update == 1 ? 'El stock ha sido modificado correctamente.' : 'Error al modificar el stock.';
 
             return $this->successResponse(new StockResource($stock), $message);
+
+        } catch (\TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);

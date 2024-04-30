@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class UserController extends Controller
 {
@@ -60,12 +61,15 @@ class UserController extends Controller
         }
     }
 
-    public function getUser(int $id): JsonResponse
+    public function getUser($id): JsonResponse
     {
         try {
             $user = $this->repository->findOrFail($id);
 
             return $this->successResponse(new UsuarioResource($user));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -75,12 +79,15 @@ class UserController extends Controller
         }
     }
 
-    public function getUsersPedidos(int $id): JsonResponse
+    public function getUsersPedidos($id): JsonResponse
     {
         try {
             $pedidos = $this->pedidoService->findPedidosByIdUsuario($id);
 
             return $this->successResponse(PedidoResource::collection($pedidos));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -96,7 +103,7 @@ class UserController extends Controller
         }
     }
 
-    public function getAllUsersByRole(int $id): JsonResponse
+    public function getAllUsersByRole($id): JsonResponse
     {
         try {
             $this->roleRepository->findOrFail($id);
@@ -104,6 +111,9 @@ class UserController extends Controller
             $users = $this->service->findAllByIdRol($id);
 
             return $this->successResponse(UsuarioResource::collection($users));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -116,7 +126,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateUser(Request $request, int $id): JsonResponse
+    public function updateUser(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -142,7 +152,10 @@ class UserController extends Controller
 
             $this->service->sendUpdatedUserEmail($updatedUser);
 
-            return $this->successResponse(new UsuarioResource($user), '');
+            return $this->successResponse(new UsuarioResource($user), $message);
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
@@ -158,7 +171,7 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUser(int $id): JsonResponse
+    public function deleteUser($id): JsonResponse
     {
         try {
             $user = $this->repository->findOrFail($id);
@@ -169,6 +182,9 @@ class UserController extends Controller
             $this->service->sendGoodByeEmail($user);
 
             return $this->successResponse('', $message);
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());

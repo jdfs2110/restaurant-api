@@ -17,6 +17,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class ProductoController extends Controller
 {
@@ -59,12 +60,15 @@ class ProductoController extends Controller
         }
     }
 
-    function getProducto(int $id): JsonResponse
+    function getProducto($id): JsonResponse
     {
         try {
             $producto = $this->repository->findOrFail($id);
 
             return $this->successResponse(new ProductoResource($producto));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -112,7 +116,7 @@ class ProductoController extends Controller
         }
     }
 
-    function deleteProducto(int $id): JsonResponse
+    function deleteProducto($id): JsonResponse
     {
         try {
             $producto = $this->repository->findOrFail($id);
@@ -129,6 +133,9 @@ class ProductoController extends Controller
 
             return $this->successResponse('', $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -137,7 +144,7 @@ class ProductoController extends Controller
         }
     }
 
-    function getProductosByCategoria(int $id): JsonResponse
+    function getProductosByCategoria($id): JsonResponse
     {
         try {
             $this->categoriaRepository->findOrFail($id);
@@ -145,6 +152,9 @@ class ProductoController extends Controller
             $productos = $this->service->findAllByIdCategoria($id);
 
             return $this->successResponse(ProductoResource::collection($productos));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -157,7 +167,7 @@ class ProductoController extends Controller
         }
     }
 
-    function getProductStock(int $id): JsonResponse
+    function getProductStock($id): JsonResponse
     {
         try {
             $this->repository->findOrFail($id);
@@ -165,6 +175,9 @@ class ProductoController extends Controller
             $stock = $this->stockRepository->findByIdProductoOrFail($id);
 
             return $this->successResponse(new StockResource($stock));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -176,11 +189,11 @@ class ProductoController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param $id
      * @return JsonResponse
      * @uses Este método requiere que sea hecho a través de POST, con '?_method=PUT' al final de la URL.
      */
-    function updateProducto(Request $request, int $id): JsonResponse
+    function updateProducto(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -218,6 +231,9 @@ class ProductoController extends Controller
 
             return $this->successResponse(new ProductoResource($producto), $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
@@ -229,7 +245,7 @@ class ProductoController extends Controller
         }
     }
 
-    function addStock(Request $request, int $id): JsonResponse
+    function addStock(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -244,6 +260,9 @@ class ProductoController extends Controller
 
             return $this->successResponse(new StockResource($updatedStock), 'Cantidad actualizada correctamente.');
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
@@ -255,7 +274,7 @@ class ProductoController extends Controller
         }
     }
 
-    function reduceStock(Request $request, int $id): JsonResponse
+    function reduceStock(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -269,6 +288,9 @@ class ProductoController extends Controller
             $updatedStock = $this->stockRepository->findByIdProducto($id);
 
             return $this->successResponse(new StockResource($updatedStock), 'Cantidad actualizada correctamente.');
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);

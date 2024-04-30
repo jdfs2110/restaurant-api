@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class RoleController extends Controller
 {
@@ -53,12 +54,15 @@ class RoleController extends Controller
         }
     }
 
-    function getRole(int $id): JsonResponse
+    function getRole($id): JsonResponse
     {
         try {
             $role = $this->repository->findOrFail($id);
 
             return $this->successResponse(new RoleResource($role));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -89,7 +93,7 @@ class RoleController extends Controller
         }
     }
 
-    public function deleteRole(int $id): JsonResponse
+    public function deleteRole($id): JsonResponse
     {
         try {
             $role = $this->repository->findOrFail($id);
@@ -104,6 +108,9 @@ class RoleController extends Controller
 
             return $this->successResponse('', $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
@@ -112,7 +119,7 @@ class RoleController extends Controller
         }
     }
 
-    public function updateRole(Request $request, int $id): JsonResponse
+    public function updateRole(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -127,6 +134,9 @@ class RoleController extends Controller
             $message = $update == 1 ? 'El rol ha sido modificado correctamente.' : 'Error al modificar el rol.';
 
             return $this->successResponse(new RoleResource($role), $message);
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);

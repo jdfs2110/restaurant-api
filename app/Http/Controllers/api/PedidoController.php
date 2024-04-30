@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use TypeError;
 
 class PedidoController extends Controller
 {
@@ -61,12 +62,15 @@ class PedidoController extends Controller
         }
     }
 
-    function getPedido(int $id): JsonResponse
+    function getPedido($id): JsonResponse
     {
         try {
             $pedido = $this->repository->findOrFail($id);
 
             return $this->successResponse(new PedidoResource($pedido));
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
@@ -113,7 +117,7 @@ class PedidoController extends Controller
         }
     }
 
-    function updatePedido(Request $request, int $id): JsonResponse
+    function updatePedido(Request $request, $id): JsonResponse
     {
         try {
             $data = $request->validate([
@@ -140,6 +144,9 @@ class PedidoController extends Controller
 
             return $this->successResponse(new PedidoResource($pedido), $message);
 
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
@@ -154,7 +161,7 @@ class PedidoController extends Controller
         }
     }
 
-    function deletePedido(int $id): JsonResponse
+    function deletePedido($id): JsonResponse
     {
         try {
             $pedido = $this->repository->findOrFail($id);
@@ -170,6 +177,9 @@ class PedidoController extends Controller
             $message = $deletion == 1 ? 'El pedido ha sido eliminado correctamente' : 'Error al eliminar el pedido';
 
             return $this->successResponse('', $message);
+
+        } catch(TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
