@@ -91,11 +91,7 @@ class AuthController extends Controller
         try {
             PersonalAccessToken::findToken($request->bearerToken())->delete();
 
-            $response = [
-                'message' => 'logged out'
-            ];
-
-            return response()->json($response);
+            return $this->successResponse('', 'logged out.');
 
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());
