@@ -139,9 +139,16 @@ class PedidoController extends Controller
             ]);
 
             $pedido = $this->repository->findOrFail($id);
+
+            $this->service->checkIfServido($pedido);
+
             $this->mesaRepository->findOrFail($data['id_mesa']);
 
             $this->userService->checkIfMesero($data['id_usuario']);
+
+            if ($data['estado'] === 2) {
+                $this->service->servirPedido($id);
+            }
 
             $update = $pedido->update([
                 'estado' => $data['estado'],
@@ -163,7 +170,7 @@ class PedidoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (UserIsNotWaiterException $e) {
+        } catch (UserIsNotWaiterException|PedidoAlreadyServedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {

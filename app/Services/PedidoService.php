@@ -6,10 +6,10 @@ use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
 use App\Exceptions\UserIsNotWaiterException;
+use App\Models\Pedido;
 use App\Repositories\LineaRepository;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
 class PedidoService
@@ -25,6 +25,17 @@ class PedidoService
     }
 
     /**
+     * @param Pedido $pedido El pedido a revisar
+     * @throws PedidoAlreadyServedException cuando el pedido ya está servido
+     */
+    public function checkIfServido(Pedido $pedido): void
+    {
+        if ($pedido->isServido()) {
+            throw new PedidoAlreadyServedException('No se puede editar un pedido servido.');
+        }
+    }
+
+    /**
      * @param int $id ID del pedido
      * @throws PedidoAlreadyServedException si el pedido a recalcular ya está servido
      * @throws ModelNotFoundException cuando no se encuentra el pedido
@@ -33,9 +44,7 @@ class PedidoService
     {
         $pedido = $this->repository->findOrFail($id);
 
-        if ($pedido->isServido()) {
-            throw new PedidoAlreadyServedException('No se puede editar un pedido servido.');
-        }
+        $this->checkIfServido($pedido);
 
         $lineas = $this->lineaRepository->findAllByIdPedido($id);
 
@@ -105,9 +114,7 @@ class PedidoService
     {
         $pedido = $this->repository->findOrFail($id);
 
-        if ($pedido->isServido()) {
-            throw new PedidoAlreadyServedException('El pedido ya esta servido.');
-        }
+        $this->checkIfServido($pedido);
 
         $mesa = $this->mesaRepository->findOrFail($pedido->getIdMesa());
 
