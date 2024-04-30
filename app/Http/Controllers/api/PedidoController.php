@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Events\PedidoCreatedEvent;
+use App\Exceptions\MesaOcupadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Exceptions\PedidoAlreadyServedException;
 use App\Exceptions\UserIsNotWaiterException;
 use App\Http\Controllers\Controller;
 use App\Repositories\LineaRepository;
@@ -12,6 +14,7 @@ use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\UserRepository;
 use App\Resources\PedidoResource;
+use App\Services\MesaService;
 use App\Services\PedidoService;
 use App\Services\UserService;
 use Exception;
@@ -26,9 +29,10 @@ class PedidoController extends Controller
         public readonly PedidoRepository $repository,
         public readonly PedidoService    $service,
         public readonly MesaRepository   $mesaRepository,
+        public readonly MesaService      $mesaService,
         public readonly UserRepository   $userRepository,
         public readonly UserService      $userService,
-        public readonly LineaRepository  $lineaRepository
+        public readonly LineaRepository  $lineaRepository,
     )
     {
     }
@@ -90,8 +94,9 @@ class PedidoController extends Controller
                 'id_usuario' => 'required|int'
             ]);
 
-            $this->mesaRepository->findOrFail($data['id_mesa']);
-            $this->userRepository->findOrFail($data['id_usuario']);
+            $mesa = $this->mesaService->checkIfBusy($data['id_mesa']);
+
+            $this->userService->checkIfMesero($data['id_usuario']);
 
             $pedido = $this->repository->create([
                 'fecha' => now(),
@@ -102,6 +107,8 @@ class PedidoController extends Controller
                 'id_usuario' => $data['id_usuario']
             ]);
 
+            $this->mesaService->setOcupada($mesa);
+
             event(new PedidoCreatedEvent($pedido));
 
             return $this->successResponse(new PedidoResource($pedido), 'Pedido creado correctamente.', 201);
@@ -111,6 +118,9 @@ class PedidoController extends Controller
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
+        } catch (MesaOcupadaException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());
@@ -183,6 +193,27 @@ class PedidoController extends Controller
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
+
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
+        }
+    }
+
+    function servirPedido($id): JsonResponse
+    {
+        try {
+            $this->service->servirPedido($id);
+
+            return $this->successResponse('', 'Estado del pedido cambiado correctamente.');
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+
+        } catch (PedidoAlreadyServedException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());

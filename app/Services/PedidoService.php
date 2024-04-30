@@ -7,6 +7,7 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
 use App\Exceptions\UserIsNotWaiterException;
 use App\Repositories\LineaRepository;
+use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,7 +17,9 @@ class PedidoService
     public function __construct(
         public readonly PedidoRepository $repository,
         public readonly LineaRepository $lineaRepository,
-        public readonly UserService     $userService
+        public readonly UserService     $userService,
+        public readonly MesaRepository  $mesaRepository,
+        public readonly MesaService     $mesaService,
     )
     {
     }
@@ -91,5 +94,26 @@ class PedidoService
         }
 
         return $pedidos;
+    }
+
+    /**
+     * @param int $id ID del pedido
+     * @throws ModelNotFoundException cuando no se encuentra el pedido o la mesa
+     * @throws PedidoAlreadyServedException cuando el pedido ya está servido
+     */
+    public function servirPedido(int $id): void
+    {
+        $pedido = $this->repository->findOrFail($id);
+
+        if ($pedido->isServido()) {
+            throw new PedidoAlreadyServedException('El pedido ya esta servido.');
+        }
+
+        $mesa = $this->mesaRepository->findOrFail($pedido->getIdMesa());
+
+        $this->mesaService->setLibre($mesa);
+
+        $pedido->setEstado(2);
+        $pedido->save();
     }
 }
