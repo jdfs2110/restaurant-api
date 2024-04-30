@@ -143,7 +143,7 @@ Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido']);
 Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido']);
 Route::get('/pedidos/{id}/lineas', [LineaController::class, 'getLineasByPedido']);
 Route::get('/pedidos/{id}/factura', [FacturaController::class, 'getFacturaByPedido']);
-Route::get('/pedidos/{id}/servir', [PedidoController::class, 'servirPedido']);
+Route::post('/pedidos/{id}/servir', [PedidoController::class, 'servirPedido']);
 
 /**
  *  Líneas endpoints
