@@ -4,8 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Exceptions\IncorrectLoginException;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UsuarioResource;
 use App\Repositories\UserRepository;
+use App\Resources\UsuarioResource;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;

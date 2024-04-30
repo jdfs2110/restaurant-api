@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoleResource extends JsonResource
+class FacturaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,8 @@ class RoleResource extends JsonResource
     {
         return [
             'id' => $this->getId(),
-            'nombre' => $this->getNombre(),
-            'created_at' => $this->getCreatedAt()
+            'fecha' => $this->getFecha(),
+            'id_pedido' => $this->getIdPedido(),
         ];
     }
 }

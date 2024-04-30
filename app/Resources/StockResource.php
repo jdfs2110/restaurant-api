@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FacturaResource extends JsonResource
+class StockResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,10 @@ class FacturaResource extends JsonResource
     {
         return [
             'id' => $this->getId(),
-            'fecha' => $this->getFecha(),
-            'id_pedido' => $this->getIdPedido(),
+            'id_producto' => $this->getIdProducto(),
+            'producto' => $this->producto->getNombre(),
+            'cantidad' => $this->getCantidad(),
+            'created_at' => $this->getCreatedAt()
         ];
     }
 }

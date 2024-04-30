@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Resources;
 
-use App\Traits\GeneralClass;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoriaResource extends JsonResource
+class RoleResource extends JsonResource
 {
-    use GeneralClass;
     /**
      * Transform the resource into an array.
      *
@@ -19,7 +17,7 @@ class CategoriaResource extends JsonResource
         return [
             'id' => $this->getId(),
             'nombre' => $this->getNombre(),
-            'foto' => $this->toCloudflareUrl($this->getFoto()),
+            'created_at' => $this->getCreatedAt()
         ];
     }
 }

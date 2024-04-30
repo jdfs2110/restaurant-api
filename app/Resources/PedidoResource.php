@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MesaResource extends JsonResource
+class PedidoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,13 @@ class MesaResource extends JsonResource
     {
         return [
             'id' => $this->getId(),
-            'capacidad_maxima' => $this->getCapacidadMaxima(),
+            'fecha' => $this->getFecha(),
             'estado' => $this->getEstado(),
             'estado_numero' => $this->getEstadoValue(),
+            'precio' => $this->getPrecio(),
+            'numero_comensales' => $this->getNumeroComensales(),
+            'id_mesa' => $this->getIdMesa(),
+            'id_usuario' => $this->getIdUsuario(),
         ];
     }
 }

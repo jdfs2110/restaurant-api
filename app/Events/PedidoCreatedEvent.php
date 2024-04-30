@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
+use App\Resources\PedidoResource;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
