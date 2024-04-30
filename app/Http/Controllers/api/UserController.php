@@ -44,8 +44,8 @@ class UserController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -56,8 +56,8 @@ class UserController extends Controller
 
             return $this->successResponse($paginas);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -74,8 +74,8 @@ class UserController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
         try {
             $pedidos = $this->pedidoService->findPedidosByIdUsuario($id);
 
-            return $this->successResponse(PedidoResource::collection($pedidos));
+            return $this->successResponse(PedidoResource::collection($pedidos), "Pedidos del usuario $id");
 
         } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
@@ -98,8 +98,8 @@ class UserController extends Controller
         } catch (UserIsNotWaiterException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -110,7 +110,7 @@ class UserController extends Controller
 
             $users = $this->service->findAllByIdRol($id);
 
-            return $this->successResponse(UsuarioResource::collection($users));
+            return $this->successResponse(UsuarioResource::collection($users), "Usuarios del rol $id");
 
         } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
@@ -121,8 +121,8 @@ class UserController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -166,8 +166,8 @@ class UserController extends Controller
         } catch (EmailAlreadyInUseException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -189,8 +189,8 @@ class UserController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 }

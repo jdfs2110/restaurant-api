@@ -43,8 +43,8 @@ class ProductoController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -55,8 +55,8 @@ class ProductoController extends Controller
 
             return $this->successResponse($paginas);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -73,8 +73,8 @@ class ProductoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -111,8 +111,8 @@ class ProductoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -162,8 +162,8 @@ class ProductoController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -182,8 +182,8 @@ class ProductoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -209,9 +209,9 @@ class ProductoController extends Controller
 
             $this->categoriaRepository->findOrFail($data['id_categoria']);
 
-            $null = is_null($data['foto']);
+            $notNull = !is_null($data['foto']);
 
-            if (!$null) {
+            if ($notNull) {
                 $path = $request->file('foto')->store('productos', 'r2');
 
                 $this->deletePhotoIfExists($producto->getFoto());
@@ -240,8 +240,8 @@ class ProductoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -269,8 +269,8 @@ class ProductoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -301,8 +301,8 @@ class ProductoController extends Controller
         } catch (NegativeQuantityException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 }

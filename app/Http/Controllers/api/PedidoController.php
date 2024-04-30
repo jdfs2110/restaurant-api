@@ -49,8 +49,8 @@ class PedidoController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -61,8 +61,8 @@ class PedidoController extends Controller
 
             return $this->successResponse($paginas);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -79,8 +79,8 @@ class PedidoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -122,8 +122,8 @@ class PedidoController extends Controller
         } catch (MesaOcupadaException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -139,11 +139,9 @@ class PedidoController extends Controller
             ]);
 
             $pedido = $this->repository->findOrFail($id);
-
-            $this->service->checkIfServido($pedido);
-
             $this->mesaRepository->findOrFail($data['id_mesa']);
 
+            $this->service->checkIfServido($pedido);
             $this->userService->checkIfMesero($data['id_usuario']);
 
             if ($data['estado'] === 2) {
@@ -173,8 +171,8 @@ class PedidoController extends Controller
         } catch (UserIsNotWaiterException|PedidoAlreadyServedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -201,8 +199,8 @@ class PedidoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -222,8 +220,8 @@ class PedidoController extends Controller
         } catch (PedidoAlreadyServedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 }

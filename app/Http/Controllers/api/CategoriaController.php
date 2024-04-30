@@ -37,8 +37,8 @@ class CategoriaController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -49,8 +49,8 @@ class CategoriaController extends Controller
 
             return $this->successResponse($paginas);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -92,8 +92,8 @@ class CategoriaController extends Controller
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -121,8 +121,8 @@ class CategoriaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -142,9 +142,9 @@ class CategoriaController extends Controller
 
             $categoria = $this->repository->findOrFail($id);
 
-            $null = is_null($data['foto']);
+            $notNull = !is_null($data['foto']);
 
-            if (!$null) {
+            if ($notNull) {
                 $path = $request->file('foto')->store('categorias', 'r2');
 
                 $this->deletePhotoIfExists($categoria->getFoto());
@@ -168,8 +168,8 @@ class CategoriaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse('¿Estás usando POST y _method=PUT?');
         }
     }
 }

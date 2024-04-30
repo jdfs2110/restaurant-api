@@ -38,8 +38,8 @@ class FacturaController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -50,8 +50,8 @@ class FacturaController extends Controller
 
             return $this->successResponse($paginas);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -68,8 +68,8 @@ class FacturaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -95,8 +95,8 @@ class FacturaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -126,8 +126,8 @@ class FacturaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -147,8 +147,8 @@ class FacturaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -166,8 +166,8 @@ class FacturaController extends Controller
         } catch (ModelNotFoundException|PedidoSinFacturaException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 }

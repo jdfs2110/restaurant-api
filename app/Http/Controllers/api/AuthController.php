@@ -49,8 +49,8 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -81,8 +81,8 @@ class AuthController extends Controller
         } catch (IncorrectLoginException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
@@ -93,8 +93,8 @@ class AuthController extends Controller
 
             return $this->successResponse('', 'logged out.');
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 }

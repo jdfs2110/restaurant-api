@@ -155,7 +155,7 @@ class MesaController extends Controller
         }
     }
 
-    // TODO: hacerle una revisión porque no estoy muy claro
+    // Parece ser que está bien
     function getPedidoActual($id): JsonResponse
     {
         try {
