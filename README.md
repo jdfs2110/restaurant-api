@@ -1,10 +1,9 @@
 # TODO
 
-- [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
 - [ ] secure routes before production
+- [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
 - [x] remove all error messages for unhandled errors before production
-- [ ] mesacontroller
-- [ ] quitarle el hashing a las contraseñas cuando esten hasheadas client-side
+- [x] mesacontroller
 
 ##### Side note
 
