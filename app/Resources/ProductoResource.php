@@ -2,13 +2,13 @@
 
 namespace App\Resources;
 
-use App\Traits\GeneralClass;
+use App\Traits\CloudflareUtilsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductoResource extends JsonResource
 {
-    use GeneralClass;
+    use CloudflareUtilsTrait;
     /**
      * Transform the resource into an array.
      *

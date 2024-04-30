@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\GeneralClass;
+use App\Traits\ApiResponsesTrait;
+use App\Traits\CloudflareUtilsTrait;
 
 abstract class Controller
 {
-    use GeneralClass;
+    use ApiResponsesTrait, CloudflareUtilsTrait;
 }
