@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 trait GeneralClass
 {
     /**
-     * @param mixed $data Datos que se va a formatear a JSON
+     * @param mixed $data Datos que se van a formatear a JSON
      * @param string $message Mensaje de respuesta (Por defecto una cadena vacía)
      * @param int $status El estado HTTP (Por defecto 200 OK)
      * @return JsonResponse La respuesta formateada a JSON
