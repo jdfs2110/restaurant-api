@@ -4,6 +4,7 @@
 - [ ] secure routes before production
 - [ ] remove all error messages for unhandled errors before production
 - [ ] mesacontroller
+- [ ] quitarle el hashing a las contraseñas cuando esten hasheadas client-side
 
 ##### Side note
 
@@ -29,26 +30,26 @@
 
 ## Usuarios
 
-| Caso de uso                                | Endpoint              | Método HTTP |
-| ------------------------------------------ | --------------------- | ----------- |
-| Listar todos los usuarios (admin)          | /usuarios             | GET         |
-| Buscar un usuario por id                   | /usuarios/{id}        | GET         |
-| Login                                      | /login                | POST        |
-| Registro                                   | /registro             | POST        |
-| Cierre de sesión                           | /logout               | POST        |
-| Editar usuario (admin)                     | /usuarios/{id}        | PUT         |
-| Buscar los pedidos manejados por un usuario (filtrado por mesero en el cliente)| /usuarios/{id}/pedidos| GET         |
+| Caso de uso                                                                     | Endpoint               | Método HTTP |
+|---------------------------------------------------------------------------------|------------------------|-------------|
+| Listar todos los usuarios (admin)                                               | /usuarios              | GET         |
+| Buscar un usuario por id                                                        | /usuarios/{id}         | GET         |
+| Login                                                                           | /login                 | POST        |
+| Registro                                                                        | /registro              | POST        |
+| Cierre de sesión                                                                | /logout                | POST        |
+| Editar usuario (admin)                                                          | /usuarios/{id}         | PUT         |
+| Buscar los pedidos manejados por un usuario (filtrado por mesero en el cliente) | /usuarios/{id}/pedidos | GET         |
 
 ## Categorias
 
-| Caso de uso                           | Endpoint             | Método HTTP |
-| ------------------------------------- | -------------------- | ----------- |
-| Buscar todas las categorias           | /categorias          | GET         |
-| Buscar una categoría por id           | /categorias/{id}     | GET         |
-| Crear una categoría                   | /categorias/new      | POST        |
-| Eliminar una categoría (admin)        | /categorias/{id}     | DELETE      |
-| Buscar todos los productos de una categoría | /categorias/{id}/productos | GET | 
-| Editar una categoría                  | /categorias/{id}     | PUT         |
+| Caso de uso                                 | Endpoint                   | Método HTTP |
+|---------------------------------------------|----------------------------|-------------|
+| Buscar todas las categorias                 | /categorias                | GET         |
+| Buscar una categoría por id                 | /categorias/{id}           | GET         |
+| Crear una categoría                         | /categorias/new            | POST        |
+| Eliminar una categoría (admin)              | /categorias/{id}           | DELETE      |
+| Buscar todos los productos de una categoría | /categorias/{id}/productos | GET         | 
+| Editar una categoría                        | /categorias/{id}           | PUT         |
 
 ## Productos
 
@@ -65,11 +66,11 @@
 
 ## Stock
 
-| Caso de uso                            | Endpoint              | Método HTTP |
-|----------------------------------------| --------------------- | ----------- |
-| Buscar el stock de todos los productos | /stock                | GET         |
-| Dar de alta un stock                   | /stock/new            | POST        |
-| Editar un stock (admin only)           | /stock/{id}           | PUT         |
+| Caso de uso                            | Endpoint    | Método HTTP |
+|----------------------------------------|-------------|-------------|
+| Buscar el stock de todos los productos | /stock      | GET         |
+| Dar de alta un stock                   | /stock/new  | POST        |
+| Editar un stock (admin only)           | /stock/{id} | PUT         |
 
 ## Mesas
 
@@ -108,12 +109,12 @@
 
 ## Facturas
 
-| Caso de uso                    | Endpoint              | Método HTTP |
-| ------------------------------ | --------------------- | ----------- |
-| Buscar todas las facturas      | /facturas             | GET         |
-| Buscar una factura por id      | /facturas/{id}        | GET         |
-| Crear una factura              | /facturas/new         | POST        |
-| Eliminar una factura (admin)   | /facturas/{id}        | DELETE      |
+| Caso de uso                  | Endpoint       | Método HTTP |
+|------------------------------|----------------|-------------|
+| Buscar todas las facturas    | /facturas      | GET         |
+| Buscar una factura por id    | /facturas/{id} | GET         |
+| Crear una factura            | /facturas/new  | POST        |
+| Eliminar una factura (admin) | /facturas/{id} | DELETE      |
 
 ---------------------
 <br>
