@@ -3,12 +3,15 @@
 namespace App\Services;
 
 use App\Exceptions\MesaDesocupadaException;
+use App\Exceptions\MesaOcupadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Models\Mesa;
 use App\Models\Pedido;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class MesaService
 {
@@ -68,5 +71,33 @@ class MesaService
         }
 
         return $this->pedidoRepository->findLastPedidoByIdMesa($id);
+    }
+
+    /**
+     * @param int $id ID de la mesa
+     * @throws ModelNotFoundException cuando no se encuentra la mesa
+     * @throws MesaOcupadaException cuando la mesa tiene el estado 'ocupada'
+     */
+    public function checkIfBusy(int $id): Model
+    {
+        $mesa = $this->repository->findOrFail($id);
+
+        if ($mesa->getEstado() === 'ocupada') {
+            throw new MesaOcupadaException('No se puede asignar un pedido a una mesa ocupada.');
+        }
+
+        return $mesa;
+    }
+
+    public function setOcupada(Mesa $mesa): void
+    {
+        $mesa->setEstado(1);
+        $mesa->save();
+    }
+
+    public function setLibre(Mesa $mesa): void
+    {
+        $mesa->setEstado(0);
+        $mesa->save();
     }
 }
