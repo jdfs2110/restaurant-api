@@ -127,12 +127,13 @@ Route::get('/mesas/{id}/pedido', [MesaController::class, 'getPedidoActual']);
  *  Pedidos endpoints
  *  1. Pedidos paginados
  *  2. Cantidad de páginas que tienen los pedidos
- *  2. Buscar un pedido por ID
- *  3. Crear un pedido
- *  4. Editar un pedido
- *  5. Eliminar un pedido
- *  6. Buscar las líneas de un pedido
- *  7. Buscar la factura de un pedido
+ *  3. Buscar un pedido por ID
+ *  4. Crear un pedido
+ *  5. Editar un pedido
+ *  6. Eliminar un pedido
+ *  7. Buscar las líneas de un pedido
+ *  8. Buscar la factura de un pedido
+ *  9. Cambiar el estado de un pedido a 'servido'
  */
 Route::get('/pedidos', [PedidoController::class, 'index']);
 Route::get('/pedidos/pages', [PedidoController::class, 'getAmountOfPages']);
@@ -142,6 +143,7 @@ Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido']);
 Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido']);
 Route::get('/pedidos/{id}/lineas', [LineaController::class, 'getLineasByPedido']);
 Route::get('/pedidos/{id}/factura', [FacturaController::class, 'getFacturaByPedido']);
+Route::get('/pedidos/{id}/servir', [PedidoController::class, 'servirPedido']);
 
 /**
  *  Líneas endpoints
