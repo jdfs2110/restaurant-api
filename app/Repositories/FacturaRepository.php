@@ -12,7 +12,7 @@ class FacturaRepository extends GeneralRepository
     public function __construct()
     {
         $this->setBuilderFromModel(Factura::query()->getModel());
-        $this->setEntityName(self::ENTITY_NAME);
+        $this->setNotFoundMessage(self::ENTITY_NAME. ' no encontrada.');
     }
 
     /**

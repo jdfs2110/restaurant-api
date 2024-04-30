@@ -10,6 +10,6 @@ class MesaRepository extends GeneralRepository
     public function __construct()
     {
         $this->setBuilderFromModel(Mesa::query()->getModel());
-        $this->setEntityName(self::ENTITY_NAME);
+        $this->setNotFoundMessage(self::ENTITY_NAME . ' no encontrada.');
     }
 }

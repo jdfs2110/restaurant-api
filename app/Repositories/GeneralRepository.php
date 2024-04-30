@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class GeneralRepository
 {
     private ?Builder $builder = null;
-    private string $entityName = '';
+    private string $notFoundMessage = '';
     protected function getBuilder(): Builder
     {
         return $this->builder;
@@ -21,9 +21,9 @@ abstract class GeneralRepository
         $this->builder = $model::query();
     }
 
-    protected function setEntityName(string $entityName): void
+    protected function setNotFoundMessage(string $message): void
     {
-        $this->entityName = $entityName;
+        $this->notFoundMessage = $message;
     }
 
     public function all(): Collection
@@ -41,7 +41,7 @@ abstract class GeneralRepository
         $entity =  $this->builder->find($id);
 
         if (is_null($entity)) {
-            throw new ModelNotFoundException($this->entityName . ' not found.');
+            throw new ModelNotFoundException($this->notFoundMessage);
         }
 
         return $entity;

@@ -13,7 +13,7 @@ class StockRepository extends GeneralRepository
     public function __construct()
     {
         $this->setBuilderFromModel(Stock::query()->getModel());
-        $this->setEntityName(self::ENTITY_NAME);
+        $this->setNotFoundMessage(self::ENTITY_NAME . ' no encontrado.');
     }
 
     public function all(): Collection

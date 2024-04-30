@@ -11,7 +11,7 @@ class PedidoRepository extends GeneralRepository
     public function __construct()
     {
         $this->setBuilderFromModel(Pedido::query()->getModel());
-        $this->setEntityName(self::ENTITY_NAME);
+        $this->setNotFoundMessage(self::ENTITY_NAME . ' no encontrado.');
     }
 
     public function findPedidosByIdUsuario(int $id): Collection

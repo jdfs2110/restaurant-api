@@ -13,7 +13,7 @@ class UserRepository extends GeneralRepository
     public function __construct()
     {
         $this->setBuilderFromModel(User::query()->getModel());
-        $this->setEntityName(self::ENTITY_NAME);
+        $this->setNotFoundMessage(self::ENTITY_NAME . ' no encontrado.');
     }
 
     public function findByEmail(string $email): Model | null
