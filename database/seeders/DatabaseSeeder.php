@@ -310,7 +310,7 @@ class DatabaseSeeder extends Seeder
 
         Mesa::factory()->create([
              'capacidad_maxima' => 6,
-             'estado' => 1
+             'estado' => 2
         ]);
 
         Mesa::factory()->create([
@@ -352,6 +352,15 @@ class DatabaseSeeder extends Seeder
             'numero_comensales' => 1,
             'id_mesa' => 5,
             'id_usuario' => 4
+        ]);
+
+        Pedido::factory()->create([
+            'fecha' => now(),
+            'estado' => 1,
+            'precio' => 19.00,
+            'numero_comensales' => 1,
+            'id_mesa' => 6,
+            'id_usuario' => 3
         ]);
 
         /**
