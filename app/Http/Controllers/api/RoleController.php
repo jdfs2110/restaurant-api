@@ -25,14 +25,12 @@ class RoleController extends Controller
     {
     }
 
-    function index(Request $request): JsonResponse
+    function index(): JsonResponse
     {
         try {
-            $pagina = $request->query('page', 1);
+            $roles = $this->service->all();
 
-            $roles = $this->service->paginated($pagina);
-
-            return $this->successResponse(RoleResource::collection($roles), "Roles de la página $pagina");
+            return $this->successResponse(RoleResource::collection($roles));
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
@@ -41,19 +39,6 @@ class RoleController extends Controller
             return $this->unhandledErrorResponse();
         }
     }
-
-    function getAmountOfPages(): JsonResponse
-    {
-        try {
-            $paginas = $this->service->getAmountOfPages();
-
-            return $this->successResponse($paginas);
-
-        } catch (Exception) {
-            return $this->unhandledErrorResponse();
-        }
-    }
-
     function getRole($id): JsonResponse
     {
         try {

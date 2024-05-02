@@ -14,30 +14,18 @@ class RoleService
     {
     }
 
-    private const PAGINATION_LIMIT = 10;
     /**
-     * @param int $pagina Número de página que se desea obtener
-     * @throws NoContentException cuando la página está vacía
-     * @return Collection Los roles de la página deseada
+     * @throws NoContentException cuando la lista de roles está vacía
+     * @return Collection la lista de roles
      */
-    public function paginated(int $pagina): Collection
+    public function all(): Collection
     {
-        $roles = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
+        $roles = $this->repository->all();
 
         if ($roles->isEmpty()) {
-            throw new NoContentException('No hay roles.');
+            throw new NoContentException();
         }
 
         return $roles;
-    }
-
-    /**
-     * @return int La cantidad de páginas que tienen los roles
-     */
-    public function getAmountOfPages(): int
-    {
-        $paginas = $this->repository->all()->count();
-
-        return ceil($paginas / self::PAGINATION_LIMIT);
     }
 }
