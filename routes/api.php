@@ -11,6 +11,7 @@ use App\Http\Controllers\api\PedidoController;
 use App\Http\Controllers\api\LineaController;
 use App\Http\Controllers\api\FacturaController;
 use App\Http\Middleware\AdminCheck;
+use App\Http\Middleware\CocineroCheck;
 use App\Http\Middleware\MeseroCheck;
 use App\Http\Middleware\UserIsOwnerCheck;
 use App\Http\Middleware\UserNotBlockedCheck;
@@ -136,12 +137,12 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  8. Buscar la factura de un pedido
      *  9. Cambiar el estado de un pedido a 'servido'
      */
-    Route::get('/pedidos', [PedidoController::class, 'index']); // TODO: mirar los permisos para esta ruta
-    Route::get('/pedidos/pages', [PedidoController::class, 'getAmountOfPages']); // TODO: mirar los permisos para esta ruta
+    Route::get('/pedidos', [PedidoController::class, 'index'])->middleware([MeseroCheck::class]);
+    Route::get('/pedidos/pages', [PedidoController::class, 'getAmountOfPages'])->middleware([MeseroCheck::class]);
     Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']); // TODO: mirar los permisos para esta ruta
     Route::post('/pedidos/new', [PedidoController::class, 'newPedido'])->middleware([MeseroCheck::class]);
-    Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido']); // TODO: mirar los permisos para esta ruta
-    Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido']); // TODO: mirar los permisos para esta ruta
+    Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+    Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido'])->middleware([MeseroCheck::class, CocineroCheck::class]);
     Route::get('/pedidos/{id}/lineas', [LineaController::class, 'getLineasByPedido']); // TODO: mirar los permisos para esta ruta
     Route::get('/pedidos/{id}/factura', [FacturaController::class, 'getFacturaByPedido']); // TODO: mirar los permisos para esta ruta
     Route::post('/pedidos/{id}/servir', [PedidoController::class, 'servirPedido']); // TODO: mirar los permisos para esta ruta
