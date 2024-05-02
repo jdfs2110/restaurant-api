@@ -16,6 +16,11 @@ class UserRepository extends GeneralRepository
         $this->setNotFoundMessage(self::ENTITY_NAME . ' no encontrado.');
     }
 
+    public function all(): Collection
+    {
+        return $this->getBuilder()->with(['rol'])->get();
+    }
+
     public function findByEmail(string $email): Model | null
     {
         return $this->getBuilder()->where('email', $email)->get()->first();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -111,5 +112,10 @@ class User extends Authenticatable
     public function getDeletedAt(): string | null
     {
         return $this->deleted_at;
+    }
+
+    public function rol(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'id_rol', 'id')->withTrashed();
     }
 }
