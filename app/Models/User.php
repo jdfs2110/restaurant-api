@@ -81,6 +81,9 @@ class User extends Authenticatable
         return $this->estado;
     }
 
+    /**
+     * @deprecated
+     */
     private const ROLES = [ // Descartar array si se permiten crear / borrar roles en un futuro.
         1 => 'mesero',
         2 => 'cocina',
@@ -94,6 +97,10 @@ class User extends Authenticatable
         return $this->id_rol;
     }
 
+    /**
+     * @deprecated
+     * @return string
+     */
     public function getRol(): string
     {
         return self::ROLES[$this->id_rol];
