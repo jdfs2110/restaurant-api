@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\LineaDuplicadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
@@ -93,6 +94,8 @@ class LineaController extends Controller
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
 
+            $this->repository->checkDuplicate($data['id_pedido'], $data['id_producto']);
+
             $this->stockService->reduceStock($data['id_producto'], $data['cantidad']);
 
             $linea = $this->repository->create([
@@ -112,7 +115,7 @@ class LineaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (NegativeQuantityException|PedidoAlreadyServedException $e) {
+        } catch (NegativeQuantityException|PedidoAlreadyServedException|LineaDuplicadaException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception) {
