@@ -43,10 +43,10 @@ trait ApiResponsesTrait
         ], 500);
     }
 
-    public function unauthorizedResponse(): JsonResponse
+    public function unauthorizedResponse(string $message = 'Permisos insuficientes.'): JsonResponse
     {
         return response()->json([
-            'error' => 'Permisos insuficientes.'
+            'error' => $message
         ], 403);
     }
 }
