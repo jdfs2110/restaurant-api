@@ -11,7 +11,6 @@ class UserTest extends TestCase
     /**
      * A basic feature test example.
      */
-    use DatabaseTransactions;
     public function test_incorrect_login(): void
     {
         $response = $this->withHeaders(['Accept' => 'application/json'])->post('/api/login', ['email' => 'test@test.com', 'password' => '12345']);
