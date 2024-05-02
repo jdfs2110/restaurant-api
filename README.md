@@ -270,8 +270,6 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-### Levantar la API
-
 > [!TIP]
 > Es recomendable añadir el alias de abajo para no tener que poner './vendor/bin/sail' para cada comando
 
@@ -281,6 +279,8 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 > [!NOTE]
 > Si al final no has utilizado el alias, cada comando se haría con './vendor/bin/sail' en vez de únicamente 'sail'
+
+### Levantar la API
 
 ```bash
 sail up -d
