@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MeseroCheck
+class UserIsOwnerCheck
 {
     use ApiResponsesTrait;
     /**
@@ -18,9 +18,11 @@ class MeseroCheck
     public function handle(Request $request, Closure $next): Response
     {
         $role = $request->user()->getIdRol();
+        $userId = $request->user()->getId();
+        $paramId = $request->route()->parameter('id');
 
-        if ($role !== 1 && $role !== 4) { // 4 -> admin
-            return $this->errorResponse('El usuario no es mesero.', 403);
+        if ($userId != $paramId && $role != 4) {
+            return $this->errorResponse('Permisos insuficientes', 403);
         }
 
         return $next($request);
