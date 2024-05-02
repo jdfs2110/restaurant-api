@@ -272,27 +272,37 @@ docker run --rm \
 
 ### Levantar la API
 
+> [!TIP]
+> Es recomendable añadir el alias de abajo para no tener que poner './vendor/bin/sail' para cada comando
+
 ```bash
-./vendor/bin/sail up -d
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
+```
+
+> [!NOTE]
+> Si al final no has utilizado el alias, cada comando se haría con './vendor/bin/sail' en vez de únicamente 'sail'
+
+```bash
+sail up -d
 ```
 ### Realizar las migraciones de las tablas
 
 ```bash
-php artisan migrate
+sail artisan migrate
 ```
 En caso de hacer una migración limpia (borrando los datos anteriores)
 ```bash
-php artisan migrate:fresh
+sail artisan migrate:fresh
 ```
 
 ### Generar datos de prueba
 ```bash
-php artisan db:seed
+sail artisan db:seed
 ```
 
 ### Parar la api y eliminar los contenedores
 ```bash
-./vendor/bin/sail down
+sail down
 ```
 
 Realizar las peticiones a http://localhost/api/endpoint
