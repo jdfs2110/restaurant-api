@@ -20,7 +20,7 @@ class MeseroCheck
         $role = $request->user()->getIdRol();
 
         if ($role !== 1 && $role !== 4) { // 4 -> admin
-            return $this->errorResponse('El usuario no es mesero.', 403);
+            return $this->unauthorizedResponse();
         }
 
         return $next($request);

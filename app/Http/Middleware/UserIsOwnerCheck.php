@@ -22,7 +22,7 @@ class UserIsOwnerCheck
         $paramId = $request->route()->parameter('id');
 
         if ($userId != $paramId && $role != 4) {
-            return $this->errorResponse('Permisos insuficientes', 403);
+            return $this->unauthorizedResponse();
         }
 
         return $next($request);

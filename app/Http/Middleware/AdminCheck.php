@@ -20,7 +20,7 @@ class AdminCheck
         $role = $request->user()->getIdRol();
 
         if ($role !== 4) {
-            return $this->errorResponse('Permisos insuficientes.', 403);
+            return $this->unauthorizedResponse();
         }
 
         return $next($request);
