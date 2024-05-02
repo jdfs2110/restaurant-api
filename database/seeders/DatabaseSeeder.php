@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
         Producto::factory()->create([
             'id' => 3,
             'nombre' => 'Cerveza',
-            'precio' => 0.80,
+            'precio' => 1.20,
             'activo' => true,
             'id_categoria' => 1,
             'foto' => 'productos/cerveza.webp'
@@ -270,117 +270,158 @@ class DatabaseSeeder extends Seeder
          */
         for ($i = 1; $i <= self::PRODUCT_QUANTITY; $i++) {
             Stock::factory()->create([
-                'cantidad' => rand(10, 75),
+                'cantidad' => rand(50, 150),
                 'id_producto' => $i
             ]);
         }
 
         /**
          *  Creación de mesas
+         *  ESTADOS:
+         *  0: libre
+         *  1: ocupada
+         *  2: reservada
          */
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 1
              'capacidad_maxima' => 7,
              'estado' => 0
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 2
              'capacidad_maxima' => 5,
              'estado' => 0
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 3
              'capacidad_maxima' => 10,
              'estado' => 0
         ]);
 
-        Mesa::factory()->create([
-             'capacidad_maxima' => 2,
-             'estado' => 0
-        ]);
-
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 4
              'capacidad_maxima' => 2,
              'estado' => 1
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 5
+             'capacidad_maxima' => 2,
+             'estado' => 1
+        ]);
+
+        Mesa::factory()->create([ // 6
              'capacidad_maxima' => 1,
              'estado' => 1
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 7
              'capacidad_maxima' => 6,
              'estado' => 2
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 8
              'capacidad_maxima' => 5,
              'estado' => 0
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 9
              'capacidad_maxima' => 3,
              'estado' => 0
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 10
              'capacidad_maxima' => 12,
              'estado' => 2
         ]);
 
-        Mesa::factory()->create([
+        Mesa::factory()->create([ // 11
              'capacidad_maxima' => 15,
              'estado' => 2
         ]);
 
+        Mesa::factory()->create([ // 12
+             'capacidad_maxima' => 15,
+             'estado' => 1
+        ]);
+
         /**
          *  Creación de pedidos
+         *  ESTADOS:
+         *  0: pendiente
+         *  1: preparando
+         *  2: servido
+         *  3: cancelado
          */
-        Pedido::factory()->create([
+        Pedido::factory()->create([ // 1
             'fecha' => now(),
             'estado' => 2,
             'precio' => 19.00,
             'numero_comensales' => 1,
             'id_mesa' => 6,
-            'id_usuario' => 3
+            'id_usuario' => 5
         ]);
 
-        Pedido::factory()->create([
+        Pedido::factory()->create([ // 2
             'fecha' => now(),
             'estado' => 0,
             'precio' => 19.00,
             'numero_comensales' => 1,
             'id_mesa' => 5,
-            'id_usuario' => 4
+            'id_usuario' => 5
         ]);
 
-        Pedido::factory()->create([
+        Pedido::factory()->create([ // 3
             'fecha' => now(),
             'estado' => 1,
             'precio' => 19.00,
             'numero_comensales' => 1,
             'id_mesa' => 6,
-            'id_usuario' => 3
+            'id_usuario' => 6
+        ]);
+
+        Pedido::factory()->create([ // 4
+            'fecha' => now(),
+            'estado' => 3,
+            'precio' => 19.00,
+            'numero_comensales' => 1,
+            'id_mesa' => 6,
+            'id_usuario' => 6
+        ]);
+
+        Pedido::factory()->create([ // 5
+            'fecha' => now(),
+            'estado' => 0,
+            'precio' => 34.40,
+            'numero_comensales' => 2,
+            'id_mesa' => 4,
+            'id_usuario' => 7
+        ]);
+
+        Pedido::factory()->create([ // 6
+            'fecha' => now(),
+            'estado' => 1,
+            'precio' => 290.00,
+            'numero_comensales' => 14,
+            'id_mesa' => 12,
+            'id_usuario' => 7
         ]);
 
         /**
-         *  Creacion de las lineas de los pedidos
+         *  Creación de las lineas de los pedidos
          */
-        Linea::factory()->create([
+        Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 1,
             'id_producto' => 12,
             'id_pedido' => 1
         ]);
 
-        Linea::factory()->create([
+        Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 1,
             'id_producto' => 9,
             'id_pedido' => 1
         ]);
 
-        Linea::factory()->create([
+        Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 1,
             'id_producto' => 7,
@@ -388,27 +429,188 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Pedido 2
-        Linea::factory()->create([
+        Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 1,
             'id_producto' => 12,
             'id_pedido' => 2
         ]);
 
-        Linea::factory()->create([
+        Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 1,
             'id_producto' => 9,
             'id_pedido' => 2
         ]);
 
-        Linea::factory()->create([
+        Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 1,
             'id_producto' => 7,
             'id_pedido' => 2
         ]);
 
+        // Pedido 3
+        Linea::factory()->create([ // Tarta
+            'precio' => 4.00,
+            'cantidad' => 1,
+            'id_producto' => 12,
+            'id_pedido' => 3
+        ]);
+
+        Linea::factory()->create([ // Pollo al horno
+            'precio' => 10.00,
+            'cantidad' => 1,
+            'id_producto' => 9,
+            'id_pedido' => 3
+        ]);
+
+        Linea::factory()->create([ // Nachos
+            'precio' => 5.00,
+            'cantidad' => 1,
+            'id_producto' => 7,
+            'id_pedido' => 3
+        ]);
+
+        // Pedido 4
+        Linea::factory()->create([ // Tarta
+            'precio' => 4.00,
+            'cantidad' => 1,
+            'id_producto' => 12,
+            'id_pedido' => 4
+        ]);
+
+        Linea::factory()->create([ // Pollo al horno
+            'precio' => 10.00,
+            'cantidad' => 1,
+            'id_producto' => 9,
+            'id_pedido' => 4
+        ]);
+
+        Linea::factory()->create([ // Nachos
+            'precio' => 5.00,
+            'cantidad' => 1,
+            'id_producto' => 7,
+            'id_pedido' => 4
+        ]);
+
+        // Pedido 5
+        Linea::factory()->create([ // Coca-Cola
+            'precio' => 1.80,
+            'cantidad' => 3,
+            'id_producto' => 2,
+            'id_pedido' => 5
+        ]);
+
+        Linea::factory()->create([ // Filete de salmón
+            'precio' => 12.50,
+            'cantidad' => 1,
+            'id_producto' => 8,
+            'id_pedido' => 5
+        ]);
+
+        Linea::factory()->create([ // Pasta carbonara
+            'precio' => 8.50,
+            'cantidad' => 1,
+            'id_producto' => 10,
+            'id_pedido' => 5
+        ]);
+
+        Linea::factory()->create([ // Tarta
+            'precio' => 4,
+            'cantidad' => 2,
+            'id_producto' => 12,
+            'id_pedido' => 5
+        ]);
+
+        // Pedido 6
+        Linea::factory()->create([ // Coca-Cola
+            'precio' => 1.80,
+            'cantidad' => 6,
+            'id_producto' => 2,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Cerveza
+            'precio' => 1.20,
+            'cantidad' => 8,
+            'id_producto' => 3,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Agua
+            'precio' => 1.20,
+            'cantidad' => 2,
+            'id_producto' => 1,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Sopa
+            'precio' => 3.60,
+            'cantidad' => 6,
+            'id_producto' => 6,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Nachos
+            'precio' => 5.00,
+            'cantidad' => 8,
+            'id_producto' => 7,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Pollo al horno
+            'precio' => 10.00,
+            'cantidad' => 2,
+            'id_producto' => 9,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Filete de salmón
+            'precio' => 12.50,
+            'cantidad' => 8,
+            'id_producto' => 8,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Pasta carbonara
+            'precio' => 8.50,
+            'cantidad' => 2,
+            'id_producto' => 10,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Arroz
+            'precio' => 9.50,
+            'cantidad' => 2,
+            'id_producto' => 11,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Tarta
+            'precio' => 4.00,
+            'cantidad' => 9,
+            'id_producto' => 12,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Helado
+            'precio' => 2.60,
+            'cantidad' => 4,
+            'id_producto' => 13,
+            'id_pedido' => 6
+        ]);
+
+        Linea::factory()->create([ // Flan
+            'precio' => 3.20,
+            'cantidad' => 1,
+            'id_producto' => 14,
+            'id_pedido' => 6
+        ]);
+
+        /**
+         *  Creación de las facturas
+         */
         Factura::factory()->create([
             'fecha' => now(),
             'id_pedido' => 1
