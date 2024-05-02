@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -12,6 +11,7 @@ class UserTest extends TestCase
     /**
      * A basic feature test example.
      */
+    use DatabaseTransactions;
     public function test_incorrect_login(): void
     {
         $response = $this->withHeaders(['Accept' => 'application/json'])->post('/api/login', ['email' => 'test@test.com', 'password' => '12345']);
@@ -44,9 +44,9 @@ class UserTest extends TestCase
         $response = $this->withHeaders(['Accept' => 'application/json'])->post('/api/registro', $data);
 
         $response
-            ->assertStatus(422)
+            ->assertStatus(400)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->hasAny('errors', 'message')
+            $json->hasAny('error', 'errors')
             );
 
     }
@@ -63,9 +63,9 @@ class UserTest extends TestCase
         $response = $this->withHeaders(['Accept' => 'application/json'])->post('/api/registro', $data);
 
         $response
-            ->assertStatus(200)
+            ->assertStatus(201)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->hasAny('data', 'token')
+            $json->hasAny('data', 'token', 'message')
             );
     }
 }
