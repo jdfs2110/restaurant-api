@@ -26,7 +26,9 @@ class LineaRepository extends GeneralRepository
     }
 
     /**
-     * @throws LineaDuplicadaException
+     * @param int $idPedido ID del pedido
+     * @param int $idProducto ID del producto
+     * @throws LineaDuplicadaException cuando la línea ya existe
      */
     public function checkDuplicate(int $idPedido, int $idProducto): void
     {
