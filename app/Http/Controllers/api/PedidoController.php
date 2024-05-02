@@ -96,7 +96,7 @@ class PedidoController extends Controller
 
             $mesa = $this->mesaService->checkIfBusy($data['id_mesa']);
 
-            $this->userService->checkIfMesero($data['id_usuario']);
+//            $this->userService->checkIfMesero($data['id_usuario']);
 
             $pedido = $this->repository->create([
                 'fecha' => now(),
