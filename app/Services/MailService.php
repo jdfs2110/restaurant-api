@@ -44,6 +44,19 @@ class MailService
     /**
      * @param User $user El usuario al que se le envía el correo
      */
+    public function sendUpdatedEmailNotice(User $user): void
+    {
+        Resend::emails()->send([
+            'to' => $user->getEmail(),
+            'from' => 'Soporte <soporte@mail.'. self::DOMAIN_NAME .'>',
+            'subject' => 'Cambio de correo electrónico',
+            'html' => $this->templateService->renderUpdatedEmailNoticeTemplate($user->getName())
+        ]);
+    }
+
+    /**
+     * @param User $user El usuario al que se le envía el correo
+     */
     public function sendGoodByeEmail(User $user): void
     {
         Resend::emails()->send([

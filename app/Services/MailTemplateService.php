@@ -44,6 +44,24 @@ class MailTemplateService
 
     /**
      * @param string $name El nombre del usuario
+     * @return string la plantilla de correo electrónico de noticia de cambio de email
+     */
+    public function renderUpdatedEmailNoticeTemplate(string $name): string
+    {
+        return
+        '
+        <body>
+            <h1>Hola, <strong>'. $name .'</strong></h1>
+            <p style="font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.5;">Te escribimos para notificarte que se ha cambiado la dirección de correo electrónico de tu cuenta.</p>
+            <p style="font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.5;">Si no has sido tu, por favor ponte en contacto con nosotros via correo electrónico &lt;soporte@mail.jdfs.dev&gt;</p>
+            <p style="font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.5;">En el caso de haber sido tú, simplemente ignora este correo electrónico.</p>
+            <p style="font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.5;">Saludos,<br>Jose Fernandez<br>Webmaster</p>
+        </body>
+        ';
+    }
+
+    /**
+     * @param string $name El nombre del usuario
      * @return string la plantilla de correo electrónico de borrado de cuenta del usuario
      */
     public function renderGoodByeEmail(string $name): string

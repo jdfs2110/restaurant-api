@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
     public function __construct(
-        public readonly UserRepository   $repository,
-        public readonly MailService      $mailService
+        public readonly UserRepository $repository,
+        public readonly MailService    $mailService
     )
     {
     }
@@ -31,9 +31,15 @@ class UserService
     /**
      * @param User $user El usuario al que se le envía el correo
      */
-    public function sendUpdatedUserEmail(User $user): void
+    public function sendUpdatedUserEmail(User $user, User $previous): void
     {
+        if ($user->getEmail() == $previous->getEmail()) {
+            $this->mailService->sendUpdatedUserEmail($user);
+            return;
+        }
+
         $this->mailService->sendUpdatedUserEmail($user);
+        $this->mailService->sendUpdatedEmailNotice($previous);
     }
 
     /**
@@ -71,10 +77,11 @@ class UserService
     }
 
     private const PAGINATION_LIMIT = 15;
+
     /**
      * @param int $pagina Número de página que se desea obtener
-     * @throws NoContentException cuando la página está vacía
      * @return Collection Los usuarios de la página deseada
+     * @throws NoContentException cuando la página está vacía
      */
     public function paginated(int $pagina): Collection
     {
@@ -99,8 +106,8 @@ class UserService
 
     /**
      * @param int $id ID del rol
-     * @throws NoContentException cuando el rol no tiene usuarios
      * @return Collection Los usuarios de ese rol
+     * @throws NoContentException cuando el rol no tiene usuarios
      */
     public function findAllByIdRol(int $id): Collection
     {

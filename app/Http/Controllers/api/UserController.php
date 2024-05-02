@@ -137,6 +137,7 @@ class UserController extends Controller
             ]);
 
             $user = $this->repository->findOrFail($id);
+            $userCopy = $this->repository->findOrFail($id); // No me fascina esta idea
 
             $this->repository->emailExists($id, $data["email"]);
 
@@ -150,7 +151,7 @@ class UserController extends Controller
 
             $updatedUser = $this->repository->findOrFail($id);
 
-            $this->service->sendUpdatedUserEmail($updatedUser);
+            $this->service->sendUpdatedUserEmail($updatedUser, $userCopy);
 
             return $this->successResponse(new UsuarioResource($user), $message);
 
