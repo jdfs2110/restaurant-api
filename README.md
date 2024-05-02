@@ -1,14 +1,11 @@
 # TODO
 
-- [ ] secure routes before production
 - [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
-- [x] remove all error messages for unhandled errors before production
-- [x] mesacontroller
+- [ ] secure routes before production
 
 ##### Side note
 
 * Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en el modelo User y getRol() en el resource.
-* El logout se peta si se usa un token que ha sido eliminado previamente
 
 -------
 
@@ -22,8 +19,8 @@
 |------------------------------------------------------|----------------------|-------------|
 | Buscar todos los roles                               | /roles               | GET         |
 | Buscar un rol por id                                 | /roles/{id}          | GET         |
-| Crear un rol (admin)                                 | /roles/new           | POST        |
-| Eliminar un rol (admin)                              | /roles/{id}          | DELETE      |
+| Crear un rol (admin) --EN DESCARTE--                 | /roles/new           | POST        |
+| Eliminar un rol (admin) --EN DESCARTE--              | /roles/{id}          | DELETE      |
 | Editar un rol (admin)                                | /roles/{id}          | PUT         |
 | Buscar todos los usuarios de un rol concreto (admin) | /roles/{id}/usuarios | GET         |
 
@@ -98,13 +95,13 @@
 
 ## Lineas
 
-| Caso de uso                                                                                     | Endpoint      | Método HTTP |
-|-------------------------------------------------------------------------------------------------|---------------|-------------|
-| Buscar todas las lineas                                                                         | /lineas       | GET         |
-| Buscar una línea por id                                                                         | /lineas/{id}  | GET         |
-| Añadir una nueva línea (teoricamente se le asigna el id del pedido en el cuerpo de la peticion) | /lineas/new   | POST        |
-| Editar una línea                                                                                | /lineas/{id}  | PUT         |
-| Eliminar una línea                                                                              | /lineas/{id}  | DELETE      | 
+| Caso de uso             | Endpoint      | Método HTTP |
+|-------------------------|---------------|-------------|
+| Buscar todas las lineas | /lineas       | GET         |
+| Buscar una línea por id | /lineas/{id}  | GET         |
+| Añadir una nueva línea  | /lineas/new   | POST        |
+| Editar una línea        | /lineas/{id}  | PUT         |
+| Eliminar una línea      | /lineas/{id}  | DELETE      | 
 
 ## Facturas
 
