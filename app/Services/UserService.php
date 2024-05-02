@@ -59,7 +59,7 @@ class UserService
     {
         $user = $this->repository->findOrFail($id);
 
-        if ($user->getRol() !== 'mesero') {
+        if ($user->getIdRol() !== '1') {
             throw new UserIsNotWaiterException('El usuario no es mesero.');
         }
     }
