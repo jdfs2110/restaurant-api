@@ -3,6 +3,7 @@
 - [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
 - [x] secure routes before production
 - [ ] protect routes with permissions (middlewares)
+- [ ] añadir más datos al seeder
 
 ##### Side note
 
