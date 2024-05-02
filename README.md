@@ -1,7 +1,7 @@
 # TODO
 
 - [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
-- [ ] secure routes before production
+- [x] secure routes before production
 
 ##### Side note
 
