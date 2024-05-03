@@ -13,7 +13,8 @@
 - [x] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
 - [x] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
 - [x] --Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra--
-- [ ] Terminar de descifrar las cosas que son para admin en las tablas de MD
+- [x] Terminar de descifrar las cosas que son para admin en las tablas de MD
+- [ ] Terminar todos los permisos
 
 ### Schizo posting
 
@@ -60,38 +61,42 @@ que al crear un pedido el precio inicial sea 0, ya que las lineas son las que ac
 | Cierre de sesión                                | /logout                | POST        |
 | Editar usuario (admin o self)                   | /usuarios/{id}         | PUT         |
 | Buscar los pedidos manejados por un usuario     | /usuarios/{id}/pedidos | GET         |
+| Eliminar usuario (admin)                        | /usuarios/{id}         | DELETE      | 
 
 ## Categorias
 
-| Caso de uso                                 | Endpoint                   | Método HTTP |
-|---------------------------------------------|----------------------------|-------------|
-| Buscar todas las categorias                 | /categorias                | GET         |
-| Buscar una categoría por id                 | /categorias/{id}           | GET         |
-| Crear una categoría (admin)                 | /categorias/new            | POST        |
-| Eliminar una categoría (admin)              | /categorias/{id}           | DELETE      |
-| Buscar todos los productos de una categoría | /categorias/{id}/productos | GET         | 
-| Editar una categoría (admin)                | /categorias/{id}           | PUT         |
+| Caso de uso                                     | Endpoint                   | Método HTTP |
+|-------------------------------------------------|----------------------------|-------------|
+| Listar todas las categorias paginadas (admin)   | /categorias                | GET         |
+| Obtener el número de páginas existentes (admin) | /categorias/pages          | GET         |
+| Buscar una categoría por id (admin)             | /categorias/{id}           | GET         |
+| Crear una categoría (admin)                     | /categorias/new            | POST        |
+| Eliminar una categoría (admin)                  | /categorias/{id}           | DELETE      |
+| Buscar todos los productos de una categoría     | /categorias/{id}/productos | GET         | 
+| Editar una categoría (admin)                    | /categorias/{id}           | PUT         |
 
 ## Productos
 
-| Caso de uso                      | Endpoint                     | Método HTTP |
-|----------------------------------|------------------------------|-------------|
-| Buscar todos los productos       | /productos                   | GET         |
-| Buscar un producto por id        | /productos/{id}              | GET         |
-| Crear un nuevo producto          | /productos/new               | POST        |
-| Eliminar un producto             | /productos/{id}              | DELETE      |
-| Editar un producto               | /productos/{id}              | PUT         | 
-| Buscar el stock de un producto   | /productos/{id}/stock        | GET         |
-| Aumentar el stock de un producto | /productos/{id}/stock/add    | POST        | 
-| Reducir el stock de un producto  | /productos/{id}/stock/reduce | POST        |
+| Caso de uso                             | Endpoint                     | Método HTTP |
+|-----------------------------------------|------------------------------|-------------|
+| Listar todos los productos paginados    | /productos                   | GET         |
+| Obtener el número de páginas existentes | /productos/pages             | GET         |
+| Buscar un producto por id               | /productos/{id}              | GET         |
+| Crear un nuevo producto (admin)         | /productos/new               | POST        |
+| Eliminar un producto (admin)            | /productos/{id}              | DELETE      |
+| Editar un producto                      | /productos/{id}              | PUT         | 
+| Buscar el stock de un producto          | /productos/{id}/stock        | GET         |
+| Aumentar el stock de un producto        | /productos/{id}/stock/add    | POST        | 
+| Reducir el stock de un producto         | /productos/{id}/stock/reduce | POST        |
 
 ## Stock
 
-| Caso de uso                            | Endpoint    | Método HTTP |
-|----------------------------------------|-------------|-------------|
-| Buscar el stock de todos los productos | /stock      | GET         |
-| Dar de alta un stock                   | /stock/new  | POST        |
-| Editar un stock (admin only)           | /stock/{id} | PUT         |
+| Caso de uso                                     | Endpoint     | Método HTTP |
+|-------------------------------------------------|--------------|-------------|
+| Listar el stock de todos los productos paginado | /stock       | GET         |
+| Obtener el número de páginas existentes         | /stock/pages | GET         |
+| Dar de alta un stock (admin) --pointless--      | /stock/new   | POST        |
+| Editar un stock                                 | /stock/{id}  | PUT         |
 
 ## Mesas
 
@@ -99,8 +104,8 @@ que al crear un pedido el precio inicial sea 0, ya que las lineas son las que ac
 |-------------------------------------|---------------------|-------------|
 | Buscar todas las mesas              | /mesas              | GET         |
 | Buscar una mesa por id              | /mesas/{id}         | GET         |
-| Crear una mesa                      | /mesas/new          | POST        |
-| Eliminar una mesa                   | /mesas/{id}         | DELETE      |
+| Crear una mesa (admin)              | /mesas/new          | POST        |
+| Eliminar una mesa (admin)           | /mesas/{id}         | DELETE      |
 | Editar una mesa                     | /mesas/{id}         | PUT         |
 | Listar los pedidos de una mesa      | /mesas/{id}/pedidos | GET         |
 | Listar el pedido actual de una mesa | /mesas/{id}/pedido  | GET         |
@@ -109,36 +114,40 @@ que al crear un pedido el precio inicial sea 0, ya que las lineas son las que ac
 
 | Caso de uso                                | Endpoint              | Método HTTP |
 |--------------------------------------------|-----------------------|-------------|
-| Buscar todos los pedidos                   | /pedidos              | GET         |
+| Listar todos los pedidos paginados         | /pedidos              | GET         |
+| Obtener el número de páginas existentes    | /pedidos/pages        | GET         |
 | Buscar un pedido por id                    | /pedidos/{id}         | GET         |
 | Crear un pedido                            | /pedidos/new          | POST        |
 | Editar un pedido                           | /pedidos/{id}         | PUT         |
-| Eliminar un pedido (admin)                 | /pedidos/{id}         | DELETE      | 
+| Eliminar un pedido                         | /pedidos/{id}         | DELETE      | 
 | Buscar las líneas de un pedido             | /pedidos/{id}/lineas  | GET         |
 | Buscar la factura de un pedido             | /pedidos/{id}/factura | GET         |
 | Cambiar el estado de un pedido a 'servido' | /pedidos/{id}/servir  | POST        |
 
 ## Lineas
 
-| Caso de uso                                | Endpoint               | Método HTTP |
-|--------------------------------------------|------------------------|-------------|
-| Buscar todas las lineas                    | /lineas                | GET         |
-| Buscar una línea por id                    | /lineas/{id}           | GET         |
-| Añadir una nueva línea                     | /lineas/new            | POST        |
-| Editar una línea                           | /lineas/{id}           | PUT         |
-| Eliminar una línea                         | /lineas /{id}          | DELETE      | 
-| Recuperar las líneas de cocina             | /lineas/tipo/cocina    | GET         |
-| Recuperar las líneas de la barra           | /lineas/tipo/barra     | GET         |
-| Cambiar el estado una línea a 'completada' | /lineas/{id}/completar | POST        |
+| Caso de uso                                      | Endpoint               | Método HTTP |
+|--------------------------------------------------|------------------------|-------------|
+| Listar todas las lineas paginadas (admin)        | /lineas                | GET         |
+| Obtener el número de páginas existentes  (admin) | /lineas/pages          | GET         |
+| Buscar una línea por id                          | /lineas/{id}           | GET         |
+| Añadir una nueva línea                           | /lineas/new            | POST        |
+| Editar una línea                                 | /lineas/{id}           | PUT         |
+| Eliminar una línea                               | /lineas /{id}          | DELETE      | 
+| Recuperar las líneas de cocina                   | /lineas/tipo/cocina    | GET         |
+| Recuperar las líneas de la barra                 | /lineas/tipo/barra     | GET         |
+| Cambiar el estado una línea a 'completada'       | /lineas/{id}/completar | POST        |
 
 ## Facturas
 
-| Caso de uso                  | Endpoint       | Método HTTP |
-|------------------------------|----------------|-------------|
-| Buscar todas las facturas    | /facturas      | GET         |
-| Buscar una factura por id    | /facturas/{id} | GET         |
-| Crear una factura            | /facturas/new  | POST        |
-| Eliminar una factura (admin) | /facturas/{id} | DELETE      |
+| Caso de uso                                     | Endpoint         | Método HTTP |
+|-------------------------------------------------|------------------|-------------|
+| Listar todas las facturas paginadas (admin)     | /facturas        | GET         |
+| Obtener el número de páginas existentes (admin) | /facturas/pages  | GET         |
+| Buscar una factura por id (admin?)              | /facturas/{id}   | GET         |
+| Crear una factura                               | /facturas/new    | POST        |
+| Editar una factura                              | /facturas/{id}   | PUT         |
+| Eliminar una factura (admin)                    | /facturas/{id}   | DELETE      |
 
 ---------------------
 <br>
