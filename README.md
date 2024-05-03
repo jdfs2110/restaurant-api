@@ -9,11 +9,11 @@
 - [x] modificar tabla de lineas para añadir tipo 'cocina' y 'barra' maybe?
 - [x] modificar tabla de lineas para añadir estado
 - [x] quitar la excepción de lineaduplicada
-- [ ] borrar pedidocreated y hacer la misma lógica con las lineas
-- [ ] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
-- [ ] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
-- [ ] --Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra--
-- [ ] --Crear endpoints separados para crear línea (mesero) [línea que va a cocina o línea que va a barra]--
+- [x] borrar pedidocreated y hacer la misma lógica con las lineas
+- [x] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
+- [x] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
+- [x] --Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra--
+- [ ] --Crear endpoints separados para crear línea (mesero) [línea que va a cocina o línea que va a barra]-- no
 
 ### Schizo posting
 
@@ -28,6 +28,8 @@ pues una linea nueva cada vez xd
 tengo que pensar si devolver TODAS las lineas de cocina / barra para hacer historial o si simplemente devolverlas filtradas por pendiente y al carrer
 
 tengo que pensar si hacer endpoint de completar una linea como cuando se completa un pedido
+
+que al crear un pedido el precio inicial sea 0, ya que las lineas son las que actualizan su precio
 
 -------
 
