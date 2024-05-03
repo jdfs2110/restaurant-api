@@ -11,7 +11,10 @@ use App\Http\Controllers\api\PedidoController;
 use App\Http\Controllers\api\LineaController;
 use App\Http\Controllers\api\FacturaController;
 use App\Http\Middleware\AdminCheck;
+use App\Http\Middleware\BarraAndMeseroCheck;
+use App\Http\Middleware\BarraCheck;
 use App\Http\Middleware\CocineroCheck;
+use App\Http\Middleware\MeseroAndCocineroCheck;
 use App\Http\Middleware\MeseroCheck;
 use App\Http\Middleware\UserIsOwnerCheck;
 use App\Http\Middleware\UserNotBlockedCheck;
@@ -129,13 +132,13 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  7. Listar el pedido actual de una mesa
      */
     Route::prefix('/mesas')->group(function () {
-        Route::get('/', [MesaController::class, 'index'])->middleware([MeseroCheck::class, CocineroCheck::class]);
-        Route::get('/{id}', [MesaController::class, 'getMesa'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::get('/', [MesaController::class, 'index'])->middleware([MeseroAndCocineroCheck::class]);
+        Route::get('/{id}', [MesaController::class, 'getMesa'])->middleware([MeseroAndCocineroCheck::class]);
         Route::post('/new', [MesaController::class, 'newMesa'])->middleware([AdminCheck::class]);
         Route::delete('/{id}', [MesaController::class, 'deleteMesa'])->middleware([AdminCheck::class]);
         Route::put('/{id}', [MesaController::class, 'updateMesa'])->middleware([MeseroCheck::class]);
-        Route::get('/{id}/pedidos', [MesaController::class, 'getPedidosByMesa'])->middleware([MeseroCheck::class, CocineroCheck::class]);
-        Route::get('/{id}/pedido', [MesaController::class, 'getPedidoActual'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::get('/{id}/pedidos', [MesaController::class, 'getPedidosByMesa'])->middleware([MeseroAndCocineroCheck::class]);
+        Route::get('/{id}/pedido', [MesaController::class, 'getPedidoActual'])->middleware([MeseroAndCocineroCheck::class]);
     });
 
     /**
@@ -151,13 +154,13 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  9. Cambiar el estado de un pedido a 'servido'
      */
     Route::prefix('/pedidos')->group(function () {
-        Route::get('/', [PedidoController::class, 'index'])->middleware([CocineroCheck::class, MeseroCheck::class]);
-        Route::get('/pages', [PedidoController::class, 'getAmountOfPages'])->middleware([CocineroCheck::class, MeseroCheck::class]);
-        Route::get('/{id}', [PedidoController::class, 'getPedido'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+        Route::get('/', [PedidoController::class, 'index'])->middleware([MeseroAndCocineroCheck::class]);
+        Route::get('/pages', [PedidoController::class, 'getAmountOfPages'])->middleware([MeseroAndCocineroCheck::class]);
+        Route::get('/{id}', [PedidoController::class, 'getPedido'])->middleware([MeseroAndCocineroCheck::class]);
         Route::post('/new', [PedidoController::class, 'newPedido'])->middleware([MeseroCheck::class]);
-        Route::put('/{id}', [PedidoController::class, 'updatePedido'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+        Route::put('/{id}', [PedidoController::class, 'updatePedido'])->middleware([MeseroAndCocineroCheck::class]);
         Route::delete('/{id}', [PedidoController::class, 'deletePedido'])->middleware([MeseroCheck::class]);
-        Route::get('/{id}/lineas', [LineaController::class, 'getLineasByPedido'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::get('/{id}/lineas', [LineaController::class, 'getLineasByPedido'])->middleware([MeseroAndCocineroCheck::class]);
         Route::get('/{id}/factura', [FacturaController::class, 'getFacturaByPedido']); // TODO: mirar los permisos para esta ruta
         Route::post('/{id}/servir', [PedidoController::class, 'servirPedido'])->middleware([MeseroCheck::class]);
     });
@@ -170,14 +173,18 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  4. Crear una línea
      *  5. Modificar una línea
      *  6. Eliminar una línea
+     *  7. Recuperar las líneas de cocina
+     *  8. Recuperar las líneas de la barra
      */
     Route::prefix('/lineas')->group(function () {
         Route::get('/', [LineaController::class, 'index'])->middleware([AdminCheck::class]);
         Route::get('/pages', [LineaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
         Route::get('/{id}', [LineaController::class, 'getLinea'])->middleware([MeseroCheck::class]);
-        Route::post('/new', [LineaController::class, 'newLinea'])->middleware([MeseroCheck::class]);
+        Route::post('/new', [LineaController::class, 'newLinea'])->middleware([MeseroCheck::class]); // TODO: ver que hacer con cocina y barra
         Route::put('/{id}', [LineaController::class, 'updateLinea'])->middleware([MeseroCheck::class]);
         Route::delete('/{id}', [LineaController::class, 'deleteLinea'])->middleware([MeseroCheck::class]);
+        Route::get('/tipo/cocina', [LineaController::class, 'getLineasOfCocina'])->middleware([MeseroAndCocineroCheck::class]);
+        Route::get('/tipo/barra', [LineaController::class, 'getLineasOfBarra'])->middleware([BarraAndMeseroCheck::class]);
     });
 
     /**
