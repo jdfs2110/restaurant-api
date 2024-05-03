@@ -7,19 +7,27 @@
 - [x] al crear la línea poner en el validator (controlador) que sea cocina o barra
 - [x] Crear rol de barra
 - [x] modificar tabla de lineas para añadir tipo 'cocina' y 'barra' maybe?
+- [x] modificar tabla de lineas para añadir estado
+- [ ] quitar la excepción de lineaduplicada
 - [ ] borrar pedidocreated y hacer la misma lógica con las lineas
 - [ ] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
 - [ ] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
 - [ ] Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra
 - [ ] Crear endpoints separados para crear línea (mesero) [línea que va a cocina o línea que va a barra]
-- [ ] modificar tabla de lineas para añadir estado?
 
+### Schizo posting
 
 cuando modificas una linea como guardas el progreso?
 
 ej: linea de 3 cocacolas y has servido ya las 3, se añade cocacola a la linea y ahora aparece que son 4, pero hay que servir una sola
 
 que voy a hacer con eso?
+
+pues una linea nueva cada vez xd
+
+tengo que pensar si devolver TODAS las lineas de cocina / barra para hacer historial o si simplemente devolverlas filtradas por pendiente y al carrer
+
+tengo que pensar si hacer endpoint de completar una linea como cuando se completa un pedido
 
 ##### Side note
 
