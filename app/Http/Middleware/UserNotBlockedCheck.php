@@ -19,7 +19,7 @@ class UserNotBlockedCheck
     {
         $role = $request->user()->getIdRol();
 
-        if ($role === 5) {
+        if ($role === 6) {
             return $this->unauthorizedResponse('Este usuario está bloqueado.');
         }
 
