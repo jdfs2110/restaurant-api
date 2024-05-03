@@ -11,6 +11,7 @@ use App\Http\Controllers\api\PedidoController;
 use App\Http\Controllers\api\LineaController;
 use App\Http\Controllers\api\FacturaController;
 use App\Http\Middleware\AdminCheck;
+use App\Http\Middleware\BarraAndCocinaCheck;
 use App\Http\Middleware\BarraAndMeseroCheck;
 use App\Http\Middleware\BarraCheck;
 use App\Http\Middleware\CocineroCheck;
@@ -173,18 +174,20 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  4. Crear una línea
      *  5. Modificar una línea
      *  6. Eliminar una línea
-     *  7. Recuperar las líneas de cocina
-     *  8. Recuperar las líneas de la barra
+     *  7. Recuperar las líneas de cocina (solo pendientes)
+     *  8. Recuperar las líneas de la barra (solo pendientes)
+     *  9. Completar una línea
      */
     Route::prefix('/lineas')->group(function () {
         Route::get('/', [LineaController::class, 'index'])->middleware([AdminCheck::class]);
         Route::get('/pages', [LineaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
         Route::get('/{id}', [LineaController::class, 'getLinea'])->middleware([MeseroCheck::class]);
-        Route::post('/new', [LineaController::class, 'newLinea'])->middleware([MeseroCheck::class]); // TODO: ver que hacer con cocina y barra
+        Route::post('/new', [LineaController::class, 'newLinea'])->middleware([MeseroCheck::class]);
         Route::put('/{id}', [LineaController::class, 'updateLinea'])->middleware([MeseroCheck::class]);
         Route::delete('/{id}', [LineaController::class, 'deleteLinea'])->middleware([MeseroCheck::class]);
         Route::get('/tipo/cocina', [LineaController::class, 'getLineasOfCocina'])->middleware([MeseroAndCocineroCheck::class]);
         Route::get('/tipo/barra', [LineaController::class, 'getLineasOfBarra'])->middleware([BarraAndMeseroCheck::class]);
+        Route::post('/{id}/completar', [LineaController::class, 'completarLinea'])->middleware([BarraAndCocinaCheck::class]);
     });
 
     /**

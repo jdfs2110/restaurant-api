@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\LineaAlreadyCompletedException;
+use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Repositories\LineaRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -55,5 +57,22 @@ class LineaService
         }
 
         return $lineas;
+    }
+
+    /**
+     * @param int $id ID de la línea
+     * @throws ModelNotFoundException cuando la línea no existe
+     * @throws LineaAlreadyCompletedException cuando la línea ya está completada
+     */
+    public function completarLinea(int $id): void
+    {
+        $linea = $this->repository->findOrFail($id);
+
+        if ($linea->getEstadoValue() == 1) {
+            throw new LineaAlreadyCompletedException('Esta línea ya está completada.');
+        }
+
+        $linea->setEstado(1);
+        $linea->save();
     }
 }

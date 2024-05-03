@@ -87,7 +87,6 @@ class PedidoController extends Controller
     {
         try {
             $data = $request->validate([
-                'precio' => 'required|numeric',
                 'numero_comensales' => 'required|int|min:1',
                 'id_mesa' => 'required|int',
                 'id_usuario' => 'required|int'
@@ -100,7 +99,7 @@ class PedidoController extends Controller
             $pedido = $this->repository->create([
                 'fecha' => now(),
                 'estado' => 0,
-                'precio' => $data['precio'],
+                'precio' => 0,
                 'numero_comensales' => $data['numero_comensales'],
                 'id_mesa' => $data['id_mesa'],
                 'id_usuario' => $data['id_usuario']

@@ -8,6 +8,7 @@ use App\Events\LineaBarraEditedEvent;
 use App\Events\LineaCocinaCreatedEvent;
 use App\Events\LineaCocinaDeletedEvent;
 use App\Events\LineaCocinaEditedEvent;
+use App\Exceptions\LineaAlreadyCompletedException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
@@ -271,6 +272,25 @@ class LineaController extends Controller
             return $this->errorResponse('', 204);
 
         } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
+    function completarLinea($id): JsonResponse
+    {
+        try {
+            $this->service->completarLinea($id);
+
+            return $this->successResponse('', "Línea $id completada correctamente.");
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
+        } catch (LineaAlreadyCompletedException $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+
+        } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse();
         }
     }
