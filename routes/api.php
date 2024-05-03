@@ -17,6 +17,7 @@ use App\Http\Middleware\UserIsOwnerCheck;
 use App\Http\Middleware\UserNotBlockedCheck;
 use Illuminate\Support\Facades\Route;
 
+
 Route::post('/registro', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], function () {
@@ -32,12 +33,14 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  6. Editar un rol
      *  7. Listar usuarios por rol concreto (ID)
      */
-    Route::get('/roles', [RoleController::class, 'index'])->middleware([AdminCheck::class]);
-    Route::get('/roles/{id}', [RoleController::class, 'getRole'])->middleware([AdminCheck::class]);
-    Route::post('/roles/new', [RoleController::class, 'newRole'])->middleware([AdminCheck::class]);
-    Route::delete('/roles/{id}', [RoleController::class, 'deleteRole'])->middleware([AdminCheck::class]);
-    Route::put('/roles/{id}', [RoleController::class, 'updateRole'])->middleware([AdminCheck::class]);
-    Route::get('/roles/{id}/usuarios', [UserController::class, 'getAllUsersByRole'])->middleware([AdminCheck::class]);
+    Route::prefix('/roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->middleware([AdminCheck::class]);
+        Route::get('/{id}', [RoleController::class, 'getRole'])->middleware([AdminCheck::class]);
+        Route::post('/new', [RoleController::class, 'newRole'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}', [RoleController::class, 'deleteRole'])->middleware([AdminCheck::class]);
+        Route::put('/{id}', [RoleController::class, 'updateRole'])->middleware([AdminCheck::class]);
+        Route::get('/{id}/usuarios', [UserController::class, 'getAllUsersByRole'])->middleware([AdminCheck::class]);
+    });
 
     /**
      *  User endpoints
@@ -48,12 +51,14 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  5. Editar un usuario
      *  6. Eliminar un usuario
      */
-    Route::get('/usuarios', [UserController::class, 'index'])->middleware([AdminCheck::class]);
-    Route::get('/usuarios/pages', [UserController::class, 'getAmountOfpages'])->middleware([AdminCheck::class]);
-    Route::get('/usuarios/{id}', [UserController::class, 'getUser']); // TODO: mirar los permisos para esta ruta
-    Route::get('/usuarios/{id}/pedidos', [UserController::class, 'getUsersPedidos']); // TODO: mirar los permisos para esta ruta
-    Route::put('/usuarios/{id}', [UserController::class, 'updateUser'])->middleware([UserIsOwnerCheck::class]);
-    Route::delete('/usuarios/{id}', [UserController::class, 'deleteUser'])->middleware([AdminCheck::class]);
+    Route::prefix('/usuarios')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->middleware([AdminCheck::class]);
+        Route::get('/pages', [UserController::class, 'getAmountOfpages'])->middleware([AdminCheck::class]);
+        Route::get('/{id}', [UserController::class, 'getUser'])->middleware([UserIsOwnerCheck::class]);
+        Route::get('/{id}/pedidos', [UserController::class, 'getUsersPedidos']); // TODO: mirar los permisos para esta ruta
+        Route::put('/{id}', [UserController::class, 'updateUser'])->middleware([UserIsOwnerCheck::class]);
+        Route::delete('/{id}', [UserController::class, 'deleteUser'])->middleware([AdminCheck::class]);
+    });
 
     /**
      *  Categorias endpoints
@@ -65,13 +70,15 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  6. Todos los productos de una categoría (ID)
      *  7. Editar una categoría (ID)
      */
-    Route::get('/categorias', [CategoriaController::class, 'index'])->middleware([AdminCheck::class]);
-    Route::get('/categorias/pages', [CategoriaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
-    Route::get('/categorias/{id}', [CategoriaController::class, 'getCategoria']); // TODO: mirar los permisos para esta ruta
-    Route::post('/categorias/new', [CategoriaController::class, 'newCategoria'])->middleware([AdminCheck::class]);
-    Route::delete('/categorias/{id}', [CategoriaController::class, 'deleteCategoria'])->middleware([AdminCheck::class]);
-    Route::get('/categorias/{id}/productos', [ProductoController::class, 'getProductosByCategoria']); // TODO: mirar los permisos para esta ruta
-    Route::put('/categorias/{id}', [CategoriaController::class, 'updateCategoria']); // TODO: mirar los permisos para esta ruta
+    Route::prefix('/categorias')->group(function () {
+        Route::get('/', [CategoriaController::class, 'index'])->middleware([AdminCheck::class]);
+        Route::get('/pages', [CategoriaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
+        Route::get('/{id}', [CategoriaController::class, 'getCategoria'])->middleware([AdminCheck::class]);
+        Route::post('/new', [CategoriaController::class, 'newCategoria'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}', [CategoriaController::class, 'deleteCategoria'])->middleware([AdminCheck::class]);
+        Route::get('/{id}/productos', [ProductoController::class, 'getProductosByCategoria']);
+        Route::put('/{id}', [CategoriaController::class, 'updateCategoria'])->middleware([AdminCheck::class]);
+    });
 
     /**
      *  Productos endpoints
@@ -85,27 +92,31 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  8. Aumentar el stock de un producto
      *  9. Reducir el stock de un producto
      */
-    Route::get('/productos', [ProductoController::class, 'index']); // TODO: mirar los permisos para esta ruta
-    Route::get('/productos/pages', [ProductoController::class, 'getAmountOfPages']); // TODO: mirar los permisos para esta ruta
-    Route::get('/productos/{id}', [ProductoController::class, 'getProducto']); // TODO: mirar los permisos para esta ruta
-    Route::post('/productos/new', [ProductoController::class, 'newProducto']); // TODO: mirar los permisos para esta ruta
-    Route::delete('/productos/{id}', [ProductoController::class, 'deleteProducto'])->middleware([AdminCheck::class]);
-    Route::put('/productos/{id}', [ProductoController::class, 'updateProducto']); // TODO: mirar los permisos para esta ruta
-    Route::get('/productos/{id}/stock', [ProductoController::class, 'getProductStock']); // TODO: mirar los permisos para esta ruta
-    Route::post('/productos/{id}/stock/add', [ProductoController::class, 'addStock']); // TODO: mirar los permisos para esta ruta
-    Route::post('/productos/{id}/stock/reduce', [ProductoController::class, 'reduceStock']); // TODO: mirar los permisos para esta ruta
+    Route::prefix('/productos')->group(function () {
+        Route::get('/', [ProductoController::class, 'index']);
+        Route::get('/pages', [ProductoController::class, 'getAmountOfPages']);
+        Route::get('/{id}', [ProductoController::class, 'getProducto']);
+        Route::post('/new', [ProductoController::class, 'newProducto'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}', [ProductoController::class, 'deleteProducto'])->middleware([AdminCheck::class]);
+        Route::put('/{id}', [ProductoController::class, 'updateProducto']); // TODO: check perms
+        Route::get('/{id}/stock', [ProductoController::class, 'getProductStock']);
+        Route::post('/{id}/stock/add', [ProductoController::class, 'addStock']);
+        Route::post('/{id}/stock/reduce', [ProductoController::class, 'reduceStock']);
+    });
 
     /**
      *  Stock endpoints
      *  1. El stock de todos los productos paginado
      *  2. Cantidad de páginas existentes
-     *  2. Dar de alta un producto en stock (Dudo que se vaya a utilizar)
-     *  3. Editar un stock
+     *  3. Dar de alta un producto en stock (Dudo que se vaya a utilizar)
+     *  4. Editar un stock
      */
-    Route::get('/stock', [StockController::class, 'index']); // TODO: mirar los permisos para esta ruta
-    Route::get('/stock/pages', [StockController::class, 'getAmountOfPages']); // TODO: mirar los permisos para esta ruta
-    Route::post('/stock/new', [StockController::class, 'createStock']); // TODO: mirar los permisos para esta ruta
-    Route::put('/stock/{id}', [StockController::class, 'updateStock']); // TODO: mirar los permisos para esta ruta
+    Route::prefix('/stock')->group(function () {
+        Route::get('/', [StockController::class, 'index']);
+        Route::get('/pages', [StockController::class, 'getAmountOfPages']);
+        Route::post('/new', [StockController::class, 'createStock'])->middleware([AdminCheck::class]);
+        Route::put('/{id}', [StockController::class, 'updateStock'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+    });
 
     /**
      *  Mesas endpoints
@@ -117,13 +128,15 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  6. Listar todos los pedidos de una mesa
      *  7. Listar el pedido actual de una mesa
      */
-    Route::get('/mesas', [MesaController::class, 'index']); // TODO: mirar los permisos para esta ruta
-    Route::get('/mesas/{id}', [MesaController::class, 'getMesa']); // TODO: mirar los permisos para esta ruta
-    Route::post('/mesas/new', [MesaController::class, 'newMesa'])->middleware([AdminCheck::class]);
-    Route::delete('/mesas/{id}', [MesaController::class, 'deleteMesa'])->middleware([AdminCheck::class]);
-    Route::put('/mesas/{id}', [MesaController::class, 'updateMesa']); // TODO: mirar los permisos para esta ruta
-    Route::get('mesas/{id}/pedidos', [MesaController::class, 'getPedidosByMesa']); // TODO: mirar los permisos para esta ruta
-    Route::get('/mesas/{id}/pedido', [MesaController::class, 'getPedidoActual']); // TODO: mirar los permisos para esta ruta
+    Route::prefix('/mesas')->group(function () {
+        Route::get('/', [MesaController::class, 'index'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::get('/{id}', [MesaController::class, 'getMesa'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::post('/new', [MesaController::class, 'newMesa'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}', [MesaController::class, 'deleteMesa'])->middleware([AdminCheck::class]);
+        Route::put('/{id}', [MesaController::class, 'updateMesa'])->middleware([MeseroCheck::class]);
+        Route::get('/{id}/pedidos', [MesaController::class, 'getPedidosByMesa'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::get('/{id}/pedido', [MesaController::class, 'getPedidoActual'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+    });
 
     /**
      *  Pedidos endpoints
@@ -137,15 +150,17 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  8. Buscar la factura de un pedido
      *  9. Cambiar el estado de un pedido a 'servido'
      */
-    Route::get('/pedidos', [PedidoController::class, 'index'])->middleware([MeseroCheck::class]);
-    Route::get('/pedidos/pages', [PedidoController::class, 'getAmountOfPages'])->middleware([MeseroCheck::class]);
-    Route::get('/pedidos/{id}', [PedidoController::class, 'getPedido']); // TODO: mirar los permisos para esta ruta
-    Route::post('/pedidos/new', [PedidoController::class, 'newPedido'])->middleware([MeseroCheck::class]);
-    Route::put('/pedidos/{id}', [PedidoController::class, 'updatePedido'])->middleware([MeseroCheck::class, CocineroCheck::class]);
-    Route::delete('/pedidos/{id}', [PedidoController::class, 'deletePedido'])->middleware([MeseroCheck::class, CocineroCheck::class]);
-    Route::get('/pedidos/{id}/lineas', [LineaController::class, 'getLineasByPedido']); // TODO: mirar los permisos para esta ruta
-    Route::get('/pedidos/{id}/factura', [FacturaController::class, 'getFacturaByPedido']); // TODO: mirar los permisos para esta ruta
-    Route::post('/pedidos/{id}/servir', [PedidoController::class, 'servirPedido']); // TODO: mirar los permisos para esta ruta
+    Route::prefix('/pedidos')->group(function () {
+        Route::get('/', [PedidoController::class, 'index'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+        Route::get('/pages', [PedidoController::class, 'getAmountOfPages'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+        Route::get('/{id}', [PedidoController::class, 'getPedido'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+        Route::post('/new', [PedidoController::class, 'newPedido'])->middleware([MeseroCheck::class]);
+        Route::put('/{id}', [PedidoController::class, 'updatePedido'])->middleware([CocineroCheck::class, MeseroCheck::class]);
+        Route::delete('/{id}', [PedidoController::class, 'deletePedido'])->middleware([MeseroCheck::class]);
+        Route::get('/{id}/lineas', [LineaController::class, 'getLineasByPedido'])->middleware([MeseroCheck::class, CocineroCheck::class]);
+        Route::get('/{id}/factura', [FacturaController::class, 'getFacturaByPedido']); // TODO: mirar los permisos para esta ruta
+        Route::post('/{id}/servir', [PedidoController::class, 'servirPedido'])->middleware([MeseroCheck::class]);
+    });
 
     /**
      *  Líneas endpoints
@@ -156,12 +171,14 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  5. Modificar una línea
      *  6. Eliminar una línea
      */
-    Route::get('/lineas', [LineaController::class, 'index']); // TODO: mirar los permisos para esta ruta
-    Route::get('/lineas/pages', [LineaController::class, 'getAmountOfPages']); // TODO: mirar los permisos para esta ruta
-    Route::get('/lineas/{id}', [LineaController::class, 'getLinea']); // TODO: mirar los permisos para esta ruta
-    Route::post('/lineas/new', [LineaController::class, 'newLinea']); // TODO: mirar los permisos para esta ruta
-    Route::put('/lineas/{id}', [LineaController::class, 'updateLinea']); // TODO: mirar los permisos para esta ruta
-    Route::delete('/lineas/{id}', [LineaController::class, 'deleteLinea']); // TODO: mirar los permisos para esta ruta
+    Route::prefix('/lineas')->group(function () {
+        Route::get('/', [LineaController::class, 'index'])->middleware([AdminCheck::class]);
+        Route::get('/pages', [LineaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
+        Route::get('/{id}', [LineaController::class, 'getLinea'])->middleware([MeseroCheck::class]);
+        Route::post('/new', [LineaController::class, 'newLinea'])->middleware([MeseroCheck::class]);
+        Route::put('/{id}', [LineaController::class, 'updateLinea'])->middleware([MeseroCheck::class]);
+        Route::delete('/{id}', [LineaController::class, 'deleteLinea'])->middleware([MeseroCheck::class]);
+    });
 
     /**
      *  Facturas endpoints
@@ -172,11 +189,12 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  4. Modificar una factura
      *  5. Eliminar una factura
      */
-    Route::get('/facturas', [FacturaController::class, 'index']); // TODO: mirar los permisos para esta ruta
-    Route::get('/facturas/pages', [FacturaController::class, 'getAmountOfPages']); // TODO: mirar los permisos para esta ruta
-    Route::get('/facturas/{id}', [FacturaController::class, 'getFactura']); // TODO: mirar los permisos para esta ruta
-    Route::post('/facturas/new', [FacturaController::class, 'newFactura']); // TODO: mirar los permisos para esta ruta
-    Route::put('/facturas/{id}', [FacturaController::class, 'updateFactura']); // TODO: mirar los permisos para esta ruta
-    Route::delete('/facturas/{id}', [FacturaController::class, 'deleteFactura'])->middleware([AdminCheck::class]);
+    Route::prefix('/facturas')->group(function () {
+        Route::get('/', [FacturaController::class, 'index'])->middleware([AdminCheck::class]); // TODO: admin onlu??
+        Route::get('/pages', [FacturaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]); // TODO: admin only??
+        Route::get('/{id}', [FacturaController::class, 'getFactura'])->middleware([AdminCheck::class]); // TODO: admin only??
+        Route::post('/new', [FacturaController::class, 'newFactura'])->middleware([MeseroCheck::class]);
+        Route::put('/{id}', [FacturaController::class, 'updateFactura'])->middleware([MeseroCheck::class]);
+        Route::delete('/{id}', [FacturaController::class, 'deleteFactura'])->middleware([AdminCheck::class]);
+    });
 });
-
