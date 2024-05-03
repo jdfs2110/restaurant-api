@@ -21,7 +21,13 @@ class Linea extends Model
         'cantidad',
         'id_producto',
         'id_pedido',
-        'tipo'
+        'tipo',
+        'estado'
+    ];
+
+    private const ESTADOS = [
+        'pendiente',
+        'completada'
     ];
 
     public function getId(): int
@@ -67,5 +73,20 @@ class Linea extends Model
     public function setTipo(string $tipo): void
     {
         $this->tipo = $tipo;
+    }
+
+    public function getEstado(): string
+    {
+        return self::ESTADOS[$this->estado];
+    }
+
+    public function setEstado(int $estado): void
+    {
+        $this->estado = $estado;
+    }
+
+    public function getEstadoValue(): int
+    {
+        return $this->estado;
     }
 }

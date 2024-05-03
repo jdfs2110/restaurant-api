@@ -12,7 +12,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('lineas', function (Blueprint $table) {
-            $table->string('tipo')->after('id_pedido');
+            $table->integer('estado')->after('tipo');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('lineas', function (Blueprint $table) {
-            $table->dropColumn('tipo');
+            $table->dropColumn('estado');
         });
     }
 };
