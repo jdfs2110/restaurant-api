@@ -16,7 +16,9 @@
 
 
 cuando modificas una linea como guardas el progreso?
+
 ej: linea de 3 cocacolas y has servido ya las 3, se añade cocacola a la linea y ahora aparece que son 4, pero hay que servir una sola
+
 que voy a hacer con eso?
 
 ##### Side note
