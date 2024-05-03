@@ -105,6 +105,7 @@ class LineaController extends Controller
                 'id_producto' => $data['id_producto'],
                 'id_pedido' => $data['id_pedido'],
                 'tipo' => $data['tipo'],
+                'estado' => 0
             ]);
 
             $this->pedidoService->recalculatePrice($data['id_pedido']);
@@ -133,7 +134,8 @@ class LineaController extends Controller
                 'cantidad' => 'required|int|min:1',
                 'id_producto' => 'required|int',
                 'id_pedido' => 'required|int',
-                'tipo' => 'required|in:cocina,barra'
+                'tipo' => 'required|in:cocina,barra',
+                'estado' => 'required|int|min:0,max:1'
             ]);
 
             $linea = $this->repository->findOrFail($id);
@@ -148,6 +150,7 @@ class LineaController extends Controller
                 'id_producto' => $data['id_producto'],
                 'id_pedido' => $data['id_pedido'],
                 'tipo' => $data['tipo'],
+                'estado' => $data['estado']
             ]);
             $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
@@ -209,6 +212,36 @@ class LineaController extends Controller
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
+
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
+    function getLineasOfCocina(): JsonResponse
+    {
+        try {
+            $lineas = $this->repository->getLineasOfCocina();
+
+            return $this->successResponse(LineaResource::collection($lineas), 'Lineas de cocina');
+
+        } catch (NoContentException) {
+            return $this->errorResponse('', 204);
+
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
+    function getLineasOfBarra(): JsonResponse
+    {
+        try {
+            $lineas = $this->repository->getLineasOfBarra();
+
+            return $this->successResponse(LineaResource::collection($lineas), 'Lineas de barra');
+
+        } catch (NoContentException) {
+            return $this->errorResponse('', 204);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();

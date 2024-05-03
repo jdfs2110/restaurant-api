@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Exceptions\LineaDuplicadaException;
+use App\Exceptions\NoContentException;
 use App\Models\Linea;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -37,5 +38,33 @@ class LineaRepository extends GeneralRepository
         if ($count >= 1) {
             throw new LineaDuplicadaException('La línea ya existe');
         }
+    }
+
+    /**
+     * @throws NoContentException
+     */
+    public function getLineasOfCocina(): Collection
+    {
+        $lineas = $this->getBuilder()->with(['producto'])->where('tipo', 'cocina')->where('estado', '0')->get();
+
+        if ($lineas->isEmpty()) {
+            throw new NoContentException();
+        }
+
+        return $lineas;
+    }
+
+    /**
+     * @throws NoContentException
+     */
+    public function getLineasOfBarra(): Collection
+    {
+        $lineas = $this->getBuilder()->with(['producto'])->where('tipo', 'barra')->where('estado', '0')->get();
+
+        if ($lineas->isEmpty()) {
+            throw new NoContentException();
+        }
+
+        return $lineas;
     }
 }
