@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Validator::extend('cocinaobarra', function ($attribute, $value, $parameters, $validator) {
+            if (strtolower($value) != 'cocina' && strtolower($value) != 'barra') {
+                return false;
+            }
+
+            return true;
+
+        }, "El campo debe ser 'cocina' o 'barra'.");
     }
 }
