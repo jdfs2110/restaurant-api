@@ -21,6 +21,7 @@ class LineaResource extends JsonResource
             'id_producto' => $this->getIdProducto(),
             'producto' => $this->producto->getNombre(),
             'id_pedido' => $this->getIdPedido(),
+            'tipo' => $this->getTipo()
         ];
     }
 }

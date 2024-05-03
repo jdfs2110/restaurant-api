@@ -20,7 +20,8 @@ class Linea extends Model
         'precio',
         'cantidad',
         'id_producto',
-        'id_pedido'
+        'id_pedido',
+        'tipo'
     ];
 
     public function getId(): int
@@ -56,5 +57,15 @@ class Linea extends Model
     public function producto(): BelongsTo
     {
         return $this->belongsTo(Producto::class, 'id_producto', 'id')->withTrashed();
+    }
+
+    public function getTipo(): string
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo(string $tipo): void
+    {
+        $this->tipo = $tipo;
     }
 }

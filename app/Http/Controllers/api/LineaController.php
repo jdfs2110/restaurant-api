@@ -88,7 +88,8 @@ class LineaController extends Controller
                 'precio' => 'required|numeric',
                 'cantidad' => 'required|int|min:1',
                 'id_producto' => 'required|int',
-                'id_pedido' => 'required|int'
+                'id_pedido' => 'required|int',
+                'tipo' => 'required|in:cocina,barra'
             ]);
 
             $this->productoRepository->findOrFail($data['id_producto']);
@@ -102,7 +103,8 @@ class LineaController extends Controller
                 'precio' => $data['precio'],
                 'cantidad' => $data['cantidad'],
                 'id_producto' => $data['id_producto'],
-                'id_pedido' => $data['id_pedido']
+                'id_pedido' => $data['id_pedido'],
+                'tipo' => $data['tipo'],
             ]);
 
             $this->pedidoService->recalculatePrice($data['id_pedido']);
@@ -130,7 +132,8 @@ class LineaController extends Controller
                 'precio' => 'required|numeric',
                 'cantidad' => 'required|int|min:1',
                 'id_producto' => 'required|int',
-                'id_pedido' => 'required|int'
+                'id_pedido' => 'required|int',
+                'tipo' => 'required|in:cocina,barra'
             ]);
 
             $linea = $this->repository->findOrFail($id);
@@ -143,7 +146,8 @@ class LineaController extends Controller
                 'precio' => $data['precio'],
                 'cantidad' => $data['cantidad'],
                 'id_producto' => $data['id_producto'],
-                'id_pedido' => $data['id_pedido']
+                'id_pedido' => $data['id_pedido'],
+                'tipo' => $data['tipo'],
             ]);
             $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
