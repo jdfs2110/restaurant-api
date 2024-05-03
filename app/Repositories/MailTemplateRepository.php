@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories;
 
-class MailTemplateService
+class MailTemplateRepository
 {
     /**
      * @param string $name El nombre del usuario
