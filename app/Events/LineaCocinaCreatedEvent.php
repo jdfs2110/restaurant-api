@@ -2,34 +2,34 @@
 
 namespace App\Events;
 
-use App\Models\Pedido;
-use App\Resources\PedidoResource;
+use App\Models\Linea;
+use App\Resources\LineaResource;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PedidoCreatedEvent implements ShouldBroadcastNow
+class LineaCocinaCreatedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Pedido
+     * @var Linea
      */
-    public $pedido;
+    public $data;
 
-    public function __construct(Pedido $pedido)
+    public function __construct(Linea $linea, public string $ocurredOn)
     {
-        $this->pedido = new PedidoResource($pedido);
+        $this->data = new LineaResource($linea);
     }
 
     public function broadcastOn()
     {
-        return ['pedido-created'];
+        return ['lineas-cocina'];
     }
 
-    public function broadcastAs(): string
+    public function broadcastAs()
     {
-        return 'pedido-created';
+        return 'linea-created';
     }
 }
