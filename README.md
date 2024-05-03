@@ -12,8 +12,8 @@
 - [ ] borrar pedidocreated y hacer la misma lógica con las lineas
 - [ ] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
 - [ ] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
-- [ ] Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra
-- [ ] Crear endpoints separados para crear línea (mesero) [línea que va a cocina o línea que va a barra]
+- [ ] --Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra--
+- [ ] --Crear endpoints separados para crear línea (mesero) [línea que va a cocina o línea que va a barra]--
 
 ### Schizo posting
 
@@ -28,10 +28,6 @@ pues una linea nueva cada vez xd
 tengo que pensar si devolver TODAS las lineas de cocina / barra para hacer historial o si simplemente devolverlas filtradas por pendiente y al carrer
 
 tengo que pensar si hacer endpoint de completar una linea como cuando se completa un pedido
-
-##### Side note
-
-* Si el administrador acaba pudiendo crear / eliminar roles, descartar el array en el modelo User y getRol() en el resource.
 
 -------
 
