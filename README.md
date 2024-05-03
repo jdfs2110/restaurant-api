@@ -8,7 +8,7 @@
 - [x] Crear rol de barra
 - [x] modificar tabla de lineas para añadir tipo 'cocina' y 'barra' maybe?
 - [x] modificar tabla de lineas para añadir estado
-- [ ] quitar la excepción de lineaduplicada
+- [x] quitar la excepción de lineaduplicada
 - [ ] borrar pedidocreated y hacer la misma lógica con las lineas
 - [ ] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
 - [ ] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra

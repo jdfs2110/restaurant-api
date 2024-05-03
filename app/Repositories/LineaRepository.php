@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\LineaDuplicadaException;
 use App\Exceptions\NoContentException;
 use App\Models\Linea;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,20 +23,6 @@ class LineaRepository extends GeneralRepository
     public function findAllByIdPedido(int $id): Collection
     {
         return $this->getBuilder()->where('id_pedido', $id)->get();
-    }
-
-    /**
-     * @param int $idPedido ID del pedido
-     * @param int $idProducto ID del producto
-     * @throws LineaDuplicadaException cuando la línea ya existe
-     */
-    public function checkDuplicate(int $idPedido, int $idProducto): void
-    {
-        $count = $this->getBuilder()->getModel()->where('id_pedido', $idPedido)->where('id_producto', $idProducto)->count();
-
-        if ($count >= 1) {
-            throw new LineaDuplicadaException('La línea ya existe');
-        }
     }
 
     /**
