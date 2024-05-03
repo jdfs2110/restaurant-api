@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Events\LineaBarraCreatedEvent;
+use App\Events\LineaBarraDeletedEvent;
+use App\Events\LineaBarraEditedEvent;
+use App\Events\LineaCocinaCreatedEvent;
+use App\Events\LineaCocinaDeletedEvent;
+use App\Events\LineaCocinaEditedEvent;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
@@ -88,8 +94,10 @@ class LineaController extends Controller
                 'cantidad' => 'required|int|min:1',
                 'id_producto' => 'required|int',
                 'id_pedido' => 'required|int',
-                'tipo' => 'required|in:cocina,barra'
+                'tipo' => 'required|cocinaobarra'
             ]);
+
+            $tipo = strtolower($data['tipo']);
 
             $this->productoRepository->findOrFail($data['id_producto']);
             $this->pedidoRepository->findOrFail($data['id_pedido']);
@@ -101,9 +109,15 @@ class LineaController extends Controller
                 'cantidad' => $data['cantidad'],
                 'id_producto' => $data['id_producto'],
                 'id_pedido' => $data['id_pedido'],
-                'tipo' => $data['tipo'],
+                'tipo' => $tipo,
                 'estado' => 0
             ]);
+
+            if ($tipo == 'cocina') {
+                event(new LineaCocinaCreatedEvent($linea, now()));
+            } else if ($tipo == 'barra') {
+                event(new LineaBarraCreatedEvent($linea, now()));
+            }
 
             $this->pedidoService->recalculatePrice($data['id_pedido']);
 
@@ -131,7 +145,7 @@ class LineaController extends Controller
                 'cantidad' => 'required|int|min:1',
                 'id_producto' => 'required|int',
                 'id_pedido' => 'required|int',
-                'tipo' => 'required|in:cocina,barra',
+                'tipo' => 'required|cocinaobarra',
                 'estado' => 'required|int|min:0,max:1'
             ]);
 
@@ -141,17 +155,25 @@ class LineaController extends Controller
 
             $this->stockService->updateStock($data['id_producto'], $data['cantidad'], $linea->getCantidad());
 
+            $tipo = strtolower($data['tipo']);
+
             $update = $linea->update([
                 'precio' => $data['precio'],
                 'cantidad' => $data['cantidad'],
                 'id_producto' => $data['id_producto'],
                 'id_pedido' => $data['id_pedido'],
-                'tipo' => $data['tipo'],
+                'tipo' => $tipo,
                 'estado' => $data['estado']
             ]);
             $message = $update == 1 ? 'La línea ha sido modificada correctamente.' : 'Error al modificar la línea';
 
             $this->pedidoService->recalculatePrice($data['id_pedido']);
+
+            if ($tipo == 'cocina') {
+                event(new LineaCocinaEditedEvent($linea));
+            } else if ($tipo == 'barra') {
+                event(new LineaBarraEditedEvent($linea));
+            }
 
             return $this->successResponse(new LineaResource($linea), $message);
 
@@ -177,8 +199,16 @@ class LineaController extends Controller
         try {
             $linea = $this->repository->findOrFail($id);
 
+            $tipo = $linea->getTipo();
+
             $deletion = $this->repository->delete($linea);
             $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
+
+            if ($tipo === 'cocina') {
+                event(new LineaCocinaDeletedEvent($id));
+            } else if ($tipo === 'barra') {
+                event(new LineaBarraDeletedEvent($id));
+            }
 
             return $this->successResponse('', $message);
 

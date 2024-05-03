@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Events\PedidoCreatedEvent;
 use App\Exceptions\MesaOcupadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
@@ -108,8 +107,6 @@ class PedidoController extends Controller
             ]);
 
             $this->mesaService->setOcupada($mesa);
-
-            event(new PedidoCreatedEvent($pedido));
 
             return $this->successResponse(new PedidoResource($pedido), 'Pedido creado correctamente.', 201);
 
