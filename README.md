@@ -1,9 +1,23 @@
 # TODO
 
 - [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
-- [x] secure routes before production
-- [ ] protect routes with permissions (middlewares)
 - [ ] añadir más datos al seeder
+- [x] secure routes before production
+- [x] protect routes with permissions (middlewares)
+- [x] al crear la línea poner en el validator (controlador) que sea cocina o barra
+- [x] Crear rol de barra
+- [x] modificar tabla de lineas para añadir tipo 'cocina' y 'barra' maybe?
+- [ ] borrar pedidocreated y hacer la misma lógica con las lineas
+- [ ] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
+- [ ] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
+- [ ] Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra
+- [ ] Crear endpoints separados para crear línea (mesero) [línea que va a cocina o línea que va a barra]
+- [ ] modificar tabla de lineas para añadir estado?
+
+
+cuando modificas una linea como guardas el progreso?
+ej: linea de 3 cocacolas y has servido ya las 3, se añade cocacola a la linea y ahora aparece que son 4, pero hay que servir una sola
+que voy a hacer con eso?
 
 ##### Side note
 
@@ -97,13 +111,15 @@
 
 ## Lineas
 
-| Caso de uso             | Endpoint      | Método HTTP |
-|-------------------------|---------------|-------------|
-| Buscar todas las lineas | /lineas       | GET         |
-| Buscar una línea por id | /lineas/{id}  | GET         |
-| Añadir una nueva línea  | /lineas/new   | POST        |
-| Editar una línea        | /lineas/{id}  | PUT         |
-| Eliminar una línea      | /lineas/{id}  | DELETE      | 
+| Caso de uso                      | Endpoint            | Método HTTP |
+|----------------------------------|---------------------|-------------|
+| Buscar todas las lineas          | /lineas             | GET         |
+| Buscar una línea por id          | /lineas/{id}        | GET         |
+| Añadir una nueva línea           | /lineas/new         | POST        |
+| Editar una línea                 | /lineas/{id}        | PUT         |
+| Eliminar una línea               | /lineas /{id}       | DELETE      | 
+| Recuperar las líneas de cocina   | /lineas/tipo/cocina | GET         |
+| Recuperar las líneas de la barra | /lineas/tipo/barra  | GET         |
 
 ## Facturas
 
@@ -219,6 +235,9 @@ CREATE TABLE lineas(
   cantidad INT NOT NULL DEFAULT 1,
   id_producto INT NOT NULL,
   id_pedido INT NOT NULL,
+  tipo VARCHAR2 NOT NULL, -- barra / cocina,
+  estado INT NOT NULL,
+  CHECK estado>=0 AND estado <=2,
   PRIMARY KEY(id),
   FOREIGN KEY(id_producto) REFERENCES productos(id),
   FOREIGN KEY(id_pedido) REFERENCES pedidos(id)
