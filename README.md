@@ -51,17 +51,17 @@ que al crear un pedido el precio inicial sea 0, ya que las lineas son las que ac
 
 ## Usuarios
 
-| Caso de uso                                     | Endpoint               | Método HTTP |
-|-------------------------------------------------|------------------------|-------------|
-| Listar todos los usuarios paginados (admin)     | /usuarios              | GET         |
-| Obtener el número de páginas existentes (admin) | /usuarios/pages        | GET         |
-| Buscar un usuario por id (admin o self)         | /usuarios/{id}         | GET         |
-| Login                                           | /login                 | POST        |
-| Registro                                        | /registro              | POST        |
-| Cierre de sesión                                | /logout                | POST        |
-| Editar usuario (admin o self)                   | /usuarios/{id}         | PUT         |
-| Buscar los pedidos manejados por un usuario     | /usuarios/{id}/pedidos | GET         |
-| Eliminar usuario (admin)                        | /usuarios/{id}         | DELETE      | 
+| Caso de uso                                         | Endpoint               | Método HTTP |
+|-----------------------------------------------------|------------------------|-------------|
+| Listar todos los usuarios paginados (admin)         | /usuarios              | GET         |
+| Obtener el número de páginas existentes (admin)     | /usuarios/pages        | GET         |
+| Buscar un usuario por id (admin o self)             | /usuarios/{id}         | GET         |
+| Login                                               | /login                 | POST        |
+| Registro (admin)                                    | /registro              | POST        |
+| Cierre de sesión                                    | /logout                | POST        |
+| Editar usuario (admin o self)                       | /usuarios/{id}         | PUT         |
+| Buscar los pedidos manejados por un usuario (admin) | /usuarios/{id}/pedidos | GET         |
+| Eliminar usuario (admin)                            | /usuarios/{id}         | DELETE      | 
 
 ## Categorias
 
@@ -84,7 +84,7 @@ que al crear un pedido el precio inicial sea 0, ya que las lineas son las que ac
 | Buscar un producto por id               | /productos/{id}              | GET         |
 | Crear un nuevo producto (admin)         | /productos/new               | POST        |
 | Eliminar un producto (admin)            | /productos/{id}              | DELETE      |
-| Editar un producto                      | /productos/{id}              | PUT         | 
+| Editar un producto (admin)              | /productos/{id}              | PUT         | 
 | Buscar el stock de un producto          | /productos/{id}/stock        | GET         |
 | Aumentar el stock de un producto        | /productos/{id}/stock/add    | POST        | 
 | Reducir el stock de un producto         | /productos/{id}/stock/reduce | POST        |

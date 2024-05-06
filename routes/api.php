@@ -13,7 +13,6 @@ use App\Http\Controllers\api\FacturaController;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\BarraAndCocinaCheck;
 use App\Http\Middleware\BarraAndMeseroCheck;
-use App\Http\Middleware\BarraCheck;
 use App\Http\Middleware\CocineroCheck;
 use App\Http\Middleware\MeseroAndCocineroCheck;
 use App\Http\Middleware\MeseroCheck;
@@ -22,10 +21,10 @@ use App\Http\Middleware\UserNotBlockedCheck;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/registro', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], function () {
-    //protected endpoints
+
+    Route::post('/registro', [AuthController::class, 'register'])->middleware([AdminCheck::class]);
     Route::post('/logout', [AuthController::class, 'logout'])->withoutMiddleware(UserNotBlockedCheck::class);
 
     /**
@@ -59,7 +58,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::get('/', [UserController::class, 'index'])->middleware([AdminCheck::class]);
         Route::get('/pages', [UserController::class, 'getAmountOfpages'])->middleware([AdminCheck::class]);
         Route::get('/{id}', [UserController::class, 'getUser'])->middleware([UserIsOwnerCheck::class]);
-        Route::get('/{id}/pedidos', [UserController::class, 'getUsersPedidos']); // TODO: mirar los permisos para esta ruta
+        Route::get('/{id}/pedidos', [UserController::class, 'getUsersPedidos'])->middleware([AdminCheck::class]);
         Route::put('/{id}', [UserController::class, 'updateUser'])->middleware([UserIsOwnerCheck::class]);
         Route::delete('/{id}', [UserController::class, 'deleteUser'])->middleware([AdminCheck::class]);
     });
@@ -75,9 +74,9 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  7. Editar una categoría (ID)
      */
     Route::prefix('/categorias')->group(function () {
-        Route::get('/', [CategoriaController::class, 'index'])->middleware([AdminCheck::class]);
-        Route::get('/pages', [CategoriaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
-        Route::get('/{id}', [CategoriaController::class, 'getCategoria'])->middleware([AdminCheck::class]);
+        Route::get('/', [CategoriaController::class, 'index']);
+        Route::get('/pages', [CategoriaController::class, 'getAmountOfPages']);
+        Route::get('/{id}', [CategoriaController::class, 'getCategoria']);
         Route::post('/new', [CategoriaController::class, 'newCategoria'])->middleware([AdminCheck::class]);
         Route::delete('/{id}', [CategoriaController::class, 'deleteCategoria'])->middleware([AdminCheck::class]);
         Route::get('/{id}/productos', [ProductoController::class, 'getProductosByCategoria']);
@@ -102,7 +101,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::get('/{id}', [ProductoController::class, 'getProducto']);
         Route::post('/new', [ProductoController::class, 'newProducto'])->middleware([AdminCheck::class]);
         Route::delete('/{id}', [ProductoController::class, 'deleteProducto'])->middleware([AdminCheck::class]);
-        Route::put('/{id}', [ProductoController::class, 'updateProducto']); // TODO: check perms
+        Route::put('/{id}', [ProductoController::class, 'updateProducto'])->middleware([AdminCheck::class]);
         Route::get('/{id}/stock', [ProductoController::class, 'getProductStock']);
         Route::post('/{id}/stock/add', [ProductoController::class, 'addStock']);
         Route::post('/{id}/stock/reduce', [ProductoController::class, 'reduceStock']);
@@ -162,7 +161,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::put('/{id}', [PedidoController::class, 'updatePedido'])->middleware([MeseroAndCocineroCheck::class]);
         Route::delete('/{id}', [PedidoController::class, 'deletePedido'])->middleware([MeseroCheck::class]);
         Route::get('/{id}/lineas', [LineaController::class, 'getLineasByPedido'])->middleware([MeseroAndCocineroCheck::class]);
-        Route::get('/{id}/factura', [FacturaController::class, 'getFacturaByPedido']); // TODO: mirar los permisos para esta ruta
+        Route::get('/{id}/factura', [FacturaController::class, 'getFacturaByPedido']);
         Route::post('/{id}/servir', [PedidoController::class, 'servirPedido'])->middleware([MeseroCheck::class]);
     });
 
@@ -200,9 +199,9 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  5. Eliminar una factura
      */
     Route::prefix('/facturas')->group(function () {
-        Route::get('/', [FacturaController::class, 'index'])->middleware([AdminCheck::class]); // TODO: admin onlu??
-        Route::get('/pages', [FacturaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]); // TODO: admin only??
-        Route::get('/{id}', [FacturaController::class, 'getFactura'])->middleware([AdminCheck::class]); // TODO: admin only??
+        Route::get('/', [FacturaController::class, 'index'])->middleware([AdminCheck::class]);
+        Route::get('/pages', [FacturaController::class, 'getAmountOfPages'])->middleware([AdminCheck::class]);
+        Route::get('/{id}', [FacturaController::class, 'getFactura'])->middleware([AdminCheck::class]);
         Route::post('/new', [FacturaController::class, 'newFactura'])->middleware([MeseroCheck::class]);
         Route::put('/{id}', [FacturaController::class, 'updateFactura'])->middleware([MeseroCheck::class]);
         Route::delete('/{id}', [FacturaController::class, 'deleteFactura'])->middleware([AdminCheck::class]);
