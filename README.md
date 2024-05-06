@@ -1,39 +1,3 @@
-# TODO
-
-- [x] cálculos de precios (pedidos, productos, etc) [que no puedan ser negativos] (REVISAR)
-- [ ] añadir más datos al seeder
-- [x] secure routes before production
-- [x] protect routes with permissions (middlewares)
-- [x] al crear la línea poner en el validator (controlador) que sea cocina o barra
-- [x] Crear rol de barra
-- [x] modificar tabla de lineas para añadir tipo 'cocina' y 'barra' maybe?
-- [x] modificar tabla de lineas para añadir estado
-- [x] quitar la excepción de lineaduplicada
-- [x] borrar pedidocreated y hacer la misma lógica con las lineas
-- [x] Lanzar evento linea-created, canales -> lineas-cocina, lineas-barra
-- [x] Lanzar evento linea-edited, canales -> lineas-cocina, lineas-barra
-- [x] --Lanzar evento linea-deleted, canales -> lineas-cocina, lineas-barra--
-- [x] Terminar de descifrar las cosas que son para admin en las tablas de MD
-- [ ] Terminar todos los permisos
-
-### Schizo posting
-
-cuando modificas una linea como guardas el progreso?
-
-ej: linea de 3 cocacolas y has servido ya las 3, se añade cocacola a la linea y ahora aparece que son 4, pero hay que servir una sola
-
-que voy a hacer con eso?
-
-pues una linea nueva cada vez xd
-
-tengo que pensar si devolver TODAS las lineas de cocina / barra para hacer historial o si simplemente devolverlas filtradas por pendiente y al carrer
-
-tengo que pensar si hacer endpoint de completar una linea como cuando se completa un pedido
-
-que al crear un pedido el precio inicial sea 0, ya que las lineas son las que actualizan su precio
-
--------
-
 # Casos de uso con sus endpoints
 
 ### Los campos marcados con (admin) son para el panel de administración
