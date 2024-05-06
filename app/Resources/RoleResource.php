@@ -16,7 +16,7 @@ class RoleResource extends JsonResource
     {
         return [
             'id' => $this->getId(),
-            'nombre' => $this->getNombre()
+            'nombre' => strtoupper(substr($this->getNombre(), 0, 1)) . substr($this->getNombre(), 1)
         ];
     }
 }
