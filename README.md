@@ -277,7 +277,7 @@ CREATE TABLE facturas(
 ---------------------
 
 ## Diagrama Entidad-Relación
-<img src="diagrama.png" alt="Diagrama Entidad-Relación"/>
+<img src="diagrama-er.png" alt="Diagrama Entidad-Relación"/>
 
 ---------------------
 
