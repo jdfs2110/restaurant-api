@@ -279,7 +279,13 @@ class LineaController extends Controller
     function completarLinea($id): JsonResponse
     {
         try {
-            $this->service->completarLinea($id);
+            $linea = $this->service->completarLinea($id);
+
+            if ($linea->getTipo() === 'cocina') {
+                event(new LineaCocinaDeletedEvent($id));
+            } else if ($linea->getTipo() === 'barra') {
+                event(new LineaBarraDeletedEvent($id));
+            }
 
             return $this->successResponse('', "Línea $id completada correctamente.");
 

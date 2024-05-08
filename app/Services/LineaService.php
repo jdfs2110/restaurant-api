@@ -64,7 +64,7 @@ class LineaService
      * @throws ModelNotFoundException cuando la línea no existe
      * @throws LineaAlreadyCompletedException cuando la línea ya está completada
      */
-    public function completarLinea(int $id): void
+    public function completarLinea(int $id): Linea
     {
         $linea = $this->repository->findOrFail($id);
 
@@ -74,5 +74,6 @@ class LineaService
 
         $linea->setEstado(1);
         $linea->save();
+        return $linea;
     }
 }
