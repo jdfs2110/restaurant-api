@@ -276,7 +276,7 @@ class LineaController extends Controller
         }
     }
 
-    function completarLinea($id): JsonResponse
+    function completarLinea(int $id): JsonResponse
     {
         try {
             $linea = $this->service->completarLinea($id);
