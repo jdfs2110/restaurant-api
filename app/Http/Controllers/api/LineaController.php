@@ -289,14 +289,14 @@ class LineaController extends Controller
 
             return $this->successResponse('', "Línea $id completada correctamente.");
 
-        } catch (TypeError) {
+        } catch (TypeError $e) {
+            dd ($e);
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (LineaAlreadyCompletedException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            dd($e);
+        } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
     }
