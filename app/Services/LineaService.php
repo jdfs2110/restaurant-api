@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\LineaAlreadyCompletedException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
+use App\Models\Linea;
 use App\Repositories\LineaRepository;
 use Illuminate\Database\Eloquent\Collection;
 
