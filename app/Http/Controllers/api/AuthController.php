@@ -97,4 +97,14 @@ class AuthController extends Controller
             return $this->unhandledErrorResponse();
         }
     }
+
+    public function validateToken(Request $request): JsonResponse
+    {
+        try {
+            return $this->successResponse(new UsuarioResource($request->user()));
+
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
 }

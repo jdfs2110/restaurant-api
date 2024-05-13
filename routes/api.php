@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
 
     Route::post('/registro', [AuthController::class, 'register'])->middleware([AdminCheck::class]);
     Route::post('/logout', [AuthController::class, 'logout'])->withoutMiddleware(UserNotBlockedCheck::class);
+    Route::post('/validateToken', [AuthController::class, 'validateToken']);
 
     /**
      *  Roles endpoints
