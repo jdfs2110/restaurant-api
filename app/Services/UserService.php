@@ -76,7 +76,7 @@ class UserService
         }
     }
 
-    private const PAGINATION_LIMIT = 15;
+    private const PAGINATION_LIMIT = 10;
 
     /**
      * @param int $pagina Número de página que se desea obtener
