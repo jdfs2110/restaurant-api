@@ -45,4 +45,10 @@ class UserRepository extends GeneralRepository
             throw new EmailAlreadyInUseException('El email ingresado ya existe');
         }
     }
+
+    public function findSimilarUsersByName(string $name): Collection
+    {
+        return $this->getBuilder()->where('nombre', $name)
+            ->orWhere('name', 'like', "$name%")->get();
+    }
 }

@@ -196,4 +196,16 @@ class UserController extends Controller
             return $this->unhandledErrorResponse();
         }
     }
+
+    public function getSimilarUsers($name): JsonResponse
+    {
+        try {
+            $users = $this->repository->findSimilarUsersByName($name);
+
+            return $this->successResponse(UsuarioResource::collection($users), "Usuarios similares");
+        } catch (Exception $e) {
+            dd($e);
+            return $this->unhandledErrorResponse();
+        }
+    }
 }
