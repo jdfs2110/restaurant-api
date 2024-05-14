@@ -49,6 +49,6 @@ class UserRepository extends GeneralRepository
     public function findSimilarUsersByName(string $name): Collection
     {
         return $this->getBuilder()->where('name', $name)
-            ->orWhere('name', 'like', "$name%")->get();
+            ->orWhere('name', 'like', "%$name%")->get();
     }
 }
