@@ -85,7 +85,7 @@ class RoleController extends Controller
             $usersWithRole = $this->userRepository->findAllByIdRol($id);
 
             if ($usersWithRole->isNotEmpty()) {
-                return $this->errorResponse('Error al eliminar el rol, el rol tiene usuarios', 400);
+                return $this->errorResponse('El rol tiene usuarios', 400);
             }
 
             $deletion = $this->repository->delete($role);
