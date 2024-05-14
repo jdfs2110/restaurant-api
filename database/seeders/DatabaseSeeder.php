@@ -116,6 +116,8 @@ class DatabaseSeeder extends Seeder
             'fecha_ingreso' => date('Y-m-d')
         ]);
 
+        User::factory()->count(500)->create();
+
         /**
          *  Creación de categorias
          */
