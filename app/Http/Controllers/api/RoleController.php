@@ -89,7 +89,7 @@ class RoleController extends Controller
             }
 
             $deletion = $this->repository->delete($role);
-            $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente' : 'Error al eliminar el rol';
+            $message = $deletion == 1 ? 'El rol ha sido eliminado correctamente.' : 'Error al eliminar el rol';
 
             return $this->successResponse('', $message);
 
