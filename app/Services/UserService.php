@@ -95,13 +95,19 @@ class UserService
     }
 
     /**
-     * @return int La cantidad de páginas que tienen los usuarios
+     * @return int La cantidad de usuarios existentes en la Base de Datos
      */
-    public function getAmountOfPages(): int
+    public function getAmountOfUsers(): int
     {
-        $paginas = $this->repository->all()->count();
+        return $this->repository->all()->count();
+    }
 
-        return ceil($paginas / self::PAGINATION_LIMIT);
+    /**
+     * @return int El límite de usuarios por cada petición
+     */
+    public function getPaginationLimit(): int
+    {
+        return self::PAGINATION_LIMIT;
     }
 
     /**

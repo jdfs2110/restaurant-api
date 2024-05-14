@@ -52,9 +52,11 @@ class UserController extends Controller
     public function getAmountOfpages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfpages();
+            $users = $this->service->getAmountOfUsers();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($users, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();
