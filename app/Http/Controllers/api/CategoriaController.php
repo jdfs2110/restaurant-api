@@ -174,4 +174,15 @@ class CategoriaController extends Controller
             return $this->unhandledErrorResponse('¿Estás usando POST y _method=PUT?');
         }
     }
+
+    public function getSimilarCategories($name): JsonResponse
+    {
+        try {
+            $categories = $this->repository->findSimilarCategoriesByName($name);
+
+            return $this->successResponse(CategoriaResource::collection($users), "Categorias similares");
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
 }

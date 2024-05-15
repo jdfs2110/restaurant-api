@@ -205,8 +205,7 @@ class UserController extends Controller
             $users = $this->repository->findSimilarUsersByName($name);
 
             return $this->successResponse(UsuarioResource::collection($users), "Usuarios similares");
-        } catch (Exception $e) {
-            dd($e);
+        } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
     }

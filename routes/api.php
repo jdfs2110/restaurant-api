@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  4. Buscar todos los pedidos manejados por un usuario concreto (ID)
      *  5. Editar un usuario
      *  6. Eliminar un usuario
+     *  7. Usuarios similares a una cadena
      */
     Route::prefix('/usuarios')->group(function () {
         Route::get('/', [UserController::class, 'index'])->middleware([AdminCheck::class]);
@@ -74,6 +75,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  5. Eliminar una categoría
      *  6. Todos los productos de una categoría (ID)
      *  7. Editar una categoría (ID)
+     *  8. Categorias similares a una cadena
      */
     Route::prefix('/categorias')->group(function () {
         Route::get('/', [CategoriaController::class, 'index']);
@@ -83,6 +85,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::delete('/{id}', [CategoriaController::class, 'deleteCategoria'])->middleware([AdminCheck::class]);
         Route::get('/{id}/productos', [ProductoController::class, 'getProductosByCategoria']);
         Route::put('/{id}', [CategoriaController::class, 'updateCategoria'])->middleware([AdminCheck::class]);
+        Route::get('/similar/{name}', [CategoriaController::class, 'getSimilarCategories'])->middleware([AdminCheck::class]);
     });
 
     /**
