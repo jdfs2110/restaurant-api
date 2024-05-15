@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'password' => bcrypt('123456'),
             'estado' => true,
             'fecha_ingreso' => fake()->date('Y-m-d'),
-            'id_rol' => fake()->randomDigitNot([4, 7, 8, 9]),
+            'id_rol' => fake()->randomDigitNot([0, 4, 7, 8, 9]),
         ];
     }
 
