@@ -51,9 +51,11 @@ class ProductoController extends Controller
     function getAmountOfPages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfPages();
+            $products = $this->service->getAmountOfProducts();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($products, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();
@@ -301,6 +303,17 @@ class ProductoController extends Controller
         } catch (NegativeQuantityException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
+    public function getSimilarProducts($name): JsonResponse
+    {
+        try {
+            $products = $this->repository->findSimilarProductsByName($name);
+
+            return $this->successResponse(ProductoResource::collection($products), "Productos similares");
         } catch (Exception) {
             return $this->unhandledErrorResponse();
         }

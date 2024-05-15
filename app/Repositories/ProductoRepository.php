@@ -23,4 +23,10 @@ class ProductoRepository extends GeneralRepository
     {
         return $this->getBuilder()->where('id_categoria', $id)->get();
     }
+
+    public function findSimilarProductsByName(string $name): Collection
+    {
+        return $this->getBuilder()->where('nombre', $name)
+            ->orWhere('nombre', 'like', "%$name%")->get();
+    }
 }

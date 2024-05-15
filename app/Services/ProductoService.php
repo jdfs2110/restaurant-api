@@ -32,13 +32,19 @@ class ProductoService
     }
 
     /**
-     * @return int La cantidad de páginas que tienen los productos
+     * @return int La cantidad de productos existentes en la Base de Datos
      */
-    public function getAmountOfPages(): int
+    public function getAmountOfProducts(): int
     {
-        $paginas = $this->repository->all()->count();
+        return $this->repository->all()->count();
+    }
 
-        return ceil($paginas / self::PAGINATION_LIMIT);
+    /**
+     * @return int El límite de productos por cada petición
+     */
+    public function getPaginationLimit(): int
+    {
+        return self::PAGINATION_LIMIT;
     }
 
     /**

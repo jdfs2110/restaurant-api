@@ -1,3 +1,7 @@
+# TODO
+
+- [ ] Poner en el seeder categorias variadas (bebidas, carnes, arroces, etc etc etc)
+
 # Casos de uso con sus endpoints
 
 ### Los campos marcados con (admin) son para el panel de administración

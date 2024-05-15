@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::get('/{id}/stock', [ProductoController::class, 'getProductStock']);
         Route::post('/{id}/stock/add', [ProductoController::class, 'addStock']);
         Route::post('/{id}/stock/reduce', [ProductoController::class, 'reduceStock']);
+        Route::get('/similar/{name}', [ProductoController::class, 'getSimilarProducts'])->middleware([AdminCheck::class]);
     });
 
     /**
