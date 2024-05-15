@@ -76,13 +76,19 @@ class PedidoService
     }
 
     /**
-     * @return int La cantidad de páginas que tienen los pedidos
+     * @return int La cantidad de pedidos existentes en la Base de Datos
      */
-    public function getAmountOfPages(): int
+    public function getAmountOfPedidos(): int
     {
-        $paginas = $this->repository->all()->count();
+        return $this->repository->all()->count();
+    }
 
-        return ceil($paginas / self::PAGINATION_LIMIT);
+    /**
+     * @return int El límite de pedidos por cada petición
+     */
+    public function getPaginationLimit(): int
+    {
+        return self::PAGINATION_LIMIT;
     }
 
     /**

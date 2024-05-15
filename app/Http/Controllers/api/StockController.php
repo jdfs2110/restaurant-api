@@ -44,9 +44,11 @@ class StockController extends Controller
     function getAmountOfPages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfPages();
+            $stock = $this->service->getAmountOfStock();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($stock, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();

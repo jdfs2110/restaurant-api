@@ -35,13 +35,19 @@ class LineaService
     }
 
     /**
-     * @return int La cantidad de páginas que tienen las líneas
+     * @return int La cantidad de líneas existentes en la Base de Datos
      */
-    public function  getAmountOfPages(): int
+    public function getAmountOfLineas(): int
     {
-        $paginas = $this->repository->all()->count();
+        return $this->repository->all()->count();
+    }
 
-        return ceil($paginas / self::PAGINATION_LIMIT);
+    /**
+     * @return int El límite de líneas por cada petición
+     */
+    public function getPaginationLimit(): int
+    {
+        return self::PAGINATION_LIMIT;
     }
 
     /**

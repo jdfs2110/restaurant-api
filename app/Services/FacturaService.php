@@ -32,12 +32,19 @@ class FacturaService
     }
 
     /**
-     * @return int La cantidad de páginas que tienen las facturas
+     * @return int La cantidad de facturas existentes en la Base de Datos
      */
-    public function getAmountOfPages(): int
+    public function getAmountOfFacturas(): int
     {
-        $paginas = $this->repository->all()->count();
-
-        return ceil($paginas / self::PAGINATION_LIMIT);
+        return $this->repository->all()->count();
     }
+
+    /**
+     * @return int El limite de facturas por cada petición
+     */
+    public function getPaginationLimit(): int
+    {
+        return self::PAGINATION_LIMIT;
+    }
+
 }

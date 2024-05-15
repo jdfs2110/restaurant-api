@@ -19,43 +19,46 @@
 
 ## Usuarios
 
-| Caso de uso                                         | Endpoint               | Método HTTP |
-|-----------------------------------------------------|------------------------|-------------|
-| Listar todos los usuarios paginados (admin)         | /usuarios              | GET         |
-| Obtener el número de páginas existentes (admin)     | /usuarios/pages        | GET         |
-| Buscar un usuario por id (admin o self)             | /usuarios/{id}         | GET         |
-| Login                                               | /login                 | POST        |
-| Registro (admin)                                    | /registro              | POST        |
-| Cierre de sesión                                    | /logout                | POST        |
-| Editar usuario (admin o self)                       | /usuarios/{id}         | PUT         |
-| Buscar los pedidos manejados por un usuario (admin) | /usuarios/{id}/pedidos | GET         |
-| Eliminar usuario (admin)                            | /usuarios/{id}         | DELETE      | 
+| Caso de uso                                         | Endpoint                 | Método HTTP |
+|-----------------------------------------------------|--------------------------|-------------|
+| Listar todos los usuarios paginados (admin)         | /usuarios                | GET         |
+| Obtener el número de páginas existentes (admin)     | /usuarios/pages          | GET         |
+| Buscar un usuario por id (admin o self)             | /usuarios/{id}           | GET         |
+| Login                                               | /login                   | POST        |
+| Registro (admin)                                    | /registro                | POST        |
+| Cierre de sesión                                    | /logout                  | POST        |
+| Editar usuario (admin o self)                       | /usuarios/{id}           | PUT         |
+| Buscar los pedidos manejados por un usuario (admin) | /usuarios/{id}/pedidos   | GET         |
+| Eliminar usuario (admin)                            | /usuarios/{id}           | DELETE      | 
+| Listar usuarios con nombre similar a una cadena     | /usuarios/similar/{name} | GET         |
 
 ## Categorias
 
-| Caso de uso                                     | Endpoint                   | Método HTTP |
-|-------------------------------------------------|----------------------------|-------------|
-| Listar todas las categorias paginadas (admin)   | /categorias                | GET         |
-| Obtener el número de páginas existentes (admin) | /categorias/pages          | GET         |
-| Buscar una categoría por id (admin)             | /categorias/{id}           | GET         |
-| Crear una categoría (admin)                     | /categorias/new            | POST        |
-| Eliminar una categoría (admin)                  | /categorias/{id}           | DELETE      |
-| Buscar todos los productos de una categoría     | /categorias/{id}/productos | GET         | 
-| Editar una categoría (admin)                    | /categorias/{id}           | PUT         |
+| Caso de uso                                       | Endpoint                   | Método HTTP |
+|---------------------------------------------------|----------------------------|-------------|
+| Listar todas las categorias paginadas (admin)     | /categorias                | GET         |
+| Obtener el número de páginas existentes (admin)   | /categorias/pages          | GET         |
+| Buscar una categoría por id (admin)               | /categorias/{id}           | GET         |
+| Crear una categoría (admin)                       | /categorias/new            | POST        |
+| Eliminar una categoría (admin)                    | /categorias/{id}           | DELETE      |
+| Buscar todos los productos de una categoría       | /categorias/{id}/productos | GET         | 
+| Editar una categoría (admin)                      | /categorias/{id}           | PUT         |
+| Listar categorias con nombre similar a una cadena | /categorias/similar/{name} | GET         |
 
 ## Productos
 
-| Caso de uso                             | Endpoint                     | Método HTTP |
-|-----------------------------------------|------------------------------|-------------|
-| Listar todos los productos paginados    | /productos                   | GET         |
-| Obtener el número de páginas existentes | /productos/pages             | GET         |
-| Buscar un producto por id               | /productos/{id}              | GET         |
-| Crear un nuevo producto (admin)         | /productos/new               | POST        |
-| Eliminar un producto (admin)            | /productos/{id}              | DELETE      |
-| Editar un producto (admin)              | /productos/{id}              | PUT         | 
-| Buscar el stock de un producto          | /productos/{id}/stock        | GET         |
-| Aumentar el stock de un producto        | /productos/{id}/stock/add    | POST        | 
-| Reducir el stock de un producto         | /productos/{id}/stock/reduce | POST        |
+| Caso de uso                                      | Endpoint                     | Método HTTP |
+|--------------------------------------------------|------------------------------|-------------|
+| Listar todos los productos paginados             | /productos                   | GET         |
+| Obtener el número de páginas existentes          | /productos/pages             | GET         |
+| Buscar un producto por id                        | /productos/{id}              | GET         |
+| Crear un nuevo producto (admin)                  | /productos/new               | POST        |
+| Eliminar un producto (admin)                     | /productos/{id}              | DELETE      |
+| Editar un producto (admin)                       | /productos/{id}              | PUT         | 
+| Buscar el stock de un producto                   | /productos/{id}/stock        | GET         |
+| Aumentar el stock de un producto                 | /productos/{id}/stock/add    | POST        | 
+| Reducir el stock de un producto                  | /productos/{id}/stock/reduce | POST        |
+| Listar productos con nombre similar a una cadena | /productos/similar/{name}    | GET         |
 
 ## Stock
 

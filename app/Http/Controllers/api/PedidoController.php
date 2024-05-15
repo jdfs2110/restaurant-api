@@ -56,9 +56,11 @@ class PedidoController extends Controller
     function getAmountOfPages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfPages();
+            $pedidos = $this->service->getAmountOfPedidos();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($pedidos, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();

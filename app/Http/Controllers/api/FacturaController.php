@@ -46,9 +46,11 @@ class FacturaController extends Controller
     function getAmountOfPages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfPages();
+            $facturas = $this->service->getAmountOfFacturas();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($facturas, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();

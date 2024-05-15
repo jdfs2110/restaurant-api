@@ -60,9 +60,11 @@ class LineaController extends Controller
     function getAmountOfPages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfPages();
+            $lineas = $this->service->getAmountOfLineas();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($lineas, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();
