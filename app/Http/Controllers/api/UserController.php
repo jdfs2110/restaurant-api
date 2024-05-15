@@ -135,6 +135,7 @@ class UserController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|string',
                 'password' => 'required|string|confirmed',
+                'estado' => 'required|boolean',
                 'id_rol' => 'required|int'
             ]);
 
@@ -147,6 +148,7 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
+                'estado' => $data['estado'],
                 'id_rol' => $data['id_rol']
             ]);
             $message = $update == 1 ? 'El usuario ha sido modificado correctamente.' : 'Error al modificar el usuario';
