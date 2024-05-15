@@ -45,9 +45,11 @@ class CategoriaController extends Controller
     function getAmountOfPages(): JsonResponse
     {
         try {
-            $paginas = $this->service->getAmountOfPages();
+            $categories = $this->service->getAmountOfCategories();
 
-            return $this->successResponse($paginas);
+            $limit = $this->service->getPaginationLimit();
+
+            return $this->successResponse($categories, $limit);
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();

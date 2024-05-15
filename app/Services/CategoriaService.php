@@ -32,12 +32,18 @@ class CategoriaService
     }
 
     /**
-     * @return int La cantidad de páginas que tienen las categorías
+     * @return int la cantidad de categorias existentes en la Base de Datos
      */
-    public function getAmountOfPages(): int
+    public function getAmountOfCategories(): int
     {
-        $paginas = $this->repository->all()->count();
+        return $this->repository->all()->count();
+    }
 
-        return ceil($paginas / self::PAGINATION_LIMIT);
+    /**
+     * @return int El límite de categorias por cada petición
+     */
+    public function getPaginationLimit(): int
+    {
+        return self::PAGINATION_LIMIT;
     }
 }
