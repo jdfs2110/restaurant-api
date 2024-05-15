@@ -180,7 +180,7 @@ class CategoriaController extends Controller
         try {
             $categories = $this->repository->findSimilarCategoriesByName($name);
 
-            return $this->successResponse(CategoriaResource::collection($users), "Categorias similares");
+            return $this->successResponse(CategoriaResource::collection($categories), "Categorias similares");
         } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
