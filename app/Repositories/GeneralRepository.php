@@ -26,7 +26,7 @@ abstract class GeneralRepository
         $this->notFoundMessage = $message;
     }
 
-    public function all(): Collection
+    public function all(): Collection | \Illuminate\Support\Collection
     {
         return $this->builder->get();
     }
@@ -36,7 +36,7 @@ abstract class GeneralRepository
      * @throws ModelNotFoundException cuando no se encuentra el modelo
      * @return Model El modelo que se ha encontrado
      */
-    public function findOrFail(int $id): Model
+    public function findOrFail(int $id): mixed
     {
         $entity =  $this->builder->find($id);
 

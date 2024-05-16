@@ -16,6 +16,7 @@ use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
 use TypeError;
 
@@ -38,7 +39,7 @@ class ProductoController extends Controller
 
             $productos = $this->service->paginated($pagina);
 
-            return $this->successResponse(ProductoResource::collection($productos), "Productos de la página $pagina");
+            return $this->successResponse($productos, "Productos de la página $pagina");
 
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
@@ -67,13 +68,14 @@ class ProductoController extends Controller
         try {
             $producto = $this->repository->findOrFail($id);
 
-            return $this->successResponse(new ProductoResource($producto));
+            return $this->successResponse($producto);
 
-        } catch (TypeError) {
+        } catch (TypeError $e) {
+            dd($e);
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
-        } catch (ModelNotFoundException $e) {
-            return $this->errorResponse($e->getMessage());
+        } catch (ItemNotFoundException $e) {
+            return $this->errorResponse('Producto no encontrado.');
 
         } catch (Exception) {
             return $this->unhandledErrorResponse();
@@ -105,7 +107,9 @@ class ProductoController extends Controller
 
             $this->stockService->addStock($producto->getId(), $data['cantidad']);
 
-            return $this->successResponse(new ProductoResource($producto), 'Producto creado correctamente.', 201);
+            $returning = $this->repository->findOrFail($producto->getId());
+
+            return $this->successResponse($returning, 'Producto creado correctamente.', 201);
 
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
@@ -231,7 +235,9 @@ class ProductoController extends Controller
 
             $this->stockService->setStock($id, $data['cantidad']);
 
-            return $this->successResponse(new ProductoResource($producto), $message);
+            $returning = $this->repository->findOrFail($producto->getId());
+
+            return $this->successResponse($returning, $message);
 
         } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);

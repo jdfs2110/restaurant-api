@@ -23,7 +23,8 @@ class ProductoResource extends JsonResource
             'activo' => $this->getActivo(),
             'foto' => $this->toCloudflareUrl($this->getFoto()),
             'id_categoria' => $this->getIdCategoria(),
-            'categoria' => $this->categoria->getNombre(),
+            'categoria' => $this->getCategoria(),
+            'cantidad' => $this->getCantidad()
         ];
     }
 }

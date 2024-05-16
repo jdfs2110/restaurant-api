@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Producto extends Model
 {
     use SoftDeletes, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -68,6 +69,7 @@ class Producto extends Model
     {
         $this->foto = $foto;
     }
+
     public function getIdCategoria(): int
     {
         return $this->id_categoria;
@@ -78,23 +80,32 @@ class Producto extends Model
         $this->id_categoria = $id_categoria;
     }
 
-    public function getCreatedAt(): string | null
+    public function getCreatedAt(): string|null
     {
         return $this->created_at;
     }
 
-    public function getUpdatedAt(): string | null
+    public function getUpdatedAt(): string|null
     {
         return $this->updated_at;
     }
 
-    public function getDeletedAt(): string | null
+    public function getDeletedAt(): string|null
     {
         return $this->deleted_at;
     }
 
-    public function categoria(): BelongsTo
+//    public function categoria(): BelongsTo
+//    {
+//        return $this->belongsTo(Categoria::class, 'id_categoria', 'id')->withTrashed();
+//    }
+    public function getCategoria(): string
     {
-        return $this->belongsTo(Categoria::class, 'id_categoria', 'id')->withTrashed();
+        return $this->categoria;
+    }
+
+    public function getCantidad(): string
+    {
+        return $this->cantidad;
     }
 }

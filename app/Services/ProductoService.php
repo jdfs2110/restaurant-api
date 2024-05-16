@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\NoContentException;
 use App\Repositories\ProductoRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ProductoService
 {
@@ -20,9 +21,23 @@ class ProductoService
      * @throws NoContentException cuuando la página está vacía
      * @return Collection Los productos de la página deseada
      */
-    public function paginated(int $pagina): Collection
+    public function paginated(int $pagina): \Illuminate\Support\Collection
     {
-        $productos = $this->repository->all()->forPage($pagina, self::PAGINATION_LIMIT);
+        return collect(DB::query()
+            ->select([
+                'productos.id',
+                'productos.nombre',
+                'productos.precio',
+                'productos.activo',
+                'productos.foto',
+                'productos.id_categoria',
+                'categorias.nombre as categoria',
+                'stock.cantidad',
+            ])->from('productos')
+            ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
+            ->join('stock', 'productos.id', '=', 'stock.id_producto')
+            ->forPage($pagina, self::PAGINATION_LIMIT)
+            ->get());
 
         if ($productos->isEmpty()) {
             throw new NoContentException('No hay productos.');
