@@ -42,6 +42,17 @@ class CategoriaController extends Controller
         }
     }
 
+    function all(): JsonResponse
+    {
+        try {
+            $categorias = $this->repository->all();
+
+            return $this->successResponse(CategoriaResource::collection($categorias));
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
     function getAmountOfPages(): JsonResponse
     {
         try {

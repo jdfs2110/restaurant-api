@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
     Route::prefix('/categorias')->group(function () {
         Route::get('/', [CategoriaController::class, 'index']);
         Route::get('/pages', [CategoriaController::class, 'getAmountOfPages']);
+        Route::get('/all', [CategoriaController::class, 'all'])->middleware([AdminCheck::class]);
         Route::get('/{id}', [CategoriaController::class, 'getCategoria']);
         Route::post('/new', [CategoriaController::class, 'newCategoria'])->middleware([AdminCheck::class]);
         Route::delete('/{id}', [CategoriaController::class, 'deleteCategoria'])->middleware([AdminCheck::class]);
