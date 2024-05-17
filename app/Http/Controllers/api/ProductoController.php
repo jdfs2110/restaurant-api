@@ -210,7 +210,7 @@ class ProductoController extends Controller
                 'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
             ]);
 
-            $producto = $this->repository->findOrFail($id);
+            $producto = $this->service->findModelOrFail($id);
 
             $this->categoriaRepository->findOrFail($data['id_categoria']);
 

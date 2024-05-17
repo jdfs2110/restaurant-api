@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\NoContentException;
+use App\Models\Producto;
 use App\Repositories\ProductoRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -50,6 +51,11 @@ class ProductoService
         }
 
         return $productos;
+    }
+
+    public function findModelOrFail($id): \Illuminate\Database\Eloquent\Builder|array|Collection|\Illuminate\Database\Eloquent\Model
+    {
+        return Producto::query()->findOrFail($id);
     }
 
     /**
