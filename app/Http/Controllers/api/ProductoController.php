@@ -219,7 +219,7 @@ class ProductoController extends Controller
             if ($notNull) {
                 $path = $request->file('foto')->store('productos', 'r2');
 
-                $this->deletePhotoIfExists($producto->getFoto());
+                $this->deletePhotoIfExists($producto->foto);
 
                 $producto->setFoto($path);
             }
@@ -234,7 +234,7 @@ class ProductoController extends Controller
 
             $this->stockService->setStock($id, $data['cantidad']);
 
-            $returning = $this->repository->findOrFail($producto->getId());
+            $returning = $this->repository->findOrFail($producto->id);
 
             return $this->successResponse($returning, $message);
 
