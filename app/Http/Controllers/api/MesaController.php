@@ -62,7 +62,7 @@ class MesaController extends Controller
     {
         try {
             $data = $request->validate([
-                'capacidad_maxima' => 'required|int|max:15',
+                'capacidad_maxima' => 'required|int|max:20',
                 'estado' => 'required|int|max:2'
             ]);
 
@@ -106,7 +106,7 @@ class MesaController extends Controller
     {
         try {
             $data = $request->validate([
-                'capacidad_maxima' => 'required|int|max:15',
+                'capacidad_maxima' => 'required|int|max:20',
                 'estado' => 'required|int|max:2'
             ]);
 
