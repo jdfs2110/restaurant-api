@@ -26,7 +26,7 @@ class Pedido extends Model
 
     private const ESTADOS = [
         'pendiente',
-        'preparando',
+        'en preparación',
         'servido',
         'cancelado'
     ];
