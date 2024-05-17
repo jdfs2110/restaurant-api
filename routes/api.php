@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::delete('/{id}', [UserController::class, 'deleteUser'])->middleware([AdminCheck::class]);
         Route::get('/similar/{name}', [UserController::class, 'getSimilarUsers'])->middleware([AdminCheck::class]);
         Route::post('/{id}/password', [UserController::class, 'updatePassword'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}/tokens', [UserController::class, 'revokeTokens'])->middleware([AdminCheck::class]);
     });
 
     /**

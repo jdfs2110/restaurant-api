@@ -235,4 +235,23 @@ class UserController extends Controller
             return $this->unhandledErrorResponse();
         }
     }
+
+    public function revokeTokens($id): JsonResponse
+    {
+        try {
+            $user = $this->repository->findOrFail($id);
+
+            $user->tokens()->delete();
+
+            return $this->successResponse('','Tokens revocados correctamente.');
+
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
 }

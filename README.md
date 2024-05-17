@@ -32,6 +32,7 @@
 | Eliminar usuario (admin)                            | /usuarios/{id}           | DELETE      | 
 | Listar usuarios con nombre similar a una cadena     | /usuarios/similar/{name} | GET         |
 | Cambiarle la contraseña al usuario (admin)          | /usuarios/{id}/password  | POST        | 
+| Revocar tokens de acceso (admin)                    | /usuarios/{id}/tokens    | DELETE      |
 
 ## Categorias
 
