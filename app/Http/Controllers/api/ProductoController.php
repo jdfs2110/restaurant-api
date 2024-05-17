@@ -71,7 +71,6 @@ class ProductoController extends Controller
             return $this->successResponse($producto);
 
         } catch (TypeError $e) {
-            dd($e);
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ItemNotFoundException $e) {
@@ -157,7 +156,7 @@ class ProductoController extends Controller
 
             $productos = $this->service->findAllByIdCategoria($id);
 
-            return $this->successResponse(ProductoResource::collection($productos));
+            return $this->successResponse($productos);
 
         } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);

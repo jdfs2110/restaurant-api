@@ -6,6 +6,7 @@ use App\Exceptions\NoContentException;
 use App\Repositories\ProductoRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use function Aws\map;
 
 class ProductoService
 {
@@ -23,7 +24,7 @@ class ProductoService
      */
     public function paginated(int $pagina): \Illuminate\Support\Collection
     {
-        return collect(DB::query()
+        $productos = collect(DB::query()
             ->select([
                 'productos.id',
                 'productos.nombre',
@@ -38,6 +39,11 @@ class ProductoService
             ->join('stock', 'productos.id', '=', 'stock.id_producto')
             ->forPage($pagina, self::PAGINATION_LIMIT)
             ->get());
+
+        $productos = $productos->map(function ($producto) {
+            $producto->foto = env('CLOUDFLARE_R2_URL'). '/' . $producto->foto;
+            return $producto;
+        });
 
         if ($productos->isEmpty()) {
             throw new NoContentException('No hay productos.');
@@ -67,9 +73,28 @@ class ProductoService
      * @throws NoContentException cuando la categoría no tiene productos
      * @return Collection Los productos de la categoría seleccionada
      */
-    public function findAllByIdCategoria(int $id): Collection
+    public function findAllByIdCategoria(int $id): \Illuminate\Support\Collection
     {
-        $productos = $this->repository->findAllByIdCategoria($id);
+        $productos = collect(DB::query()
+            ->select([
+                'productos.id',
+                'productos.nombre',
+                'productos.precio',
+                'productos.activo',
+                'productos.foto',
+                'productos.id_categoria',
+                'categorias.nombre as categoria',
+                'stock.cantidad',
+            ])->from('productos')
+            ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
+            ->join('stock', 'productos.id', '=', 'stock.id_producto')
+            ->where('productos.id_categoria', '=', $id)
+            ->get());
+
+        $productos = $productos->map(function ($producto) {
+            $producto->foto = env('CLOUDFLARE_R2_URL'). '/' . $producto->foto;
+            return $producto;
+        });
 
         if ($productos->isEmpty()) {
             throw new NoContentException('No hay productos.');

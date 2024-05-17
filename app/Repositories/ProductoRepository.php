@@ -17,7 +17,7 @@ class ProductoRepository extends GeneralRepository
 
     public function findOrFail(int $id): mixed
     {
-        return DB::query()
+        $producto =  DB::query()
             ->select([
                 'productos.id',
                 'productos.nombre',
@@ -32,11 +32,10 @@ class ProductoRepository extends GeneralRepository
             ->join('stock', 'productos.id', '=', 'stock.id_producto')
             ->where('productos.id', $id)
             ->get()->firstOrFail();
-    }
 
-    public function findAllByIdCategoria(int $id): Collection
-    {
-        return $this->getBuilder()->where('id_categoria', $id)->get();
+        $producto->foto = env('cloudflare_r2_url') . '/' . $producto->foto;
+
+        return $producto;
     }
 
     public function findSimilarProductsByName(string $name): Collection
