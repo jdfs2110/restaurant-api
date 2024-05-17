@@ -224,10 +224,10 @@ class ProductoController extends Controller
                 $producto->foto = ($path);
             }
 
-            $producto->setNombre($data['nombre']);
-            $producto->setPrecio($data['precio']);
-            $producto->setActivo($data['activo']);
-            $producto->setIdCategoria($data['id_categoria']);
+            $producto->nombre = ($data['nombre']);
+            $producto->precio = ($data['precio']);
+            $producto->activo = ($data['activo']);
+            $producto->id_categoria = ($data['id_categoria']);
 
             $update = $producto->save();
             $message = $update == 1 ? 'El producto ha sido modificado correctamente.' : 'Error al modificar el producto';
