@@ -318,7 +318,7 @@ class ProductoController extends Controller
         try {
             $products = $this->repository->findSimilarProductsByName($name);
 
-            return $this->successResponse(ProductoResource::collection($products), "Productos similares");
+            return $this->successResponse($products, "Productos similares");
         } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
