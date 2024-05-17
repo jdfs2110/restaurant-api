@@ -221,7 +221,7 @@ class ProductoController extends Controller
 
                 $this->deletePhotoIfExists($producto->foto);
 
-                $producto->setFoto($path);
+                $producto->foto = ($path);
             }
 
             $producto->setNombre($data['nombre']);
