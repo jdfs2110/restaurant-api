@@ -134,7 +134,6 @@ class UserController extends Controller
             $data = $request->validate([
                 'name' => 'required|string',
                 'email' => 'required|string',
-                'password' => 'required|string|confirmed',
                 'estado' => 'required|boolean',
                 'id_rol' => 'required|int'
             ]);
@@ -147,7 +146,6 @@ class UserController extends Controller
             $update = $user->update([
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'password' => bcrypt($data['password']),
                 'estado' => $data['estado'],
                 'id_rol' => $data['id_rol']
             ]);
@@ -205,6 +203,34 @@ class UserController extends Controller
             $users = $this->repository->findSimilarUsersByName($name);
 
             return $this->successResponse(UsuarioResource::collection($users), "Usuarios similares");
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
+    public function updatePassword(Request $request, $id): JsonResponse
+    {
+        try {
+            $data = $request->validate([
+                'password' => 'required|string|confirmed',
+            ]);
+
+            $user = $this->repository->findOrFail($id);
+
+            $user->password = bcrypt($data['password']);
+            $user->save();
+
+            return $this->successResponse(new UsuarioResource($user), 'Contraseña cambiada correctamente.');
+
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->errors(), 400);
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+
         } catch (Exception) {
             return $this->unhandledErrorResponse();
         }

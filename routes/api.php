@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::put('/{id}', [UserController::class, 'updateUser'])->middleware([UserIsOwnerCheck::class]);
         Route::delete('/{id}', [UserController::class, 'deleteUser'])->middleware([AdminCheck::class]);
         Route::get('/similar/{name}', [UserController::class, 'getSimilarUsers'])->middleware([AdminCheck::class]);
+        Route::post('/{id}/password', [UserController::class, 'updatePassword'])->middleware([AdminCheck::class]);
     });
 
     /**

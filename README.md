@@ -31,6 +31,7 @@
 | Buscar los pedidos manejados por un usuario (admin) | /usuarios/{id}/pedidos   | GET         |
 | Eliminar usuario (admin)                            | /usuarios/{id}           | DELETE      | 
 | Listar usuarios con nombre similar a una cadena     | /usuarios/similar/{name} | GET         |
+| Cambiarle la contraseña al usuario (admin)          | /usuarios/{id}/password  | POST        | 
 
 ## Categorias
 
