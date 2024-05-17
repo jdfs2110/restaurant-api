@@ -33,7 +33,7 @@ class ProductoRepository extends GeneralRepository
             ->where('productos.id', $id)
             ->get()->firstOrFail();
 
-        $producto->foto = env('cloudflare_r2_url') . '/' . $producto->foto;
+        $producto->foto = env('CLOUDFLARE_R2_URL') . '/' . $producto->foto;
 
         return $producto;
     }
