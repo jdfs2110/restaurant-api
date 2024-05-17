@@ -89,7 +89,7 @@ class ProductoController extends Controller
                 'precio' => 'required|numeric',
                 'id_categoria' => 'required|int',
                 'cantidad' => 'required|int|min:0',
-                'foto' => 'required|mimes:jpg,png,webp|max:2048'
+                'foto' => 'required|mimes:jpg,png,webp'
             ]);
 
             $this->categoriaRepository->findOrFail($data['id_categoria']);
