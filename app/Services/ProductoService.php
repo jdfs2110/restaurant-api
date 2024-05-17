@@ -41,7 +41,7 @@ class ProductoService
             ->get());
 
         $productos = $productos->map(function ($producto) {
-            $producto->foto = env('cloudflare_r2_url'). '/' . $producto->foto;
+            $producto->foto = env('CLOUDFLARE_R2_URL'). '/' . $producto->foto;
             return $producto;
         });
 
