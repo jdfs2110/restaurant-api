@@ -95,10 +95,10 @@ class Producto extends Model
         return $this->deleted_at;
     }
 
-//    public function categoria(): BelongsTo
-//    {
-//        return $this->belongsTo(Categoria::class, 'id_categoria', 'id')->withTrashed();
-//    }
+    public function categoria(): BelongsTo
+    {
+        return $this->belongsTo(Categoria::class, 'id_categoria', 'id')->withTrashed();
+    }
     public function getCategoria(): string
     {
         return $this->categoria;
