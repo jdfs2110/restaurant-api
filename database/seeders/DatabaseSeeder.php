@@ -600,7 +600,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 1,
             'tipo' => 'cocina',
             'estado' => 0
@@ -609,7 +609,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 18,
             'id_pedido' => 1,
             'tipo' => 'cocina',
             'estado' => 1
@@ -618,7 +618,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 7,
             'id_pedido' => 1,
             'tipo' => 'cocina',
             'estado' => 1
@@ -628,7 +628,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 2,
             'tipo' => 'cocina',
             'estado' => 0
@@ -637,7 +637,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 18,
             'id_pedido' => 2,
             'tipo' => 'cocina',
             'estado' => 0
@@ -646,7 +646,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 7,
             'id_pedido' => 2,
             'tipo' => 'cocina',
             'estado' => 1
@@ -656,7 +656,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 3,
             'tipo' => 'cocina',
             'estado' => 1
@@ -665,7 +665,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 18,
             'id_pedido' => 3,
             'tipo' => 'cocina',
             'estado' => 1
@@ -674,7 +674,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 7,
             'id_pedido' => 3,
             'tipo' => 'cocina',
             'estado' => 0
@@ -684,7 +684,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 4,
             'tipo' => 'cocina',
             'estado' => 0
@@ -693,7 +693,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 18,
             'id_pedido' => 4,
             'tipo' => 'cocina',
             'estado' => 0
@@ -702,7 +702,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 7,
             'id_pedido' => 4,
             'tipo' => 'cocina',
             'estado' => 1
@@ -712,7 +712,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Coca-Cola
             'precio' => 1.80,
             'cantidad' => 3,
-            'id_producto' => ,
+            'id_producto' => 2,
             'id_pedido' => 5,
             'tipo' => 'barra',
             'estado' => 0
@@ -721,7 +721,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Filete de salmón
             'precio' => 12.50,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 14,
             'id_pedido' => 5,
             'tipo' => 'cocina',
             'estado' => 0
@@ -730,7 +730,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pasta carbonara
             'precio' => 8.50,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 19,
             'id_pedido' => 5,
             'tipo' => 'cocina',
             'estado' => 0
@@ -739,7 +739,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 5,
             'tipo' => 'cocina',
             'estado' => 0
@@ -749,7 +749,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Coca-Cola
             'precio' => 1.80,
             'cantidad' => 6,
-            'id_producto' => ,
+            'id_producto' => 2,
             'id_pedido' => 6,
             'tipo' => 'barra',
             'estado' => 0
@@ -758,7 +758,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Cerveza
             'precio' => 1.20,
             'cantidad' => 8,
-            'id_producto' => ,
+            'id_producto' => 3,
             'id_pedido' => 6,
             'tipo' => 'barra',
             'estado' => 1
@@ -767,7 +767,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Agua
             'precio' => 1.20,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 1,
             'id_pedido' => 6,
             'tipo' => 'barra',
             'estado' => 1
@@ -776,7 +776,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Sopa
             'precio' => 3.60,
             'cantidad' => 6,
-            'id_producto' => ,
+            'id_producto' => 6,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 0
@@ -785,7 +785,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Nachos
             'precio' => 5.00,
             'cantidad' => 8,
-            'id_producto' => ,
+            'id_producto' => 7,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 1
@@ -794,7 +794,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pollo al horno
             'precio' => 10.00,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 18,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 0
@@ -803,7 +803,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Filete de salmón
             'precio' => 12.50,
             'cantidad' => 8,
-            'id_producto' => ,
+            'id_producto' => 14,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 0
@@ -812,16 +812,16 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pasta carbonara
             'precio' => 8.50,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 19,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 0
         ]);
 
-        Linea::factory()->create([ // Arroz
+        Linea::factory()->create([ // Arroz senyoret
             'precio' => 9.50,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 8,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 0
@@ -830,16 +830,16 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 9,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 1
         ]);
 
-        Linea::factory()->create([ // Helado
+        Linea::factory()->create([ // Helado caramelo salado
             'precio' => 2.60,
             'cantidad' => 4,
-            'id_producto' => ,
+            'id_producto' => 24,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 1
@@ -848,7 +848,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Flan
             'precio' => 3.20,
             'cantidad' => 1,
-            'id_producto' => ,
+            'id_producto' => 25,
             'id_pedido' => 6,
             'tipo' => 'cocina',
             'estado' => 0
@@ -858,7 +858,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Agua
             'precio' => 1.20,
             'cantidad' => 7,
-            'id_producto' => ,
+            'id_producto' => 1,
             'id_pedido' => 7,
             'tipo' => 'barra',
             'estado' => 1
@@ -867,7 +867,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Fanta naranja
             'precio' => 1.80,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 4,
             'id_pedido' => 7,
             'tipo' => 'barra',
             'estado' => 1
@@ -876,7 +876,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Cerveza
             'precio' => 1.20,
             'cantidad' => 3,
-            'id_producto' => ,
+            'id_producto' => 3,
             'id_pedido' => 7,
             'tipo' => 'barra',
             'estado' => 0
@@ -885,7 +885,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Coca-Cola
             'precio' => 1.80,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 2,
             'id_pedido' => 7,
             'tipo' => 'barra',
             'estado' => 1
@@ -894,7 +894,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Ensalada césar
             'precio' => 4.50,
             'cantidad' => 4,
-            'id_producto' => ,
+            'id_producto' => 5,
             'id_pedido' => 7,
             'tipo' => 'cocina',
             'estado' => 1
@@ -903,7 +903,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Filete de salmón
             'precio' => 12.50,
             'cantidad' => 10,
-            'id_producto' => ,
+            'id_producto' => 14,
             'id_pedido' => 7,
             'tipo' => 'cocina',
             'estado' => 0
@@ -912,7 +912,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Pasta carbonara
             'precio' => 8.50,
             'cantidad' => 2,
-            'id_producto' => ,
+            'id_producto' => 19,
             'id_pedido' => 7,
             'tipo' => 'cocina',
             'estado' => 0
@@ -921,7 +921,7 @@ class DatabaseSeeder extends Seeder
         Linea::factory()->create([ // Tarta
             'precio' => 4.00,
             'cantidad' => 9,
-            'id_producto' => ,
+            'id_producto' => 23,
             'id_pedido' => 7,
             'tipo' => 'cocina',
             'estado' => 0
