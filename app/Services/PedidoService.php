@@ -116,7 +116,7 @@ class PedidoService
      * @throws ModelNotFoundException cuando no se encuentra el pedido o la mesa
      * @throws PedidoAlreadyServedException cuando el pedido ya está servido
      */
-    public function servirPedido(int $id): void
+    public function servirPedido(int $id)
     {
         $pedido = $this->repository->findOrFail($id);
 
@@ -128,5 +128,7 @@ class PedidoService
 
         $pedido->setEstado(2);
         $pedido->save();
+
+        return $this->mesaRepository->findOrFail($pedido->getIdMesa());
     }
 }

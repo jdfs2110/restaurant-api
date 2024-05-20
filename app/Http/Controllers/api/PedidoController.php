@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Events\MesaEditedEvent;
 use App\Exceptions\MesaOcupadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
@@ -205,8 +206,9 @@ class PedidoController extends Controller
     function servirPedido($id): JsonResponse
     {
         try {
-            $this->service->servirPedido($id);
+            $mesa = $this->service->servirPedido($id);
 
+            event(new MesaEditedEvent($mesa));
             return $this->successResponse('', 'Estado del pedido cambiado correctamente.');
 
         } catch (TypeError) {
