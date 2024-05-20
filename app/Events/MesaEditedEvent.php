@@ -18,7 +18,7 @@ class MesaEditedEvent implements ShouldBroadcastNow
      */
     public $data;
 
-    public function __construct(Mesa $mesa)
+    public function __construct(Mesa $mesa, public string $message)
     {
         $this->data = new MesaResource($mesa);
     }

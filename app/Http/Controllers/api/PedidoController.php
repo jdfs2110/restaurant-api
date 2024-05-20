@@ -208,7 +208,7 @@ class PedidoController extends Controller
         try {
             $mesa = $this->service->servirPedido($id);
 
-            event(new MesaEditedEvent($mesa));
+            event(new MesaEditedEvent($mesa, "El pedido $id ha sido servido"));
             return $this->successResponse('', 'Estado del pedido cambiado correctamente.');
 
         } catch (TypeError) {
