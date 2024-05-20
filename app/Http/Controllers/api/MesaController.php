@@ -163,7 +163,8 @@ class MesaController extends Controller
 
             return $this->successResponse(new PedidoResource($pedido));
 
-        } catch (TypeError) {
+        } catch (TypeError $e) {
+            dd($e);
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
