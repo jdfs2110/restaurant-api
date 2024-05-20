@@ -1,6 +1,7 @@
 # TODO
 
 - [ ] Poner en el seeder categorias variadas (bebidas, carnes, arroces, etc etc etc)
+- [ ] Cambiar estado del producto cuando el stock llega a 0
 
 # Casos de uso con sus endpoints
 
