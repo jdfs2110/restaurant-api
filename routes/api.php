@@ -106,6 +106,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
     Route::prefix('/productos')->group(function () {
         Route::get('/', [ProductoController::class, 'index']);
         Route::get('/pages', [ProductoController::class, 'getAmountOfPages']);
+        Route::get('/all', [ProductoController::class, 'all']);
         Route::get('/{id}', [ProductoController::class, 'getProducto']);
         Route::post('/new', [ProductoController::class, 'newProducto'])->middleware([AdminCheck::class]);
         Route::delete('/{id}', [ProductoController::class, 'deleteProducto'])->middleware([AdminCheck::class]);

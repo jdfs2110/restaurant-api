@@ -16,6 +16,7 @@ use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
 use TypeError;
@@ -45,6 +46,41 @@ class ProductoController extends Controller
             return $this->errorResponse($e->getMessage(), 204);
 
         } catch (Exception) {
+            return $this->unhandledErrorResponse();
+        }
+    }
+
+    function all(): JsonResponse
+    {
+        try {
+            $productos = collect(DB::query()
+                ->select([
+                    'productos.id',
+                    'productos.nombre',
+                    'productos.precio',
+                    'productos.activo',
+                    'productos.foto',
+                    'productos.id_categoria',
+                    'categorias.nombre as categoria',
+                    'stock.cantidad',
+                ])->from('productos')
+                ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
+                ->join('stock', 'productos.id', '=', 'stock.id_producto')
+                ->get());
+
+            $productos = $productos->map(function ($producto) {
+                $producto->foto = env('CLOUDFLARE_R2_URL') . '/' . $producto->foto;
+                return $producto;
+            });
+
+            if ($productos->isEmpty()) {
+                return $this->errorResponse('', 204);
+            }
+
+            return $this->successResponse($productos);
+
+        } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse();
         }
     }
