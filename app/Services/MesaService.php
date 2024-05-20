@@ -91,12 +91,12 @@ class MesaService
 
     /**
      * @param Mesa $mesa La mesa a la que se le editará el estado
-     * @return void
      */
-    public function setOcupada(Mesa $mesa): void
+    public function setOcupada(Mesa $mesa)
     {
         $mesa->setEstado(1);
         $mesa->save();
+        return $mesa;
     }
 
     /**

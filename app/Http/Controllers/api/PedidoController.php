@@ -95,7 +95,7 @@ class PedidoController extends Controller
                 'id_usuario' => 'required|int'
             ]);
 
-            $mesa = $this->mesaService->checkIfBusy($data['id_mesa']);
+            $busy = $this->mesaService->checkIfBusy($data['id_mesa']);
 
 //            $this->userService->checkIfMesero($data['id_usuario']);
 
@@ -108,7 +108,9 @@ class PedidoController extends Controller
                 'id_usuario' => $data['id_usuario']
             ]);
 
-            $this->mesaService->setOcupada($mesa);
+            $mesa = $this->mesaService->setOcupada($busy);
+
+            event(new MesaEditedEvent($mesa, "La mesa $mesa->id ha recibido un pedido"));
 
             return $this->successResponse(new PedidoResource($pedido), 'Pedido creado correctamente.', 201);
 
