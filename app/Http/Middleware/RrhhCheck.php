@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserIsOwnerCheck
+class RrhhCheck
 {
     use ApiResponsesTrait;
     /**
@@ -18,10 +18,8 @@ class UserIsOwnerCheck
     public function handle(Request $request, Closure $next): Response
     {
         $role = $request->user()->getIdRol();
-        $userId = $request->user()->getId();
-        $paramId = $request->route()->parameter('id');
 
-        if ($userId != $paramId && $role != 4 && $role != 3) {
+        if ($role !== 3 && $role !== 4) { // 4 -> admin
             return $this->unauthorizedResponse();
         }
 

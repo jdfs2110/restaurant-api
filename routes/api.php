@@ -16,6 +16,7 @@ use App\Http\Middleware\BarraAndMeseroCheck;
 use App\Http\Middleware\CocineroCheck;
 use App\Http\Middleware\MeseroAndCocineroCheck;
 use App\Http\Middleware\MeseroCheck;
+use App\Http\Middleware\RrhhCheck;
 use App\Http\Middleware\UserIsOwnerCheck;
 use App\Http\Middleware\UserNotBlockedCheck;
 use Illuminate\Support\Facades\Route;
@@ -57,15 +58,15 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  7. Usuarios similares a una cadena
      */
     Route::prefix('/usuarios')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->middleware([AdminCheck::class]);
-        Route::get('/pages', [UserController::class, 'getAmountOfpages'])->middleware([AdminCheck::class]);
+        Route::get('/', [UserController::class, 'index'])->middleware([RrhhCheck::class]);
+        Route::get('/pages', [UserController::class, 'getAmountOfpages'])->middleware([RrhhCheck::class]);
         Route::get('/{id}', [UserController::class, 'getUser'])->middleware([UserIsOwnerCheck::class]);
         Route::get('/{id}/pedidos', [UserController::class, 'getUsersPedidos'])->middleware([AdminCheck::class]);
         Route::put('/{id}', [UserController::class, 'updateUser'])->middleware([UserIsOwnerCheck::class]);
-        Route::delete('/{id}', [UserController::class, 'deleteUser'])->middleware([AdminCheck::class]);
-        Route::get('/similar/{name}', [UserController::class, 'getSimilarUsers'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}', [UserController::class, 'deleteUser'])->middleware([RrhhCheck::class]);
+        Route::get('/similar/{name}', [UserController::class, 'getSimilarUsers'])->middleware([RrhhCheck::class]);
         Route::post('/{id}/password', [UserController::class, 'updatePassword'])->middleware([UserIsOwnerCheck::class]);
-        Route::delete('/{id}/tokens', [UserController::class, 'revokeTokens'])->middleware([AdminCheck::class]);
+        Route::delete('/{id}/tokens', [UserController::class, 'revokeTokens'])->middleware([RrhhCheck::class]);
     });
 
     /**
