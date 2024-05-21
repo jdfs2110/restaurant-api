@@ -8,6 +8,7 @@ use App\Events\LineaBarraEditedEvent;
 use App\Events\LineaCocinaCreatedEvent;
 use App\Events\LineaCocinaDeletedEvent;
 use App\Events\LineaCocinaEditedEvent;
+use App\Events\LineaCompletedEvent;
 use App\Exceptions\LineaAlreadyCompletedException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NegativeQuantityException;
@@ -288,12 +289,17 @@ class LineaController extends Controller
     {
         try {
             $linea = $this->service->completarLinea($id);
+            $producto = $this->productoRepository->findOrFail($linea->getIdProducto());
 
             if ($linea->getTipo() === 'cocina') {
                 event(new LineaCocinaDeletedEvent($id));
             } else if ($linea->getTipo() === 'barra') {
                 event(new LineaBarraDeletedEvent($id));
             }
+
+            $message = 'Hay para recoger ' . $linea->getCantidad() . 'x ' . $producto->nombre . ' en ' . $linea->getTipo();
+
+            event(new LineaCompletedEvent($id, $message, now()));
 
             return $this->successResponse('', "Línea $id completada correctamente.");
 
