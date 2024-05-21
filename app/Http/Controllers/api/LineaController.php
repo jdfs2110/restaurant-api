@@ -20,6 +20,7 @@ use App\Repositories\ProductoRepository;
 use App\Resources\LineaResource;
 use App\Services\LineaService;
 use App\Services\PedidoService;
+use App\Services\ProductoService;
 use App\Services\StockService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -201,11 +202,16 @@ class LineaController extends Controller
     {
         try {
             $linea = $this->repository->findOrFail($id);
+            $idPedido = $linea->id_pedido;
+            $cantidad = $linea->cantidad;
 
             $tipo = $linea->getTipo();
 
             $deletion = $this->repository->delete($linea);
             $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
+
+            $this->pedidoService->recalculatePrice($idPedido);
+            $this->stockService->addStock($cantidad);
 
             if ($tipo === 'cocina') {
                 event(new LineaCocinaDeletedEvent($id));
