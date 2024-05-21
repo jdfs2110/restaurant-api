@@ -39,12 +39,12 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  7. Listar usuarios por rol concreto (ID)
      */
     Route::prefix('/roles')->group(function () {
-        Route::get('/', [RoleController::class, 'index'])->middleware([AdminCheck::class]);
-        Route::get('/{id}', [RoleController::class, 'getRole'])->middleware([AdminCheck::class]);
-        Route::post('/new', [RoleController::class, 'newRole'])->middleware([AdminCheck::class]);
-        Route::delete('/{id}', [RoleController::class, 'deleteRole'])->middleware([AdminCheck::class]);
-        Route::put('/{id}', [RoleController::class, 'updateRole'])->middleware([AdminCheck::class]);
-        Route::get('/{id}/usuarios', [UserController::class, 'getAllUsersByRole'])->middleware([AdminCheck::class]);
+        Route::get('/', [RoleController::class, 'index'])->middleware([RrhhCheck::class]);
+        Route::get('/{id}', [RoleController::class, 'getRole'])->middleware([RrhhCheck::class]);
+        Route::post('/new', [RoleController::class, 'newRole'])->middleware([RrhhCheck::class]);
+        Route::delete('/{id}', [RoleController::class, 'deleteRole'])->middleware([RrhhCheck::class]);
+        Route::put('/{id}', [RoleController::class, 'updateRole'])->middleware([RrhhCheck::class]);
+        Route::get('/{id}/usuarios', [UserController::class, 'getAllUsersByRole'])->middleware([RrhhCheck::class]);
     });
 
     /**
