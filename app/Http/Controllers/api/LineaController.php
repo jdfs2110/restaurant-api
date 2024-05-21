@@ -16,6 +16,7 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
 use App\Http\Controllers\Controller;
 use App\Repositories\LineaRepository;
+use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
 use App\Repositories\ProductoRepository;
 use App\Resources\LineaResource;
@@ -37,7 +38,8 @@ class LineaController extends Controller
         public readonly ProductoRepository $productoRepository,
         public readonly PedidoRepository   $pedidoRepository,
         public readonly StockService       $stockService,
-        public readonly PedidoService      $pedidoService
+        public readonly PedidoService      $pedidoService,
+        public readonly MesaRepository     $mesaRepository
     )
     {
     }
@@ -290,6 +292,8 @@ class LineaController extends Controller
         try {
             $linea = $this->service->completarLinea($id);
             $producto = $this->productoRepository->findOrFail($linea->getIdProducto());
+            $pedido = $this->pedidoRepository->findOrFail($linea->getIdPedido());
+            $mesa = $this->mesaRepository->findOrFail($pedido->id_mesa);
 
             if ($linea->getTipo() === 'cocina') {
                 event(new LineaCocinaDeletedEvent($id));
@@ -297,7 +301,7 @@ class LineaController extends Controller
                 event(new LineaBarraDeletedEvent($id));
             }
 
-            $message = 'Hay para recoger ' . $linea->getCantidad() . 'x ' . $producto->nombre . ' en ' . $linea->getTipo();
+            $message = 'Hay para recoger ' . $linea->getCantidad() . 'x ' . $producto->nombre . ' en ' . $linea->getTipo() . ' para la mesa ' . $mesa->id;
 
             event(new LineaCompletedEvent($id, $message, now()));
 
