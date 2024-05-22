@@ -39,6 +39,7 @@ class ProductoService
             ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
             ->join('stock', 'productos.id', '=', 'stock.id_producto')
             ->forPage($pagina, self::PAGINATION_LIMIT)
+            ->orderBy('productos.id')
             ->get());
 
         $productos = $productos->map(function ($producto) {
