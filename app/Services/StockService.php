@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
+use App\Models\Producto;
 use App\Repositories\StockRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,10 +48,17 @@ class StockService
     {
         $stock = $this->repository->findByIdProductoOrFail($productId);
 
+        $producto = Producto::query()->find($productId);
+
         $stock->cantidad -= $quantity;
 
         if ($stock->cantidad < 0) {
             throw new NegativeQuantityException('La cantidad de stock es negativa');
+        }
+
+        if ($stock->cantidad == 0) {
+            $producto->activo = false;
+            $producto->save();
         }
 
         $stock->save();
