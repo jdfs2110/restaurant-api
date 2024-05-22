@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Repositories\CategoriaRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\StockRepository;
-use App\Resources\ProductoResource;
 use App\Resources\StockResource;
 use App\Services\ProductoService;
 use App\Services\StockService;
