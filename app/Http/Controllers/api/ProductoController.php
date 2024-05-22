@@ -65,6 +65,7 @@ class ProductoController extends Controller
                 ])->from('productos')
                 ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
                 ->join('stock', 'productos.id', '=', 'stock.id_producto')
+                ->orderBy('productos.id')
                 ->get());
 
             $productos = $productos->map(function ($producto) {
@@ -79,7 +80,6 @@ class ProductoController extends Controller
             return $this->successResponse($productos);
 
         } catch (Exception $e) {
-            dd($e);
             return $this->unhandledErrorResponse();
         }
     }
