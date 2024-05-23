@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserRepository extends GeneralRepository
 {
     private const ENTITY_NAME = 'Usuario';
+
     public function __construct()
     {
         $this->setBuilderFromModel(User::query()->getModel());
@@ -21,7 +22,7 @@ class UserRepository extends GeneralRepository
         return $this->getBuilder()->with(['rol'])->get();
     }
 
-    public function findByEmail(string $email): Model | null
+    public function findByEmail(string $email): Model|null
     {
         return $this->getBuilder()->where('email', $email)->get()->first();
     }
@@ -46,9 +47,13 @@ class UserRepository extends GeneralRepository
         }
     }
 
-    public function findSimilarUsersByName(string $name): Collection
+    public function findSimilarUsers(string $str): Collection
     {
-        return $this->getBuilder()->where('name', $name)
-            ->orWhere('name', 'like', "%$name%")->get();
+        return $this->getBuilder()
+            ->where('name', $str)
+            ->orWhere('email', $str)
+            ->orWhere('name', 'like', "%$str%")
+            ->orWhere('email', 'like', "%$str%")
+            ->get();
     }
 }
