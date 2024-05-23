@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
+use App\Exceptions\PedidoEnCursoException;
 use App\Exceptions\UserIsNotWaiterException;
 use App\Models\Pedido;
 use App\Repositories\LineaRepository;
@@ -125,7 +126,9 @@ class PedidoService
         $lineas = $this->lineaRepository->findAllByIdPedido($id);
 
         $lineas->some(function ($linea) {
-            dd($linea->estado === 0);
+            if($linea->estado === 0) {
+                throw new PedidoEnCursoException('El pedido sigue en curso.');
+            }
         });
 
         $mesa = $this->mesaRepository->findOrFail($pedido->getIdMesa());
