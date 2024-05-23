@@ -197,10 +197,10 @@ class UserController extends Controller
         }
     }
 
-    public function getSimilarUsers($name): JsonResponse
+    public function getSimilarUsers($str): JsonResponse
     {
         try {
-            $users = $this->repository->findSimilarUsersByName($name);
+            $users = $this->repository->findSimilarUsers($str);
 
             return $this->successResponse(UsuarioResource::collection($users), "Usuarios similares");
         } catch (Exception) {
