@@ -122,6 +122,12 @@ class PedidoService
 
         $this->checkIfServido($pedido);
 
+        $lineas = $this->lineaRepository->findAllByIdPedido($id);
+
+        $lineas->some(function ($linea) {
+            dd($linea->estado === 0);
+        });
+
         $mesa = $this->mesaRepository->findOrFail($pedido->getIdMesa());
 
         $this->mesaService->setLibre($mesa);
