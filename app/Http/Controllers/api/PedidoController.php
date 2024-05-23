@@ -7,6 +7,7 @@ use App\Exceptions\MesaOcupadaException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\PedidoAlreadyServedException;
+use App\Exceptions\PedidoEnCursoException;
 use App\Exceptions\UserIsNotWaiterException;
 use App\Http\Controllers\Controller;
 use App\Repositories\LineaRepository;
@@ -219,7 +220,7 @@ class PedidoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (PedidoAlreadyServedException $e) {
+        } catch (PedidoAlreadyServedException | PedidoEnCursoException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception) {

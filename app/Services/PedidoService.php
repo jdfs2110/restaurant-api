@@ -116,6 +116,7 @@ class PedidoService
      * @param int $id ID del pedido
      * @throws ModelNotFoundException cuando no se encuentra el pedido o la mesa
      * @throws PedidoAlreadyServedException cuando el pedido ya está servido
+     * @throws PedidoEnCursoException
      */
     public function servirPedido(int $id)
     {
