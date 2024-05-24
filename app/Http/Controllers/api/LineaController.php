@@ -230,7 +230,8 @@ class LineaController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse();
         }
     }
