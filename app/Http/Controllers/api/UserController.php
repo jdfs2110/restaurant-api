@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Resend\Exceptions\ErrorException;
 use TypeError;
 
 class UserController extends Controller
@@ -192,6 +193,9 @@ class UserController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
+        } catch (ErrorException) {
+            return $this->successResponse('', 'El usuario ha sido eliminado correctamente.');
+
         } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
@@ -243,7 +247,7 @@ class UserController extends Controller
 
             $user->tokens()->delete();
 
-            return $this->successResponse('','Tokens revocados correctamente.');
+            return $this->successResponse('', 'Tokens revocados correctamente.');
 
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
