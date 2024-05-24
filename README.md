@@ -81,17 +81,18 @@
 
 ## Pedidos
 
-| Caso de uso                                | Endpoint              | Método HTTP |
-|--------------------------------------------|-----------------------|-------------|
-| Listar todos los pedidos paginados         | /pedidos              | GET         |
-| Obtener el número de páginas existentes    | /pedidos/pages        | GET         |
-| Buscar un pedido por id                    | /pedidos/{id}         | GET         |
-| Crear un pedido                            | /pedidos/new          | POST        |
-| Editar un pedido                           | /pedidos/{id}         | PUT         |
-| Eliminar un pedido                         | /pedidos/{id}         | DELETE      | 
-| Buscar las líneas de un pedido             | /pedidos/{id}/lineas  | GET         |
-| Buscar la factura de un pedido             | /pedidos/{id}/factura | GET         |
-| Cambiar el estado de un pedido a 'servido' | /pedidos/{id}/servir  | POST        |
+| Caso de uso                                  | Endpoint               | Método HTTP |
+|----------------------------------------------|------------------------|-------------|
+| Listar todos los pedidos paginados           | /pedidos               | GET         |
+| Obtener el número de páginas existentes      | /pedidos/pages         | GET         |
+| Buscar un pedido por id                      | /pedidos/{id}          | GET         |
+| Crear un pedido                              | /pedidos/new           | POST        |
+| Editar un pedido                             | /pedidos/{id}          | PUT         |
+| Eliminar un pedido                           | /pedidos/{id}          | DELETE      | 
+| Buscar las líneas de un pedido               | /pedidos/{id}/lineas   | GET         |
+| Buscar la factura de un pedido               | /pedidos/{id}/factura  | GET         |
+| Cambiar el estado de un pedido a 'servido'   | /pedidos/{id}/servir   | POST        |
+| Cambiar el estado de un pedido a 'cancelado' | /pedidos/{id}/cancelar | POST        |
 
 ## Lineas
 

@@ -163,6 +163,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
      *  7. Buscar las líneas de un pedido
      *  8. Buscar la factura de un pedido
      *  9. Cambiar el estado de un pedido a 'servido'
+     *  10. Cambiar el estado de un pedido a 'cancelado'
      */
     Route::prefix('/pedidos')->group(function () {
         Route::get('/', [PedidoController::class, 'index'])->middleware([MeseroAndCocineroCheck::class]);
@@ -174,6 +175,7 @@ Route::group(['middleware' => ['auth:sanctum', UserNotBlockedCheck::class]], fun
         Route::get('/{id}/lineas', [LineaController::class, 'getLineasByPedido'])->middleware([MeseroAndCocineroCheck::class]);
         Route::get('/{id}/factura', [FacturaController::class, 'getFacturaByPedido']);
         Route::post('/{id}/servir', [PedidoController::class, 'servirPedido'])->middleware([MeseroCheck::class]);
+        Route::post('/{id}/cancelar', [PedidoController::class, 'cancelarPedido'])->middleware([MeseroCheck::class]);
     });
 
     /**

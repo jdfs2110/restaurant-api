@@ -21,6 +21,7 @@ class PedidoService
         public readonly UserService     $userService,
         public readonly MesaRepository  $mesaRepository,
         public readonly MesaService     $mesaService,
+        public readonly StockService    $stockService,
     )
     {
     }
@@ -142,5 +143,24 @@ class PedidoService
         $pedido->save();
 
         return $this->mesaRepository->findOrFail($pedido->getIdMesa());
+    }
+
+    public function cancelarPedido(int $id): void
+    {
+        $pedido = $this->repository->findOrFail($id);
+
+        $lineas = $this->lineaRepository->findAllByIdPedido($id);
+
+        foreach ($lineas as $linea) {
+            $this->stockService->addStock($linea->cantidad);
+            $linea->delete();
+        }
+
+        $mesa = $this->mesaRepository->findOrFail($pedido->getIdMesa());
+
+        $this->mesaService->setLibre($mesa);
+
+        $pedido->setEstado(3);
+        $pedido->save();
     }
 }

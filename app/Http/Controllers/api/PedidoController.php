@@ -227,4 +227,16 @@ class PedidoController extends Controller
             return $this->unhandledErrorResponse();
         }
     }
+
+    function cancelarPedido($id): JsonResponse
+    {
+        try {
+            $this->service->cancelarPedido($id);
+
+            return $this->successResponse('', 'Pedido cancelado correctamente.');
+        } catch (Exception $e) {
+            dd($e);
+            return $this->unhandledErrorResponse();
+        }
+    }
 }
