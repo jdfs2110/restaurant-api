@@ -81,8 +81,8 @@ class AuthController extends Controller
         } catch (IncorrectLoginException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception) {
-            return $this->unhandledErrorResponse();
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e->getMessage());
         }
     }
 
