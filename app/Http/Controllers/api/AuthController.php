@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
+use Resend\Exceptions\ErrorException;
 
 class AuthController extends Controller
 {
@@ -49,9 +50,10 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return $this->errorResponse($e->errors(), 400);
 
-        } catch (Exception $e) {
-            dd($e);
+        } catch (ErrorException) {
+            return $this->successResponse(new UsuarioResource($user), 'Registro exitoso.', 201);
 
+        } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
     }
