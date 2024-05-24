@@ -41,11 +41,13 @@ class PedidoService
      * @throws PedidoAlreadyServedException si el pedido a recalcular ya está servido
      * @throws ModelNotFoundException cuando no se encuentra el pedido
      */
-    public function recalculatePrice(int $id): void
+    public function recalculatePrice(int $id, bool $check = true): void
     {
         $pedido = $this->repository->findOrFail($id);
 
+        if ($check) {
         $this->checkIfServido($pedido);
+        }
 
         $lineas = $this->lineaRepository->findAllByIdPedido($id);
 

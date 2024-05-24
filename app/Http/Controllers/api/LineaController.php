@@ -213,7 +213,7 @@ class LineaController extends Controller
             $deletion = $this->repository->delete($linea);
             $message = $deletion == 1 ? 'La línea ha sido eliminada correctamente' : 'Error al eliminar la línea';
 
-            $this->pedidoService->recalculatePrice($idPedido);
+            $this->pedidoService->recalculatePrice($idPedido, false);
             $this->stockService->addStock($cantidad);
 
             if ($tipo === 'cocina') {
