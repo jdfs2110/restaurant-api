@@ -241,7 +241,7 @@ class ProductoController extends Controller
                 'activo' => 'required|boolean',
                 'id_categoria' => 'required|int',
                 'cantidad' => 'required|int|min:0',
-                'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
+                'foto' => 'nullable|mimes:jpg,png,webp'
             ]);
 
             $producto = $this->service->findModelOrFail($id);

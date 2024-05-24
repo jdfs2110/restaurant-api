@@ -90,7 +90,7 @@ class CategoriaController extends Controller
         try {
             $data = $request->validate([
                 'nombre' => 'required|string',
-                'foto' => 'required|mimes:jpg,png,webp|max:2048'
+                'foto' => 'required|mimes:jpg,png,webp'
             ]);
 
             $path = $request->file('foto')->store('categorias', 'r2');
@@ -150,7 +150,7 @@ class CategoriaController extends Controller
         try {
             $data = $request->validate([
                 'nombre' => 'required|string',
-                'foto' => 'nullable|mimes:jpg,png,webp|max:2048'
+                'foto' => 'nullable|mimes:jpg,png,webp'
             ]);
 
             $categoria = $this->repository->findOrFail($id);
