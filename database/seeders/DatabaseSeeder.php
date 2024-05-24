@@ -141,6 +141,14 @@ class DatabaseSeeder extends Seeder
             'fecha_ingreso' => date('Y-m-d')
         ]);
 
+        User::factory()->create([
+           'name' => 'Juan Daniel Forner Garriga',
+           'email' => 'jdanielforga@gmail.com',
+           'password' => bcrypt('123456'),
+           'id_rol' => '4',
+           'fecha_ingreso' => date('Y-m-d')
+        ]);
+
         User::factory()->count(500)->create();
 
         /**
