@@ -158,7 +158,7 @@ class DatabaseSeeder extends Seeder
 
         Categoria::factory()->create([
             'nombre' => 'Arroces',
-            'foto' => 'categorias/paella.webp'
+            'foto' => 'categorias/paella.webp' // <- foto done (gracias juanda)
         ]);
 
         Categoria::factory()->create([
@@ -200,7 +200,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 1.80,
             'activo' => true,
             'id_categoria' => 1,
-            'foto' => 'productos/cocacola.webp'
+            'foto' => 'productos/cocacola.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -218,7 +218,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 1.80,
             'activo' => true,
             'id_categoria' => 1,
-            'foto' => 'productos/fanta_naranja.webp'
+            'foto' => 'productos/fanta_naranja.webp' // <- foto done
         ]);
 
         /**
@@ -231,7 +231,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 4.50,
             'activo' => true,
             'id_categoria' => 2,
-            'foto' => 'productos/ensalada_cesar.webp'
+            'foto' => 'productos/ensalada_cesar.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -240,7 +240,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 3.60,
             'activo' => true,
             'id_categoria' => 2,
-            'foto' => 'productos/sopa_verduras.webp'
+            'foto' => 'productos/sopa_verduras.webp' // <- foto reutilizada
         ]);
 
         Producto::factory()->create([
@@ -249,7 +249,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 5.00,
             'activo' => true,
             'id_categoria' => 2,
-            'foto' => 'productos/nachos_guacamole.webp'
+            'foto' => 'productos/nachos_guacamole.webp' // <- foto reutilizada
         ]);
 
         /**
@@ -262,7 +262,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 11.50,
             'activo' => true,
             'id_categoria' => 3,
-            'foto' => 'productos/arroz_senyoret.webp'
+            'foto' => 'productos/arroz_senyoret.webp' // <- foto reutilizada
         ]);
 
         Producto::factory()->create([
@@ -271,7 +271,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 12.00,
             'activo' => true,
             'id_categoria' => 3,
-            'foto' => 'productos/paella.webp'
+            'foto' => 'productos/paella.webp' // <- foto done (gracias juanda)
         ]);
 
         Producto::factory()->create([
@@ -280,7 +280,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 12.00,
             'activo' => true,
             'id_categoria' => 3,
-            'foto' => 'productos/arroz_negro.webp'
+            'foto' => 'productos/arroz_negro.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -289,7 +289,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 12.00,
             'activo' => true,
             'id_categoria' => 3,
-            'foto' => 'productos/arroz_meloso_marisco.webp'
+            'foto' => 'productos/arroz_meloso_marisco.webp' // <- foto done
         ]);
 
         /**
@@ -298,11 +298,11 @@ class DatabaseSeeder extends Seeder
          */
         Producto::factory()->create([
             'id' => 12,
-            'nombre' => 'Filete de lubina empanizada con arroz',
+            'nombre' => 'Lubina empanizada',
             'precio' => 9.50,
             'activo' => true,
             'id_categoria' => 4,
-            'foto' => 'productos/filete_lubina_empanizada.webp'
+            'foto' => 'productos/lubina_empanizada.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -311,7 +311,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 10.50,
             'activo' => true,
             'id_categoria' => 4,
-            'foto' => 'productos/filete_merluza_empanizada.webp'
+            'foto' => 'productos/filete_merluza_empanizada.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -320,7 +320,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 12.50,
             'activo' => true,
             'id_categoria' => 4,
-            'foto' => 'productos/filete_salmon.webp'
+            'foto' => 'productos/filete_salmon.webp' // <- foto done
         ]);
 
         /**
@@ -333,7 +333,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 15.00,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/churrasco_lomo_alto.webp'
+            'foto' => 'productos/churrasco_lomo_alto.webp' // TODO que me da hambre
         ]);
 
         Producto::factory()->create([
@@ -342,7 +342,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 15.00,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/churrasco_entrecot.webp'
+            'foto' => 'productos/churrasco_entrecot.webp' // TODO que me da hambre
         ]);
 
         Producto::factory()->create([
@@ -351,7 +351,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 11.99,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/pollo_empanizado.webp'
+            'foto' => 'productos/pollo_empanizado.webp' // TODO que me da hambre
         ]);
 
         Producto::factory()->create([
@@ -360,7 +360,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 11.00,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/pollo_horno_pure.webp'
+            'foto' => 'productos/pollo_horno_pure.webp' // <- foto done
         ]);
 
         /**
@@ -373,7 +373,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 9.50,
             'activo' => true,
             'id_categoria' => 6,
-            'foto' => 'productos/pasta_carbonara.webp'
+            'foto' => 'productos/pasta_carbonara.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -382,7 +382,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 12.00,
             'activo' => true,
             'id_categoria' => 6,
-            'foto' => 'productos/pasta_marinera.webp'
+            'foto' => 'productos/pasta_marinera.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -391,7 +391,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 10.00,
             'activo' => true,
             'id_categoria' => 6,
-            'foto' => 'productos/pasta_bolonesa.webp'
+            'foto' => 'productos/pasta_bolonesa.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -400,7 +400,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 11.50,
             'activo' => true,
             'id_categoria' => 6,
-            'foto' => 'productos/lasana.webp'
+            'foto' => 'productos/lasana.webp' // <- foto done
         ]);
 
         /**
@@ -413,7 +413,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 4.00,
             'activo' => true,
             'id_categoria' => 7,
-            'foto' => 'productos/tarta_chocolate.webp'
+            'foto' => 'productos/tarta_chocolate.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -422,7 +422,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 2.60,
             'activo' => true,
             'id_categoria' => 7,
-            'foto' => 'productos/helado_caramelosalado.webp'
+            'foto' => 'productos/helado_caramelosalado.webp' // <- foto reutilizada
         ]);
 
         Producto::factory()->create([
@@ -431,7 +431,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 3.20,
             'activo' => true,
             'id_categoria' => 7,
-            'foto' => 'productos/flan.webp'
+            'foto' => 'productos/flan.webp' // <- foto done
         ]);
 
         /**
