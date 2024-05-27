@@ -53,7 +53,7 @@ class StockService
         $stock->cantidad -= $quantity;
 
         if ($stock->cantidad < 0) {
-            throw new NegativeQuantityException('La cantidad de stock es negativa');
+            throw new NegativeQuantityException('No hay suficiente stock');
         }
 
         if ($stock->cantidad == 0) {
