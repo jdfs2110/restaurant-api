@@ -294,7 +294,7 @@ class DatabaseSeeder extends Seeder
             'id' => 10,
             'nombre' => 'Arroz negro',
             'precio' => 12.00,
-            'activo' => true,
+            'activo' => false,
             'id_categoria' => 3,
             'foto' => 'productos/arroz_negro.webp' // <- foto done
         ]);
@@ -356,7 +356,7 @@ class DatabaseSeeder extends Seeder
             'id' => 16,
             'nombre' => 'Churrasco de entrecot a la plancha con patatas',
             'precio' => 15.00,
-            'activo' => true,
+            'activo' => false,
             'id_categoria' => 5,
             'foto' => 'productos/churrasco_entrecot.webp' // <- foto done
         ]);
@@ -405,7 +405,7 @@ class DatabaseSeeder extends Seeder
             'id' => 21,
             'nombre' => 'Pasta boloñesa',
             'precio' => 10.00,
-            'activo' => true,
+            'activo' => false,
             'id_categoria' => 6,
             'foto' => 'productos/pasta_bolonesa.webp' // <- foto done
         ]);
