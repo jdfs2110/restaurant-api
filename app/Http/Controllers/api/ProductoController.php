@@ -110,6 +110,7 @@ class ProductoController extends Controller
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ItemNotFoundException $e) {
+            dd($e);
             return $this->errorResponse('Producto no encontrado.');
 
         } catch (Exception) {
