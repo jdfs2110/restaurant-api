@@ -25,6 +25,7 @@ class StockService
     public function addStock(int $productId, int $quantity = 1, bool $check = true): void
     {
         $stock = $this->repository->findByIdProducto($productId);
+        dd($stock);
 
         if ($check && is_null($stock)) {
             $this->repository->create([
