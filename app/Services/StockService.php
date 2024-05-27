@@ -34,8 +34,8 @@ class StockService
             return;
         }
 
-
         $stock->cantidad += $quantity;
+        dd($stock->cantidad);
         $stock->save();
     }
 
