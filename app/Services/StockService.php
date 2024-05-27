@@ -37,7 +37,7 @@ class StockService
 
 //        $stock->cantidad += $quantity;
 //        $stock->save();
-        Stock::query()->where('id_producto', $productId)->update(['cantidad' => $stock->cantidad + $quantity]);
+        Stock::query()->where('id_producto', $productId)->update(['cantidad' => $stock->getCantidad() + $quantity]);
 
     }
 
