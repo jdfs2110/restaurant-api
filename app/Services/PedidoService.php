@@ -155,7 +155,7 @@ class PedidoService
         $lineas = $this->lineaRepository->findAllByIdPedido($id);
 
         foreach ($lineas as $linea) {
-            dd($linea);
+            dd($linea->id_producto, $linea->cantidad);
             $this->stockService->addStock($linea->id_producto, $linea->cantidad, false);
             $linea->delete();
         }
