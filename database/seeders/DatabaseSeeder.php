@@ -193,7 +193,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Categoria::factory()->create([
-            'nombre' => 'Postres y cafes',
+            'nombre' => 'Postres y cafés',
             'foto' => 'categorias/postres.webp' // <- foto done
         ]);
 
