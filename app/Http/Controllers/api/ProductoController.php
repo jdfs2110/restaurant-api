@@ -159,7 +159,7 @@ class ProductoController extends Controller
     function deleteProducto($id): JsonResponse
     {
         try {
-            $producto = Producto::query()->find($id);
+            $producto = Producto::query()->findOrFail($id);
             $stock = $this->stockRepository->findByIdProducto($id);
 
             if (!is_null($stock)) {
