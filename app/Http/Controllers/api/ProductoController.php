@@ -182,6 +182,7 @@ class ProductoController extends Controller
             return $this->errorResponse($e->getMessage());
 
         } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse($e->getMessage());
         }
     }
