@@ -31,7 +31,6 @@ class ProductoRepository extends GeneralRepository
             ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
             ->join('stock', 'productos.id', '=', 'stock.id_producto')
             ->where('productos.id', $id)
-            ->where('productos.deleted_at', '=', null)
             ->get()->first();
 
         $producto->foto = env('CLOUDFLARE_R2_URL') . '/' . $producto->foto;
