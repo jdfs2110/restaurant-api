@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
 use App\Models\Producto;
+use App\Models\Stock;
 use App\Repositories\StockRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,9 +35,10 @@ class StockService
             return;
         }
 
-        $stock->cantidad += $quantity;
-        dd($stock->cantidad);
-        $stock->save();
+//        $stock->cantidad += $quantity;
+//        $stock->save();
+        Stock::query()->where('id_producto', $productId)->update(['cantidad' => $stock->cantidad + $quantity]);
+
     }
 
     /**
