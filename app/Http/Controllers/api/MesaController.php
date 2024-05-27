@@ -173,9 +173,6 @@ class MesaController extends Controller
         } catch (MesaDesocupadaException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (NoContentException) {
-            return $this->errorResponse("no content", 204);
-
         } catch (Exception $e) {
             return $this->unhandledErrorResponse($e->getMessage());
         }
