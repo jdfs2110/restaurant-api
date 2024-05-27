@@ -23,7 +23,7 @@ class StockRepository extends GeneralRepository
 
     public function findByIdProducto($id): ?Model
     {
-        return $this->getBuilder()->where('id_producto', $id)->get()->first();
+        return Stock::query()->where('id_producto', $id)->get()->first();
     }
 
     /**
