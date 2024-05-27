@@ -113,7 +113,8 @@ class ProductoController extends Controller
             dd($e);
             return $this->errorResponse('Producto no encontrado.');
 
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse();
         }
     }
