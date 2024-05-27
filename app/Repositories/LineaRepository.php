@@ -22,7 +22,7 @@ class LineaRepository extends GeneralRepository
 
     public function findAllByIdPedido(int $id): Collection
     {
-        return $this->getBuilder()->where('id_pedido', $id)->get();
+        return Linea::query()->where('id_pedido', $id)->get();
     }
 
     /**
