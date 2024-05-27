@@ -27,14 +27,14 @@ class PedidoRepository extends GeneralRepository
     }
 
     /**
-     * @throws ModelNotFoundException
+     * @throws NoContentException
      */
     public function findLastPedidoByIdMesa(int $id): Pedido
     {
         $pedido = $this->getBuilder()->where('id_mesa', $id)->get()->last();
 
         if (is_null($pedido)) {
-            throw new ModelNotFoundException('Pedido no encontrado.');
+            throw new NoContentException('Pedido no encontrado.');
         }
 
         return $pedido;

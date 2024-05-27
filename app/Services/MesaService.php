@@ -58,8 +58,9 @@ class MesaService
 
     /**
      * @param int $id ID de la mesa
-     * @throws ModelNotFoundException cuando no se encuentra la mesa o el pedido
+     * @throws ModelNotFoundException cuando no se encuentra la mesa
      * @throws MesaDesocupadaException cuando la mesa no tiene el estado 'ocupada'
+     * @throws NoContentException cuando no hay pedido
      * @return Pedido el último pedido de la mesa
      */
     public function getPedidoActual(int $id): Pedido
