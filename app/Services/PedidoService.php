@@ -145,6 +145,9 @@ class PedidoService
         return $this->mesaRepository->findOrFail($pedido->getIdMesa());
     }
 
+    /**
+     * @throws ModelNotFoundException
+     */
     public function cancelarPedido(int $id): void
     {
         $pedido = $this->repository->findOrFail($id);
@@ -152,7 +155,7 @@ class PedidoService
         $lineas = $this->lineaRepository->findAllByIdPedido($id);
 
         foreach ($lineas as $linea) {
-            $this->stockService->addStock($linea->id_producto, $linea->cantidad);
+            $this->stockService->addStock($linea->id_producto, $linea->cantidad, false);
             $linea->delete();
         }
 

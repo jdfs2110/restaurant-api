@@ -195,7 +195,7 @@ class PedidoController extends Controller
 
             return $this->successResponse('', $message);
 
-        } catch(TypeError) {
+        } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
         } catch (ModelNotFoundException $e) {
@@ -220,7 +220,7 @@ class PedidoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (PedidoAlreadyServedException | PedidoEnCursoException $e) {
+        } catch (PedidoAlreadyServedException|PedidoEnCursoException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
         } catch (Exception) {
@@ -234,6 +234,12 @@ class PedidoController extends Controller
             $this->service->cancelarPedido($id);
 
             return $this->successResponse('', 'Pedido cancelado correctamente.');
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse($e->getMessage());
+
+        } catch (TypeError) {
+            return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
+
         } catch (Exception $e) {
             dd($e);
             return $this->unhandledErrorResponse();

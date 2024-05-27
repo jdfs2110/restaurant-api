@@ -21,11 +21,11 @@ class StockService
      * @param int $productId ID del producto
      * @param int $quantity cantidad a añadir
      */
-    public function addStock(int $productId, int $quantity = 1): void
+    public function addStock(int $productId, int $quantity = 1, bool $check = true): void
     {
         $stock = $this->repository->findByIdProducto($productId);
 
-        if (is_null($stock)) {
+        if ($check && is_null($stock)) {
             $this->repository->create([
                 'cantidad' => $quantity,
                 'id_producto' => $productId
@@ -33,6 +33,7 @@ class StockService
 
             return;
         }
+
 
         $stock->cantidad += $quantity;
         $stock->save();
@@ -106,10 +107,11 @@ class StockService
     }
 
     private const PAGINATION_LIMIT = 10;
+
     /**
      * @param int $pagina Número de página que se desea obtener
-     * @throws NoContentException cuando la página está vacía
      * @return Collection La lista de stock de la página deseada
+     * @throws NoContentException cuando la página está vacía
      */
     public function paginated(int $pagina): Collection
     {
