@@ -166,8 +166,8 @@ class ProductoController extends Controller
                 $stock->delete();
             }
 
-            if (!is_null($producto->foto)) {
-                $this->deletePhotoIfExists($producto->foto);
+            if (!is_null($producto->getFoto())) {
+                $this->deletePhotoIfExists($producto->getFoto());
             }
 
             $deletion = $this->repository->delete($producto);
