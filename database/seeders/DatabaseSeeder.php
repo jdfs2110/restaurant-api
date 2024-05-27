@@ -16,7 +16,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    private const PRODUCT_QUANTITY = 25;
+    private const PRODUCT_QUANTITY = 26;
 
     /**
      * Seed the application's database.
