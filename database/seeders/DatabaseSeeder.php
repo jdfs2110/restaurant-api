@@ -149,44 +149,52 @@ class DatabaseSeeder extends Seeder
            'fecha_ingreso' => date('Y-m-d')
         ]);
 
-        User::factory()->count(500)->create();
+        User::factory()->create([
+            'name' => 'Isabel Lopez',
+            'email' => 'isabel.lopez@iescamp.es',
+            'password' => bcrypt('isabel'),
+            'id_rol' => '4',
+            'fecha_ingreso' => date('Y-m-d')
+        ]);
+
+//        User::factory()->count(500)->create();
 
         /**
          *  Creación de categorias
          */
         Categoria::factory()->create([
             'nombre' => 'Bebidas',
-            'foto' => 'categorias/refresco.webp'
+            'foto' => 'categorias/bebidas.webp' // <- foto done
         ]);
 
         Categoria::factory()->create([
             'nombre' => 'Entrantes',
-            'foto' => 'categorias/entrantes.webp'
+            'foto' => 'categorias/entrantes.webp' // <- foto done
         ]);
 
         Categoria::factory()->create([
             'nombre' => 'Arroces',
-            'foto' => 'categorias/paella.webp' // <- foto done (gracias juanda)
+            'foto' => 'categorias/arroces.webp' // <- foto done (gracias juanda)
         ]);
 
         Categoria::factory()->create([
             'nombre' => 'Pescados',
-            'foto' => 'categorias/pescados.webp'
+            'foto' => 'categorias/pescados.webp' // <- foto done
         ]);
 
         Categoria::factory()->create([
             'nombre' => 'Carnes y pollos',
-            'foto' => 'categorias/carnes.webp'
+            'foto' => 'categorias/carnes.webp' // <- foto done
         ]);
 
         Categoria::factory()->create([
             'nombre' => 'Pastas',
-            'foto' => 'categorias/pastas.webp'
+            'foto' => 'categorias/pastas.webp' // <- foto done
         ]);
 
         Categoria::factory()->create([
             'nombre' => 'Postres y cafes',
-            'foto' => 'categorias/postres.webp'
+            'foto' => 'categorias/postres.webp' // <- foto done
         ]);
 
         /**
@@ -199,7 +207,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 1.20,
             'activo' => true,
             'id_categoria' => 1,
-            'foto' => 'productos/agua.webp'
+            'foto' => 'productos/agua.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -217,7 +225,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 1.20,
             'activo' => true,
             'id_categoria' => 1,
-            'foto' => 'productos/cerveza.webp'
+            'foto' => 'productos/cerveza.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -341,16 +349,16 @@ class DatabaseSeeder extends Seeder
             'precio' => 15.00,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/churrasco_lomo_alto.webp' // TODO que me da hambre
+            'foto' => 'productos/churrasco_lomo_alto.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
             'id' => 16,
-            'nombre' => 'Churrasco de entrecot a la plancha con puré de patatas',
+            'nombre' => 'Churrasco de entrecot a la plancha con patatas',
             'precio' => 15.00,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/churrasco_entrecot.webp' // TODO que me da hambre
+            'foto' => 'productos/churrasco_entrecot.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -359,7 +367,7 @@ class DatabaseSeeder extends Seeder
             'precio' => 11.99,
             'activo' => true,
             'id_categoria' => 5,
-            'foto' => 'productos/pollo_empanizado.webp' // TODO que me da hambre
+            'foto' => 'productos/pollo_empanizado.webp' // <- foto done
         ]);
 
         Producto::factory()->create([
@@ -440,6 +448,15 @@ class DatabaseSeeder extends Seeder
             'activo' => true,
             'id_categoria' => 7,
             'foto' => 'productos/flan.webp' // <- foto done
+        ]);
+
+        Producto::factory()->create([
+            'id' => 26,
+            'nombre' => 'Café con leche',
+            'precio' => 1.20,
+            'activo' => true,
+            'id_categoria' => 7,
+            'foto' => 'productos/cafe_leche.webp' // <- foto done
         ]);
 
         /**
