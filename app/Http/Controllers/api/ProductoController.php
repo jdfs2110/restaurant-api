@@ -166,7 +166,9 @@ class ProductoController extends Controller
                 $stock->delete();
             }
 
-            $this->deletePhotoIfExists($producto->foto);
+            if (!is_null($producto->foto)) {
+                $this->deletePhotoIfExists($producto->foto);
+            }
 
             $deletion = $this->repository->delete($producto);
             $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
