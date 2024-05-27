@@ -6,6 +6,7 @@ use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\NegativeQuantityException;
 use App\Exceptions\NoContentException;
 use App\Http\Controllers\Controller;
+use App\Models\Producto;
 use App\Repositories\CategoriaRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\StockRepository;
@@ -158,14 +159,14 @@ class ProductoController extends Controller
     function deleteProducto($id): JsonResponse
     {
         try {
-            $producto = $this->repository->findOrFail($id);
+            $producto = Producto::query()->find($id);
             $stock = $this->stockRepository->findByIdProducto($id);
 
             if (!is_null($stock)) {
                 $stock->delete();
             }
 
-            $this->deletePhotoIfExists($producto->getFoto());
+            $this->deletePhotoIfExists($producto->foto);
 
             $deletion = $this->repository->delete($producto);
             $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
