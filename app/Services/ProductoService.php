@@ -38,6 +38,7 @@ class ProductoService
             ])->from('productos')
             ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
             ->join('stock', 'productos.id', '=', 'stock.id_producto')
+            ->where('productos.deleted_at', '=', null)
             ->forPage($pagina, self::PAGINATION_LIMIT)
             ->orderBy('productos.id')
             ->get());
@@ -96,6 +97,7 @@ class ProductoService
             ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
             ->join('stock', 'productos.id', '=', 'stock.id_producto')
             ->where('productos.id_categoria', '=', $id)
+            ->where('productos.deleted_at', '=', null)
             ->get());
 
         $productos = $productos->map(function ($producto) {

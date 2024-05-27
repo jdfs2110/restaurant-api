@@ -66,6 +66,7 @@ class ProductoController extends Controller
                 ])->from('productos')
                 ->join('categorias', 'categorias.id', '=', 'productos.id_categoria')
                 ->join('stock', 'productos.id', '=', 'stock.id_producto')
+                ->where('productos.deleted_at', '=', null)
                 ->get());
 
             $productos = $productos->map(function ($producto) {
@@ -166,9 +167,9 @@ class ProductoController extends Controller
                 $stock->delete();
             }
 
-            if (!is_null($producto->getFoto())) {
+//            if (!is_null($producto->getFoto())) {
                 $this->deletePhotoIfExists($producto->getFoto());
-            }
+//            }
 
             $deletion = $this->repository->delete($producto);
             $message = $deletion == 1 ? 'El producto ha sido eliminado correctamente' : 'Error al eliminar el producto';
