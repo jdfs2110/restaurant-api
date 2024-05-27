@@ -44,4 +44,9 @@ class ProductoRepository extends GeneralRepository
         return $this->getBuilder()->where('nombre', $name)
             ->orWhere('nombre', 'like', "%$name%")->get();
     }
+
+    public function findAllByIdCategoria(int $idCategoria): Collection
+    {
+        return $this->getBuilder()->where('id_categoria', $idCategoria)->get();
+    }
 }
