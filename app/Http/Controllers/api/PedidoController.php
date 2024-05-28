@@ -229,7 +229,8 @@ class PedidoController extends Controller
         } catch (PedidoAlreadyServedException|PedidoEnCursoException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse();
         }
     }
