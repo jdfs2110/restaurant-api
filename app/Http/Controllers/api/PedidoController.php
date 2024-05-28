@@ -10,6 +10,7 @@ use App\Exceptions\PedidoAlreadyServedException;
 use App\Exceptions\PedidoEnCursoException;
 use App\Exceptions\UserIsNotWaiterException;
 use App\Http\Controllers\Controller;
+use App\Models\Factura;
 use App\Repositories\LineaRepository;
 use App\Repositories\MesaRepository;
 use App\Repositories\PedidoRepository;
@@ -210,6 +211,11 @@ class PedidoController extends Controller
     {
         try {
             $mesa = $this->service->servirPedido($id);
+
+            Factura::query()->create([
+                'fecha' => now(),
+                'id_pedido' => $id
+            ]);
 
             event(new MesaEditedEvent($mesa, "El pedido $id ha sido servido"));
             return $this->successResponse('', 'Estado del pedido cambiado correctamente.');
