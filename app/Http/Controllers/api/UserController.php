@@ -170,8 +170,8 @@ class UserController extends Controller
         } catch (EmailAlreadyInUseException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception) {
-            return $this->unhandledErrorResponse();
+        } catch (Exception $e) {
+            return $this->unhandledErrorResponse($e);
         }
     }
 
