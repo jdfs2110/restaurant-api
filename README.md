@@ -1,4 +1,24 @@
-# Casos de uso con sus endpoints
+
+# Food Flow
+
+Proyecto de gestión de restaurantes donde se manejan las mesas, los productos, las líneas de los pedidos según el rol
+
+## Roles
+
+* Mesero (camarero para los que no saben)
+    * Es el que se encarga de atender a los comensales y mandar las líneas a cocina o a barra, y a recoger las mismas
+* Cocinero
+    * Es el que se encarga de completar las lineas de cocina para que el mesero las recoja
+* Barra
+    * Es el que se encarga de completar las lineas de barra para que el mesero las recoja
+* RRHH
+    * Es un rol aparte del administrador que se encarga de gestionar usuarios
+* Administrador
+    * El administrador de la aplicación, tiene acceso a la aplicación en su totalidad, con su propio panel para gestionar todas las partes
+* Bloqueado
+    * La finalidad de este rol es que el usuario que lo posea no pueda entrar a la aplicación.
+
+## Casos de uso con sus endpoints
 
 ### Los campos marcados con (admin) son para el panel de administración
 
