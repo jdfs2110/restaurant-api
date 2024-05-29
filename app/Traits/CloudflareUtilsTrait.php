@@ -16,7 +16,6 @@ trait CloudflareUtilsTrait
         }
     }
 
-    private const PUBLIC_CLOUDFLARE_R2_STORAGE_URL = 'https://pub-bc3ca3a8662944629a67af74aa0a9f90.r2.dev/';
 
     /**
      * @param string $path Ruta donde está alojada la foto
