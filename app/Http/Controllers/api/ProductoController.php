@@ -106,15 +106,13 @@ class ProductoController extends Controller
 
             return $this->successResponse($producto);
 
-        } catch (TypeError $e) {
+        } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
-        } catch (ItemNotFoundException $e) {
-            dd($e);
+        } catch (ItemNotFoundException) {
             return $this->errorResponse('Producto no encontrado.');
 
-        } catch (Exception $e) {
-            dd($e);
+        } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
     }
@@ -184,9 +182,8 @@ class ProductoController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (Exception $e) {
-            dd($e);
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 

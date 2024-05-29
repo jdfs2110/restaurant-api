@@ -229,8 +229,7 @@ class PedidoController extends Controller
         } catch (PedidoAlreadyServedException|PedidoEnCursoException $e) {
             return $this->errorResponse($e->getMessage(), 400);
 
-        } catch (Exception $e) {
-            dd($e);
+        } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
     }
@@ -247,8 +246,7 @@ class PedidoController extends Controller
         } catch (TypeError) {
             return $this->errorResponse("Debes de introducir un número. (Valor introducido: $id)", 400);
 
-        } catch (Exception $e) {
-            dd($e);
+        } catch (Exception) {
             return $this->unhandledErrorResponse();
         }
     }
