@@ -43,7 +43,7 @@ class UserRepository extends GeneralRepository
         $count = $this->getBuilder()->getModel()
             ->where('id', '!=', $id)
             ->where('email', $email)
-            ->where('deleted_at', '!=', null)
+            ->where('deleted_at', 'is not', null)
             ->get()
             ->count();
 
