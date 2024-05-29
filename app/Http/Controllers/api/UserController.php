@@ -168,9 +168,10 @@ class UserController extends Controller
             return $this->errorResponse($e->getMessage());
 
         } catch (EmailAlreadyInUseException $e) {
-            return $this->errorResponse($e->getMessage(), 400);
+            return $this->errorResponse('El email ingresado ya existe', 400);
 
         } catch (Exception $e) {
+            dd($e);
             return $this->unhandledErrorResponse($e);
         }
     }
