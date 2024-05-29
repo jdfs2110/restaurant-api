@@ -15,6 +15,7 @@ use App\Resources\UsuarioResource;
 use App\Services\PedidoService;
 use App\Services\UserService;
 use Exception;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -167,12 +168,11 @@ class UserController extends Controller
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse($e->getMessage());
 
-        } catch (EmailAlreadyInUseException $e) {
+        } catch (EmailAlreadyInUseException|UniqueConstraintViolationException) {
             return $this->errorResponse('El email ingresado ya existe', 400);
 
-        } catch (Exception $e) {
-            dd($e);
-            return $this->unhandledErrorResponse($e);
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
