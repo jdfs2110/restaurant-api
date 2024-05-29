@@ -40,7 +40,12 @@ class UserRepository extends GeneralRepository
     public function emailExists(int $id, string $email): void
     {
         // DONT TOUCH que se rompe
-        $count = $this->getBuilder()->getModel()->where('id', '!=', $id)->where('email', $email)->get()->count();
+        $count = $this->getBuilder()->getModel()
+            ->where('id', '!=', $id)
+            ->where('email', $email)
+            ->where('deleted_at', '!=', null)
+            ->get()
+            ->count();
 
         if ($count >= 1) {
             throw new EmailAlreadyInUseException('El email ingresado ya existe');
