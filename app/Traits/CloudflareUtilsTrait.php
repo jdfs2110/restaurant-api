@@ -24,6 +24,6 @@ trait CloudflareUtilsTrait
      */
     function toCloudflareUrl(string $path): string
     {
-        return self::PUBLIC_CLOUDFLARE_R2_STORAGE_URL . $path;
+        return env('CLOUDFLARE_R2_URL') . '/' . $path;
     }
 }
