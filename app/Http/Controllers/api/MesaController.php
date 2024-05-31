@@ -150,8 +150,8 @@ class MesaController extends Controller
         } catch (NoContentException $e) {
             return $this->errorResponse($e->getMessage(), 204);
 
-        } catch (Exception $e) {
-            return $this->unhandledErrorResponse($e->getMessage());
+        } catch (Exception) {
+            return $this->unhandledErrorResponse();
         }
     }
 
