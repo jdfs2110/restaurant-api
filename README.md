@@ -5,7 +5,7 @@ Proyecto de gestión de restaurantes donde se manejan las mesas, los productos, 
 
 ## Roles
 
-* Mesero (camarero para los que no saben)
+* Mesero
     * Es el que se encarga de atender a los comensales y mandar las líneas a cocina o a barra, y a recoger las mismas
 * Cocinero
     * Es el que se encarga de completar las lineas de cocina para que el mesero las recoja
