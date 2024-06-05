@@ -1,7 +1,7 @@
 
 # Food Flow
 
-Proyecto de gestión de restaurantes donde se manejan las mesas, los productos, las líneas de los pedidos según el rol
+Proyecto de gestión de restaurantes donde se manejan las mesas, los productos con sus categorías y stock, los pedidos, las líneas de los pedidos según el rol
 
 ## Roles
 
@@ -12,7 +12,7 @@ Proyecto de gestión de restaurantes donde se manejan las mesas, los productos, 
 * Barra
     * Es el que se encarga de completar las lineas de barra para que el mesero las recoja
 * RRHH
-    * Es un rol aparte del administrador que se encarga de gestionar usuarios
+    * Es un rol aparte del administrador que se encarga de gestionar usuarios y roles
 * Administrador
     * El administrador de la aplicación, tiene acceso a la aplicación en su totalidad, con su propio panel para gestionar todas las partes
 * Bloqueado
